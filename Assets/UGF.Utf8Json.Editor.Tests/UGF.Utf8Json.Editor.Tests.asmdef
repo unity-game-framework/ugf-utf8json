@@ -1,0 +1,20 @@
+{
+    "name": "UGF.Utf8Json.Editor.Tests",
+    "references": [
+        "GUID:7d88aca9857e23b4e868d9ace8e59be2",
+        "GUID:67e52fe5dbb27a8428b65548925ff5aa"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

@@ -1,0 +1,17 @@
+{
+    "name": "UGF.Utf8Json.Runtime.Tests",
+    "references": [
+        "GUID:7d88aca9857e23b4e868d9ace8e59be2"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

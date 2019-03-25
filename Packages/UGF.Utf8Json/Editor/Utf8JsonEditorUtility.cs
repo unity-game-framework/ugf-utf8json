@@ -58,7 +58,7 @@ namespace UGF.Utf8Json.Editor
                         }
                     }
 
-                    string rootNamespace = $"{assemblyName}.Resolvers.Generated";
+                    string rootNamespace = $"{assemblyName}.Generated";
                     string resolverName = $"{assemblyName.Replace(".", string.Empty)}GeneratedResolver";
 
                     Generate(sources, path, resolverName, rootNamespace);

@@ -7,7 +7,7 @@
 #pragma warning disable 414
 #pragma warning disable 168
 
-namespace TestEditorAssembly.Resolvers.Generated.Resolvers
+namespace TestEditorAssembly.Generated.Resolvers
 {
     using System;
     using Utf8Json;
@@ -60,7 +60,7 @@ namespace TestEditorAssembly.Resolvers.Generated.Resolvers
 
             switch (key)
             {
-                case 0: return new TestEditorAssembly.Resolvers.Generated.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTargetFormatter();
+                case 0: return new TestEditorAssembly.Generated.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTargetFormatter();
                 default: return null;
             }
         }
@@ -78,7 +78,7 @@ namespace TestEditorAssembly.Resolvers.Generated.Resolvers
 #pragma warning disable 219
 #pragma warning disable 168
 
-namespace TestEditorAssembly.Resolvers.Generated.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
+namespace TestEditorAssembly.Generated.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
     using System;
     using Utf8Json;

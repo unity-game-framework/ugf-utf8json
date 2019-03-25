@@ -37,9 +37,8 @@ namespace UGF.Utf8Json.Editor
             {
                 string path = CompilationPipeline.GetAssemblyDefinitionFilePathFromAssemblyName(assemblyName);
                 string directory = Path.GetDirectoryName(Path.GetFullPath(path));
-                string resolverName = $"{assemblyName.Replace(".", string.Empty)}ResolverGenerated";
                 
-                path = $"{directory}\\{resolverName}.cs";
+                path = $"{directory}/{assemblyName}.Utf8Json.Generated.cs";
 
                 if (!string.IsNullOrEmpty(path))
                 {
@@ -60,6 +59,7 @@ namespace UGF.Utf8Json.Editor
                     }
 
                     string rootNamespace = $"{assemblyName}.Resolvers.Generated";
+                    string resolverName = $"{assemblyName.Replace(".", string.Empty)}GeneratedResolver";
 
                     Generate(sources, path, resolverName, rootNamespace);
                 }

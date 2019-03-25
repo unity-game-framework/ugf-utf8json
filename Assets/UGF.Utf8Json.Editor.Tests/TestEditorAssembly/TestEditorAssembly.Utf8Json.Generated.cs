@@ -12,11 +12,11 @@ namespace TestEditorAssembly.Resolvers.Generated.Resolvers
     using System;
     using Utf8Json;
 
-    public class TestEditorAssemblyResolverGenerated : global::Utf8Json.IJsonFormatterResolver
+    public class TestEditorAssemblyGeneratedResolver : global::Utf8Json.IJsonFormatterResolver
     {
-        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new TestEditorAssemblyResolverGenerated();
+        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new TestEditorAssemblyGeneratedResolver();
 
-        TestEditorAssemblyResolverGenerated()
+        TestEditorAssemblyGeneratedResolver()
         {
 
         }
@@ -32,7 +32,7 @@ namespace TestEditorAssembly.Resolvers.Generated.Resolvers
 
             static FormatterCache()
             {
-                var f = TestEditorAssemblyResolverGeneratedGetFormatterHelper.GetFormatter(typeof(T));
+                var f = TestEditorAssemblyGeneratedResolverGetFormatterHelper.GetFormatter(typeof(T));
                 if (f != null)
                 {
                     formatter = (global::Utf8Json.IJsonFormatter<T>)f;
@@ -41,11 +41,11 @@ namespace TestEditorAssembly.Resolvers.Generated.Resolvers
         }
     }
 
-    internal static class TestEditorAssemblyResolverGeneratedGetFormatterHelper
+    internal static class TestEditorAssemblyGeneratedResolverGetFormatterHelper
     {
         static readonly global::System.Collections.Generic.Dictionary<Type, int> lookup;
 
-        static TestEditorAssemblyResolverGeneratedGetFormatterHelper()
+        static TestEditorAssemblyGeneratedResolverGetFormatterHelper()
         {
             lookup = new global::System.Collections.Generic.Dictionary<Type, int>(1)
             {

@@ -15,7 +15,6 @@ namespace Utf8Json.Unity
 
         UnityResolver()
         {
-
         }
 
         public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()
@@ -46,27 +45,27 @@ namespace Utf8Json.Unity
         {
             lookup = new global::System.Collections.Generic.Dictionary<Type, int>(7)
             {
-                {typeof(global::UnityEngine.Vector2), 0 },
-                {typeof(global::UnityEngine.Vector3), 1 },
-                {typeof(global::UnityEngine.Vector4), 2 },
-                {typeof(global::UnityEngine.Quaternion), 3 },
-                {typeof(global::UnityEngine.Color), 4 },
-                {typeof(global::UnityEngine.Bounds), 5 },
-                {typeof(global::UnityEngine.Rect), 6 },
-                {typeof(global::UnityEngine.Vector2[]), 7 },
-                {typeof(global::UnityEngine.Vector3[]), 8 },
-                {typeof(global::UnityEngine.Vector4[]), 9 },
-                {typeof(global::UnityEngine.Quaternion[]), 10 },
-                {typeof(global::UnityEngine.Color[]), 11 },
-                {typeof(global::UnityEngine.Bounds[]), 12 },
-                {typeof(global::UnityEngine.Rect[]), 13 },
-                {typeof(global::UnityEngine.Vector2?), 14 },
-                {typeof(global::UnityEngine.Vector3?), 15 },
-                {typeof(global::UnityEngine.Vector4?), 16 },
-                {typeof(global::UnityEngine.Quaternion?), 17 },
-                {typeof(global::UnityEngine.Color?), 18 },
-                {typeof(global::UnityEngine.Bounds?), 19 },
-                {typeof(global::UnityEngine.Rect?), 20 },
+                { typeof(global::UnityEngine.Vector2), 0 },
+                { typeof(global::UnityEngine.Vector3), 1 },
+                { typeof(global::UnityEngine.Vector4), 2 },
+                { typeof(global::UnityEngine.Quaternion), 3 },
+                { typeof(global::UnityEngine.Color), 4 },
+                { typeof(global::UnityEngine.Bounds), 5 },
+                { typeof(global::UnityEngine.Rect), 6 },
+                { typeof(global::UnityEngine.Vector2[]), 7 },
+                { typeof(global::UnityEngine.Vector3[]), 8 },
+                { typeof(global::UnityEngine.Vector4[]), 9 },
+                { typeof(global::UnityEngine.Quaternion[]), 10 },
+                { typeof(global::UnityEngine.Color[]), 11 },
+                { typeof(global::UnityEngine.Bounds[]), 12 },
+                { typeof(global::UnityEngine.Rect[]), 13 },
+                { typeof(global::UnityEngine.Vector2?), 14 },
+                { typeof(global::UnityEngine.Vector3?), 15 },
+                { typeof(global::UnityEngine.Vector4?), 16 },
+                { typeof(global::UnityEngine.Quaternion?), 17 },
+                { typeof(global::UnityEngine.Color?), 18 },
+                { typeof(global::UnityEngine.Bounds?), 19 },
+                { typeof(global::UnityEngine.Rect?), 20 },
             };
         }
 
@@ -119,7 +118,6 @@ namespace Utf8Json.Unity
     using System;
     using Utf8Json;
 
-
     public sealed class Vector2Formatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Vector2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -129,22 +127,19 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1 },
             };
 
             this.____stringByteKeys = new byte[][]
             {
                 JsonWriter.GetEncodedPropertyNameWithBeginObject("x"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("y"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Vector2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.x);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -159,7 +154,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __x__ = default(float);
             var __y__ = default(float);
@@ -201,7 +195,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class Vector3Formatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Vector3>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -211,9 +204,9 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2 },
             };
 
             this.____stringByteKeys = new byte[][]
@@ -221,14 +214,11 @@ namespace Utf8Json.Unity
                 JsonWriter.GetEncodedPropertyNameWithBeginObject("x"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("y"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("z"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Vector3 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.x);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -245,7 +235,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __x__ = default(float);
             var __y__ = default(float);
@@ -292,7 +281,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class Vector4Formatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Vector4>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -302,10 +290,10 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("w"), 3},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("w"), 3 },
             };
 
             this.____stringByteKeys = new byte[][]
@@ -314,14 +302,11 @@ namespace Utf8Json.Unity
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("y"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("z"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("w"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Vector4 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.x);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -340,7 +325,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __x__ = default(float);
             var __y__ = default(float);
@@ -392,7 +376,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class QuaternionFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Quaternion>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -402,10 +385,10 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("w"), 3},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("z"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("w"), 3 },
             };
 
             this.____stringByteKeys = new byte[][]
@@ -414,14 +397,11 @@ namespace Utf8Json.Unity
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("y"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("z"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("w"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Quaternion value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.x);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -440,7 +420,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __x__ = default(float);
             var __y__ = default(float);
@@ -492,7 +471,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class ColorFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Color>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -502,10 +480,10 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("r"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("g"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("b"), 2},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("a"), 3},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("r"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("g"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("b"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("a"), 3 },
             };
 
             this.____stringByteKeys = new byte[][]
@@ -514,14 +492,11 @@ namespace Utf8Json.Unity
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("g"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("b"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("a"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Color value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.r);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -540,7 +515,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __r__ = default(float);
             var __g__ = default(float);
@@ -592,7 +566,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class BoundsFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Bounds>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -602,22 +575,19 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("center"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("size"), 1},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("center"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("size"), 1 },
             };
 
             this.____stringByteKeys = new byte[][]
             {
                 JsonWriter.GetEncodedPropertyNameWithBeginObject("center"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("size"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Bounds value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             formatterResolver.GetFormatterWithVerify<global::UnityEngine.Vector3>().Serialize(ref writer, value.center, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -632,7 +602,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __center__ = default(global::UnityEngine.Vector3);
             var __size__ = default(global::UnityEngine.Vector3);
@@ -674,7 +643,6 @@ namespace Utf8Json.Unity
         }
     }
 
-
     public sealed class RectFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Rect>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -684,10 +652,10 @@ namespace Utf8Json.Unity
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("width"), 2},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("height"), 3},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("x"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("y"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("width"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("height"), 3 },
             };
 
             this.____stringByteKeys = new byte[][]
@@ -696,14 +664,11 @@ namespace Utf8Json.Unity
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("y"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("width"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("height"),
-
             };
         }
 
         public void Serialize(ref JsonWriter writer, global::UnityEngine.Rect value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-
-
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteSingle(value.x);
             writer.WriteRaw(this.____stringByteKeys[1]);
@@ -722,7 +687,6 @@ namespace Utf8Json.Unity
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-
 
             var __x__ = default(float);
             var __y__ = default(float);
@@ -773,7 +737,6 @@ namespace Utf8Json.Unity
             return ____result;
         }
     }
-
 }
 
 #pragma warning disable 168

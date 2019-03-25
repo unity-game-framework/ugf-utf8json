@@ -1,3 +1,15 @@
-﻿{
-	"name": "UGF.Utf8Json.Runtime"
+{
+    "name": "UGF.Utf8Json.Runtime",
+    "references": [
+        "GUID:47c3349eaf0910446a6e557ee1a6748f"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }

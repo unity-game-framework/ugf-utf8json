@@ -1,12 +1,12 @@
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
+#pragma warning disable 219
+#pragma warning disable 168
+
 using Utf8Json;
 
 // ReSharper disable all
-
-// #pragma warning disable 618
-// #pragma warning disable 612
-// #pragma warning disable 414
-// #pragma warning disable 219
-// #pragma warning disable 168
 
 namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
@@ -95,8 +95,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
 
 }
 
-// #pragma warning disable 168
-// #pragma warning restore 219
-// #pragma warning restore 414
-// #pragma warning restore 618
-// #pragma warning restore 612
+#pragma warning disable 168
+#pragma warning restore 219
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612

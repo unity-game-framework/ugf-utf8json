@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using UGF.Utf8Json.Runtime;
+using UGF.Code.Analysis.Editor;
 using UnityEditor;
-using UnityEditor.Compilation;
 using Utf8Json.UniversalCodeGenerator;
-using Assembly = UnityEditor.Compilation.Assembly;
-using Debug = UnityEngine.Debug;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace UGF.Utf8Json.Editor
@@ -50,6 +47,8 @@ namespace UGF.Utf8Json.Editor
         {
             string result = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(new List<string> { path }, namespaceRoot);
 
+            result = CodeAnalysisEditorUtility.AddLeadingTrivia(result, new List<string> { "using Utf8Json;", string.Empty, "// ReSharper disable all" });
+            
             return result;
         }
 

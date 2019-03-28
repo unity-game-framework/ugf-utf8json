@@ -60,23 +60,10 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write(@"()
-        {
-
-        }
-
-        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()
-        {
-            return FormatterCache<T>.formatter;
-        }
-
-        static class FormatterCache<T>
-        {
-            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;
-
-            static FormatterCache()
-            {
-                var f = ");
+            this.Write("()\r\n        {\r\n\r\n        }\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +
+                       "        {\r\n            return FormatterCache<T>.formatter;\r\n        }\r\n\r\n        static class FormatterCache<T>\r\n" +
+                       "        {\r\n            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;\r\n\r\n            static FormatterCache()\r\n" +
+                       "            {\r\n                var f = ");
             
             #line 36 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\ResolverTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));

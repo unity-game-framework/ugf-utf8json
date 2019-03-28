@@ -269,22 +269,12 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write(@"
-            var ____count = 0;
-            reader.ReadIsBeginObjectWithVerify();
-            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
-            {
-                var stringKey = reader.ReadPropertyNameSegmentRaw();
-                int key;
-                if (!____keyMapping.TryGetValueSafe(stringKey, out key))
-                {
-                    reader.ReadNextBlock();
-                    goto NEXT_LOOP;
-                }
-
-                switch (key)
-                {
-");
+            this.Write("\r\n            var ____count = 0;\r\n            reader.ReadIsBeginObjectWithVerify();\r\n" +
+                       "            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))\r\n            {\r\n" +
+                       "                var stringKey = reader.ReadPropertyNameSegmentRaw();\r\n                int key;\r\n" +
+                       "                if (!____keyMapping.TryGetValueSafe(stringKey, out key))\r\n                {\r\n" +
+                       "                    reader.ReadNextBlock();\r\n                    goto NEXT_LOOP;\r\n                }\r\n\r\n" +
+                       "                switch (key)\r\n                {\r\n");
             
             #line 96 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
  index = 0; foreach(var x in objInfo.Members) { 

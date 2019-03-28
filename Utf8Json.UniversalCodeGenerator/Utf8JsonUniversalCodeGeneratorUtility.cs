@@ -40,11 +40,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// Generates formatters without resolver from the specified files and other arguments.
         /// </summary>
         /// <param name="inputFiles">The collection of input .cs files.</param>
-        /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(List<string> inputFiles, string resolverName, string namespaceRoot)
+        public static string GenerateFormatters(List<string> inputFiles, string namespaceRoot)
         {
-            return GenerateFormatters(inputFiles, null, null, false, resolverName, namespaceRoot);
+            return GenerateFormatters(inputFiles, null, null, false, namespaceRoot);
         }
         
         /// <summary>
@@ -54,11 +53,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="inputDirectories">The collection of directories with input .cs files.</param>
         /// <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
-        /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(List<string> inputFiles, List<string> inputDirectories, List<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
+        public static string GenerateFormatters(List<string> inputFiles, List<string> inputDirectories, List<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json")
         {
-            return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, resolverName, namespaceRoot));
+            return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot));
         }
 
         internal static CommandlineArguments InternalGetArguments(List<string> inputFiles, List<string> inputDirectories = null, List<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")

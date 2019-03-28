@@ -30,84 +30,34 @@ namespace UGF.Utf8Json.Editor
             }
         }
 
-        public static void GenerateForAssembly(string assemblyName)
+        public static void Generate(MonoScript monoScript)
         {
-            if (TryFindAssembly(assemblyName, out Assembly assembly))
-            {
-                string path = CompilationPipeline.GetAssemblyDefinitionFilePathFromAssemblyName(assemblyName);
-                string directory = Path.GetDirectoryName(Path.GetFullPath(path));
+            Type type = monoScript.GetClass();
+            string path = AssetDatabase.GetAssetPath(monoScript);
+            string namespaceRoot = type.Namespace ?? string.Empty;
+            
+            string script = Generate(path, namespaceRoot);
+            
+            string directory = Path.GetDirectoryName(path);
+            string name = Path.GetFileNameWithoutExtension(path);
+            string pathGenerated = $"{directory}/{name}.Utf8Json.Generated.cs";
 
-                path = $"{directory}/{assemblyName}.Utf8Json.Generated.cs";
+            File.WriteAllText(pathGenerated, script);
+            AssetDatabase.ImportAsset(pathGenerated);
+        }
 
-                if (!string.IsNullOrEmpty(path))
-                {
-                    var sources = new List<string>();
+        public static string Generate(string path, string namespaceRoot)
+        {
+            string result = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(new List<string> { path }, namespaceRoot);
 
-                    for (int i = 0; i < assembly.sourceFiles.Length; i++)
-                    {
-                        string sourceFilePath = assembly.sourceFiles[i];
-                        var script = AssetDatabase.LoadAssetAtPath<MonoScript>(sourceFilePath);
-                        Type type = script != null ? script.GetClass() : null;
-
-                        if (type != null && type.IsDefined(typeof(Utf8JsonSerializableAttribute)))
-                        {
-                            string fullPath = Path.GetFullPath(sourceFilePath);
-
-                            sources.Add(fullPath);
-                        }
-                    }
-
-                    string rootNamespace = $"{assemblyName}.Generated";
-                    string resolverName = $"{assemblyName.Replace(".", string.Empty)}GeneratedResolver";
-
-                    Generate(sources, path, resolverName, rootNamespace);
-                }
-                else
-                {
-                    Debug.LogWarning($"AssemblyDefinition path not found by specified assembly name: '{assemblyName}'.");
-                }
-            }
-            else
-            {
-                Debug.LogWarning($"Assembly not found by specified assembly name: '{assemblyName}'.");
-            }
+            return result;
         }
 
         public static void Generate(List<string> filePaths, string outputPath, string resolverName, string rootNamespace, bool outputLog = true, bool throwException = false)
         {
-            if (EditorUtility.DisplayCancelableProgressBar("Generate Resolver", "Processing...", 0.9F))
-            {
-                return;
-            }
-
             string result = Utf8JsonUniversalCodeGeneratorUtility.Generate(filePaths, resolverName, rootNamespace);
 
             File.WriteAllText(outputPath, result);
-
-            EditorUtility.ClearProgressBar();
-        }
-
-        private static bool TryFindAssembly(string assemblyName, out Assembly assembly)
-        {
-            Assembly[] assemblies = CompilationPipeline.GetAssemblies();
-
-            for (int i = 0; i < assemblies.Length; i++)
-            {
-                assembly = assemblies[i];
-
-                if (assembly.name == assemblyName)
-                {
-                    return true;
-                }
-            }
-
-            assembly = null;
-            return false;
-        }
-
-        private static PackageInfo GetPackageInfo(string packageName)
-        {
-            return m_getForAssetPath.Invoke($"Packages/{packageName}");
         }
     }
 }

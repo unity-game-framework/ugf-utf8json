@@ -1,4 +1,4 @@
-﻿using Utf8Json;
+using Utf8Json;
 
 // ReSharper disable all
 

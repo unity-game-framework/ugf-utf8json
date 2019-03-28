@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Text;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -77,126 +75,16 @@ namespace UGF.Utf8Json.Editor
 
         public static void Generate(List<string> filePaths, string outputPath, string resolverName, string rootNamespace, bool outputLog = true, bool throwException = false)
         {
-            string path = GetExecutePath();
-            // string arguments = GetArguments(filePaths, outputPath, resolverName, rootNamespace);
-            string arguments = GetArguments(filePaths);
-
             if (EditorUtility.DisplayCancelableProgressBar("Generate Resolver", "Processing...", 0.9F))
             {
                 return;
             }
 
-            // StartProcess(path, arguments, outputLog, throwException);
+            string result = Utf8JsonUniversalCodeGeneratorUtility.Generate(filePaths, resolverName, rootNamespace);
 
-            var args = new Utf8JsonUniversalGeneratorUtility.RunArguments();
-            
-            args.InputFiles.AddRange(filePaths);
-            args.OutputPath = outputPath;
-            args.ResolverName = resolverName;
-            args.NamespaceRoot = rootNamespace;
-            
-            Utf8JsonUniversalGeneratorUtility.Run(args);
-            
+            File.WriteAllText(outputPath, result);
+
             EditorUtility.ClearProgressBar();
-        }
-
-        private static string GetExecutePath()
-        {
-            PackageInfo packageInfo = GetPackageInfo("com.ugf.utf8json");
-
-            return $"{packageInfo.resolvedPath}/Editor/.Compiler/win-x64/Utf8Json.UniversalCodeGenerator.exe";
-        }
-
-        private static string GetArguments(List<string> filePaths)
-        {
-            var builder = new StringBuilder();
-            
-            builder.Append(" -i \"");
-
-            for (int i = 0; i < filePaths.Count; i++)
-            {
-                string filePath = filePaths[i];
-
-                builder.Append(filePath);
-
-                if (i != filePaths.Count - 1)
-                {
-                    builder.Append(", ");
-                }
-            }
-            
-            return builder.ToString();
-        }
-
-        private static string GetArguments(List<string> filePaths, string outputPath, string resolverName, string rootNamespace)
-        {
-            var builder = new StringBuilder();
-
-            builder.Append(" -i \"");
-
-            for (int i = 0; i < filePaths.Count; i++)
-            {
-                string filePath = filePaths[i];
-
-                builder.Append(filePath);
-
-                if (i != filePaths.Count - 1)
-                {
-                    builder.Append(", ");
-                }
-            }
-
-            builder.Append('\"');
-            builder.Append($" -o \"{outputPath}\"");
-            builder.Append($" -r \"{resolverName}\"");
-            builder.Append($" -n \"{rootNamespace}\"");
-
-            return builder.ToString();
-        }
-
-        private static void StartProcess(string path, string arguments, bool outputLog, bool throwException)
-        {
-            var info = new ProcessStartInfo
-            {
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                RedirectStandardOutput = outputLog,
-                RedirectStandardError = outputLog,
-                FileName = path,
-                Arguments = arguments
-            };
-
-            var process = new Process
-            {
-                StartInfo = info,
-                EnableRaisingEvents = true
-            };
-
-            process.Start();
-
-            if (outputLog)
-            {
-                string output = process.StandardOutput.ReadToEnd();
-                string error = process.StandardOutput.ReadToEnd();
-
-                if (!string.IsNullOrEmpty(output))
-                {
-                    Debug.Log(output);
-                }
-
-                if (!string.IsNullOrEmpty(error))
-                {
-                    if (throwException)
-                    {
-                        throw new Exception(error);
-                    }
-
-                    Debug.LogError(error);
-                }
-            }
-
-            process.WaitForExit();
-            process.Dispose();
         }
 
         private static bool TryFindAssembly(string assemblyName, out Assembly assembly)

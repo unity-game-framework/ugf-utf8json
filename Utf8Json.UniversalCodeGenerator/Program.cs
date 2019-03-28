@@ -13,16 +13,20 @@ namespace Utf8Json.UniversalCodeGenerator
 {
     class CommandlineArguments
     {
-        public List<string> InputFiles { get; private set; }
-        public List<string> InputDirectories { get; private set; }
-        public string OutputPath { get; private set; }
-        public List<string> ConditionalSymbols { get; private set; }
-        public string ResolverName { get; private set; }
-        public string NamespaceRoot { get; private set; }
-        public bool AllowInternal { get; private set; }
+        public List<string> InputFiles { get; set; }
+        public List<string> InputDirectories { get; set; }
+        public string OutputPath { get; set; }
+        public List<string> ConditionalSymbols { get; set; }
+        public string ResolverName { get; set; }
+        public string NamespaceRoot { get; set; }
+        public bool AllowInternal { get; set; }
 
 
         public bool IsParsed { get; set; }
+
+        public CommandlineArguments()
+        {
+        }
 
         public CommandlineArguments(string[] args)
         {

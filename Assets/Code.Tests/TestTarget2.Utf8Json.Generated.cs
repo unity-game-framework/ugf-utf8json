@@ -8,34 +8,32 @@ using Utf8Json;
 
 // ReSharper disable all
 
-namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
+namespace Code.Tests.Formatters.Code.Tests
 {
     using System;
     using Utf8Json;
 
 
-    public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
+    public sealed class TestTarget2Formatter : global::Utf8Json.IJsonFormatter<global::Code.Tests.TestTarget2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
 
-        public TestEditorTargetFormatter()
+        public TestTarget2Formatter()
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Value"), 0},
             };
 
             this.____stringByteKeys = new byte[][]
             {
-                JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
-                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"),
+                JsonWriter.GetEncodedPropertyNameWithBeginObject("Value"),
                 
             };
         }
 
-        public void Serialize(ref JsonWriter writer, global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref JsonWriter writer, global::Code.Tests.TestTarget2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
@@ -45,14 +43,12 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             
 
             writer.WriteRaw(this.____stringByteKeys[0]);
-            writer.WriteBoolean(value.BoolValue);
-            writer.WriteRaw(this.____stringByteKeys[1]);
-            writer.WriteString(value.StringValue);
+            writer.WriteBoolean(value.Value);
             
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget Deserialize(ref JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::Code.Tests.TestTarget2 Deserialize(ref JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
@@ -60,10 +56,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             }
             
 
-            var __BoolValue__ = default(bool);
-            var __BoolValue__b__ = false;
-            var __StringValue__ = default(string);
-            var __StringValue__b__ = false;
+            var __Value__ = default(bool);
+            var __Value__b__ = false;
 
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -80,12 +74,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
                 switch (key)
                 {
                     case 0:
-                        __BoolValue__ = reader.ReadBoolean();
-                        __BoolValue__b__ = true;
-                        break;
-                    case 1:
-                        __StringValue__ = reader.ReadString();
-                        __StringValue__b__ = true;
+                        __Value__ = reader.ReadBoolean();
+                        __Value__b__ = true;
                         break;
                     default:
                         reader.ReadNextBlock();
@@ -96,9 +86,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
                 continue;
             }
 
-            var ____result = new global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget();
-            if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
-            if(__StringValue__b__) ____result.StringValue = __StringValue__;
+            var ____result = new global::Code.Tests.TestTarget2();
+            if(__Value__b__) ____result.Value = __Value__;
 
             return ____result;
         }

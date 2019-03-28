@@ -6,5 +6,6 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly
     public class TestEditorTarget
     {
         public bool BoolValue { get; set; } = true;
+        public string StringValue { get; set; } = "Test";
     }
 }

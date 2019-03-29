@@ -25,12 +25,14 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             {
                 { JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0},
                 { JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1},
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2},
             };
 
             this.____stringByteKeys = new byte[][]
             {
                 JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
                 JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"),
+                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
                 
             };
         }
@@ -48,6 +50,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             writer.WriteBoolean(value.BoolValue);
             writer.WriteRaw(this.____stringByteKeys[1]);
             writer.WriteString(value.StringValue);
+            writer.WriteRaw(this.____stringByteKeys[2]);
+            formatterResolver.GetFormatterWithVerify<UnityEngine.Vector2>().Serialize(ref writer, value.Vector2, formatterResolver);
             
             writer.WriteEndObject();
         }
@@ -64,6 +68,8 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             var __BoolValue__b__ = false;
             var __StringValue__ = default(string);
             var __StringValue__b__ = false;
+            var __Vector2__ = default(UnityEngine.Vector2);
+            var __Vector2__b__ = false;
 
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -87,6 +93,10 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
                         __StringValue__ = reader.ReadString();
                         __StringValue__b__ = true;
                         break;
+                    case 2:
+                        __Vector2__ = formatterResolver.GetFormatterWithVerify<UnityEngine.Vector2>().Deserialize(ref reader, formatterResolver);
+                        __Vector2__b__ = true;
+                        break;
                     default:
                         reader.ReadNextBlock();
                         break;
@@ -99,6 +109,7 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
             var ____result = new global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget();
             if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
             if(__StringValue__b__) ____result.StringValue = __StringValue__;
+            if(__Vector2__b__) ____result.Vector2 = __Vector2__;
 
             return ____result;
         }

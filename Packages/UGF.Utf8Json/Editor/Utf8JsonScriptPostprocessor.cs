@@ -8,9 +8,9 @@ namespace UGF.Utf8Json.Editor
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
-            HandleImported(importedAssets);
-            HandleDeleted(deletedAssets);
-            HandleMoved(movedAssets, movedFromAssetPaths);
+            // HandleImported(importedAssets);
+            // HandleDeleted(deletedAssets);
+            // HandleMoved(movedAssets, movedFromAssetPaths);
         }
 
         private static void HandleImported(string[] paths)

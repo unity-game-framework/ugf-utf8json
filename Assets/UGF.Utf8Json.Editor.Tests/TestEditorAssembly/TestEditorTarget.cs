@@ -7,5 +7,6 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly
     {
         public bool BoolValue { get; set; } = true;
         public string StringValue { get; set; } = "Test";
+        public UnityEngine.Vector2 Vector2 { get; set; }
     }
 }

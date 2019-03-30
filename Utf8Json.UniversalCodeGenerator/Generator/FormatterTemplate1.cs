@@ -75,7 +75,7 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write("                { JsonWriter.GetEncodedPropertyNameWithoutQuotation(\"");
+            this.Write("                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation(\"");
             
             #line 29 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -110,7 +110,7 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write("                JsonWriter.GetEncodedPropertyNameWithBeginObject(\"");
+            this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject(\"");
             
             #line 37 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -124,7 +124,7 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write("                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator(\"");
+            this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator(\"");
             
             #line 39 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -139,7 +139,7 @@ namespace Utf8Json.CodeGenerator.Generator
             #line default
             #line hidden
             this.Write("                \r\n            };\r\n        }\r\n\r\n        public void Serialize(ref " +
-                    "JsonWriter writer, ");
+                    "global::Utf8Json.JsonWriter writer, ");
             
             #line 44 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
@@ -196,7 +196,7 @@ namespace Utf8Json.CodeGenerator.Generator
             
             #line default
             #line hidden
-            this.Write(" Deserialize(ref JsonReader reader, global::Utf8Json.IJsonFormatterResolver forma" +
+            this.Write(" Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver forma" +
                     "tterResolver)\r\n        {\r\n            if (reader.ReadIsNull())\r\n            {\r\n");
             
             #line 66 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"

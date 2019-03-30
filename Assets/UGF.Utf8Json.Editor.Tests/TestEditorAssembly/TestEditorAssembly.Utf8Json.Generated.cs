@@ -1,76 +1,60 @@
+// ReSharper disable all
+
+using UGF.Utf8Json.Runtime;
+using UnityEngine;
+
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 219
 #pragma warning disable 168
-
-using Utf8Json;
-
-// ReSharper disable all
-
-namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
+namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
     using System;
     using Utf8Json;
 
-
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute]
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
-
         public TestEditorTargetFormatter()
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
-            {
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1},
-                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2},
-            };
-
-            this.____stringByteKeys = new byte[][]
-            {
-                JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
-                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"),
-                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
-                
-            };
+            {{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2}, };
+            this.____stringByteKeys = new byte[][]{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"), };
         }
 
-        public void Serialize(ref JsonWriter writer, global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
                 writer.WriteNull();
                 return;
             }
-            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteBoolean(value.BoolValue);
             writer.WriteRaw(this.____stringByteKeys[1]);
             writer.WriteString(value.StringValue);
             writer.WriteRaw(this.____stringByteKeys[2]);
-            formatterResolver.GetFormatterWithVerify<UnityEngine.Vector2>().Serialize(ref writer, value.Vector2, formatterResolver);
-            
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget Deserialize(ref JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
                 return null;
             }
-            
 
             var __BoolValue__ = default(bool);
             var __BoolValue__b__ = false;
             var __StringValue__ = default(string);
             var __StringValue__b__ = false;
-            var __Vector2__ = default(UnityEngine.Vector2);
+            var __Vector2__ = default(Vector2);
             var __Vector2__b__ = false;
-
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
             while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
@@ -94,7 +78,7 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
                         __StringValue__b__ = true;
                         break;
                     case 2:
-                        __Vector2__ = formatterResolver.GetFormatterWithVerify<UnityEngine.Vector2>().Deserialize(ref reader, formatterResolver);
+                        __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Vector2__b__ = true;
                         break;
                     default:
@@ -103,20 +87,20 @@ namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly.Formatters.UGF.Utf8Json.E
                 }
 
                 NEXT_LOOP:
-                continue;
+                    continue;
             }
 
             var ____result = new global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget();
-            if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
-            if(__StringValue__b__) ____result.StringValue = __StringValue__;
-            if(__Vector2__b__) ____result.Vector2 = __Vector2__;
-
+            if (__BoolValue__b__)
+                ____result.BoolValue = __BoolValue__;
+            if (__StringValue__b__)
+                ____result.StringValue = __StringValue__;
+            if (__Vector2__b__)
+                ____result.Vector2 = __Vector2__;
             return ____result;
         }
     }
-
 }
-
 #pragma warning disable 168
 #pragma warning restore 219
 #pragma warning restore 414

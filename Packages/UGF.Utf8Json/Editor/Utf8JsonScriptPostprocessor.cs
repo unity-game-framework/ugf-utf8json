@@ -33,10 +33,10 @@ namespace UGF.Utf8Json.Editor
                 {
                     Type type = monoScript.GetClass();
 
-                    if (type != null && Utf8JsonEditorUtility.IsTypeValidForGenerate(type))
-                    {
-                        Utf8JsonEditorUtility.GenerateAsset(monoScript, true);
-                    }
+                    // if (type != null && Utf8JsonEditorUtility.IsTypeValidForGenerate(type))
+                    // {
+                    //     Utf8JsonEditorUtility.GenerateAsset(monoScript, true);
+                    // }
                 }
             }
         }

@@ -1,27 +1,16 @@
-using System;
 using UnityEditor;
+using UnityEditorInternal;
 
 namespace UGF.Utf8Json.Editor
 {
     internal static class Utf8JsonEditorContextMenu
     {
-        [MenuItem("CONTEXT/MonoImporter/Utf8Json Generate Formatter", false, 1100)]
+        [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate Formatters", false, 1000)]
         private static void Menu(MenuCommand menuCommand)
         {
-            var importer = (MonoImporter)menuCommand.context;
-            var script = AssetDatabase.LoadAssetAtPath<MonoScript>(importer.assetPath);
+            var importer = (AssemblyDefinitionImporter)menuCommand.context;
 
-            Utf8JsonEditorUtility.GenerateAsset(script, true);
-        }
-
-        [MenuItem("CONTEXT/MonoImporter/Utf8Json Generate Formatter", true, 1100)]
-        private static bool Validate(MenuCommand menuCommand)
-        {
-            var importer = (MonoImporter)menuCommand.context;
-            var script = AssetDatabase.LoadAssetAtPath<MonoScript>(importer.assetPath);
-            Type type = script.GetClass();
-
-            return type != null && Utf8JsonEditorUtility.IsTypeValidForGenerate(type);
+            Utf8JsonEditorUtility.GenerateAssetFromAssembly(importer.assetPath);
         }
     }
 }

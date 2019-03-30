@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using UGF.Code.Analysis.Editor;
 using UGF.Utf8Json.Runtime;
@@ -15,66 +13,62 @@ namespace UGF.Utf8Json.Editor
 {
     public static class Utf8JsonEditorUtility
     {
-        public static void GenerateAsset(MonoScript monoScript, bool import = false)
+        public static void GenerateAssetFromAssembly(string path, bool import = true)
         {
-            if (monoScript == null) throw new ArgumentNullException(nameof(monoScript));
+            if (path == null) throw new ArgumentNullException(nameof(path));
 
-            Type type = monoScript.GetClass();
-            string path = AssetDatabase.GetAssetPath(monoScript);
-            string namespaceRoot = type.Namespace ?? string.Empty;
+            string sourcePath = GetPathForGeneratedScript(path);
+            string source = GenerateFromAssembly(path);
 
-            string script = GenerateFormatter(path, namespaceRoot);
-            string scriptPath = GetPathForGeneratedScript(path);
-
-            File.WriteAllText(scriptPath, script);
+            File.WriteAllText(sourcePath, source);
 
             if (import)
             {
-                AssetDatabase.ImportAsset(scriptPath);
+                AssetDatabase.ImportAsset(sourcePath);
             }
         }
 
-        public static string GenerateAssembly(string path, string namespaceRoot)
+        public static string GenerateFromAssembly(string path)
         {
-            string name = Path.GetFileNameWithoutExtension(path);
-            Assembly assembly = CompilationPipeline.GetAssemblies().FirstOrDefault(x => x.name == name);
+            if (path == null) throw new ArgumentNullException(nameof(path));
 
-            if (assembly == null) throw new Exception("");
-
-            return null;
-        }
-
-        public static string GenerateFormatter(string path, string namespaceRoot)
-        {
-            string result = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(new List<string> { path }, namespaceRoot);
-
-            result = AddDefaultLeadingTrivia(result);
-
-            return result;
-        }
-
-        public static string GenerateFormatters(List<string> inputFiles, string namespaceRoot)
-        {
-            return null;
-        }
-
-        public static string GetAssemblyPathFromScript(string path)
-        {
-            return CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
-        }
-
-        public static List<string> GetGenerateSourcesFromAssembly(string path)
-        {
-            var sources = new List<string>();
-            Assembly assembly = GetAssemblyFromPath(path);
-
-            foreach (string sourcePath in assembly.sourceFiles)
+            if (!TryGetAssemblyByPath(path, out Assembly assembly))
             {
+                throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
             }
-            
-            return sources;
+
+            List<string> sourcePaths = GetSerializableScriptPathsFromAssembly(assembly);
+
+            return GenerateFormatters(sourcePaths, assembly.name);
         }
-        
+
+        public static string GenerateFormatters(List<string> sourcePaths, string namespaceRoot)
+        {
+            if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
+            if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
+
+            HashSet<string> usings = CodeAnalysisEditorUtility.CollectUsingNamesFromPaths(sourcePaths);
+            string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot);
+
+            formatters = CodeAnalysisEditorUtility.AddUsings(formatters, usings);
+            formatters = CodeAnalysisEditorUtility.AddAttributeToClassDeclaration(CodeAnalysisEditorUtility.ProjectCompilation, formatters, typeof(Utf8JsonFormatterAttribute), false);
+            formatters = CodeAnalysisEditorUtility.AddLeadingTrivia(formatters, new[] { $"// ReSharper disable all{Environment.NewLine}" });
+
+            return formatters;
+        }
+
+        public static List<string> GetSerializableScriptPathsFromAssembly(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            if (!TryGetAssemblyByPath(path, out Assembly assembly))
+            {
+                throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
+            }
+
+            return GetSerializableScriptPathsFromAssembly(assembly);
+        }
+
         public static string GetPathForGeneratedScript(string path)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -97,46 +91,38 @@ namespace UGF.Utf8Json.Editor
             return builder.ToString();
         }
 
-        public static bool IsTypeValidForGenerate(Type type)
+        private static List<string> GetSerializableScriptPathsFromAssembly(Assembly assembly)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
-            return type.IsDefined(typeof(Utf8JsonSerializableAttribute));
+            return CodeAnalysisEditorUtility.CheckAttributeAllPaths(CodeAnalysisEditorUtility.ProjectCompilation, assembly.sourceFiles, typeof(Utf8JsonSerializableAttribute));
         }
 
-        private static Assembly GetAssemblyFromPath(string path)
+        private static bool TryGetAssemblyByPath(string path, out Assembly assembly)
         {
-            return CompilationPipeline.GetAssemblies().FirstOrDefault(x => x.name == Path.GetFileNameWithoutExtension(path));
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            return TryGetAssemblyByName(Path.GetFileNameWithoutExtension(path), out assembly);
         }
-        
-        private static HashSet<string> CollectUsing(List<string> files)
+
+        private static bool TryGetAssemblyByName(string name, out Assembly assembly)
         {
-            if (files == null) throw new ArgumentNullException(nameof(files));
+            if (name == null) throw new ArgumentNullException(nameof(name));
 
-            var sources = new List<string>();
+            Assembly[] assemblies = CompilationPipeline.GetAssemblies();
 
-            for (int i = 0; i < files.Count; i++)
+            for (int i = 0; i < assemblies.Length; i++)
             {
-                string path = files[i];
+                assembly = assemblies[i];
 
-                if (File.Exists(path))
+                if (assembly.name == name)
                 {
-                    sources.Add(File.ReadAllText(path));
+                    return true;
                 }
             }
 
-            HashSet<string> usings = CodeAnalysisEditorUtility.CollectUsingNames(sources);
-
-            usings.Add("Utf8Json");
-
-            return usings;
-        }
-
-        private static string AddDefaultLeadingTrivia(string text)
-        {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-
-            return CodeAnalysisEditorUtility.AddLeadingTrivia(text, new List<string> { "using Utf8Json;", string.Empty, "// ReSharper disable all" });
+            assembly = null;
+            return false;
         }
     }
 }

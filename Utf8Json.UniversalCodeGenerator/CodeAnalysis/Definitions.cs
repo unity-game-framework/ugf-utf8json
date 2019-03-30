@@ -79,7 +79,7 @@ namespace Utf8Json.UniversalCodeGenerator
             }
             else
             {
-                return $"formatterResolver.GetFormatterWithVerify<{Type}>().Serialize(ref writer, value.{MemberName}, formatterResolver)";
+                return $"global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<{Type}>(formatterResolver).Serialize(ref writer, value.{MemberName}, formatterResolver)";
             }
         }
 
@@ -91,7 +91,7 @@ namespace Utf8Json.UniversalCodeGenerator
             }
             else
             {
-                return $"formatterResolver.GetFormatterWithVerify<{Type}>().Deserialize(ref reader, formatterResolver)";
+                return $"global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<{Type}>(formatterResolver).Deserialize(ref reader, formatterResolver)";
             }
         }
     }

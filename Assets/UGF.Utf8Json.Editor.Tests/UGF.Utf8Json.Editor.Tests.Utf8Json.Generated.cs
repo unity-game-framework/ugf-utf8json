@@ -1,0 +1,2 @@
+// ReSharper disable all
+

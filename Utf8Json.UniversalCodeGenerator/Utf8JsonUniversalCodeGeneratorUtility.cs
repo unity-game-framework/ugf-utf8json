@@ -62,12 +62,6 @@ namespace Utf8Json.UniversalCodeGenerator
         internal static CommandlineArguments InternalGetArguments(List<string> inputFiles, List<string> inputDirectories = null, List<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
         {
             if (inputFiles == null) throw new ArgumentNullException(nameof(inputFiles));
-
-            if (inputFiles.Count == 0 && (inputDirectories == null || inputDirectories.Count == 0))
-            {
-                throw new ArgumentException("Input files nor directories not specified.", nameof(inputDirectories));
-            }
-            
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Resolver name must be specified.", nameof(resolverName));
             
             return new CommandlineArguments

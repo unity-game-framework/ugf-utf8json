@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Compilation;
 
 namespace UGF.Utf8Json.Editor
 {
@@ -8,80 +9,67 @@ namespace UGF.Utf8Json.Editor
     {
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
-            // HandleImported(importedAssets);
-            // HandleDeleted(deletedAssets);
-            // HandleMoved(movedAssets, movedFromAssetPaths);
-        }
-
-        private static void HandleImported(string[] paths)
-        {
-            for (int i = 0; i < paths.Length; i++)
+            for (int i = 0; i < importedAssets.Length; i++)
             {
-                string path = paths[i];
+                HandleImported(importedAssets[i]);
+            }
 
-                HandleImported(path);
+            for (int i = 0; i < deletedAssets.Length; i++)
+            {
+                HandleDeleted(deletedAssets[i]);
+            }
+
+            for (int i = 0; i < movedAssets.Length; i++)
+            {
+                HandleMoved(movedAssets[i], movedFromAssetPaths[i]);
             }
         }
 
         private static void HandleImported(string path)
         {
-            if (IsCSharpFile(path))
+            if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path) && Utf8JsonEditorUtility.IsSerializableScript(path))
             {
-                var monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-
-                if (monoScript != null)
-                {
-                    Type type = monoScript.GetClass();
-
-                    // if (type != null && Utf8JsonEditorUtility.IsTypeValidForGenerate(type))
-                    // {
-                    //     Utf8JsonEditorUtility.GenerateAsset(monoScript, true);
-                    // }
-                }
-            }
-        }
-
-        private static void HandleDeleted(string[] paths)
-        {
-            for (int i = 0; i < paths.Length; i++)
-            {
-                string path = paths[i];
-
-                HandleDeleted(path);
+                GenerateAssembly(path);
             }
         }
 
         private static void HandleDeleted(string path)
         {
-            if (IsCSharpFile(path))
+            if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path))
             {
-                string scriptPath = Utf8JsonEditorUtility.GetPathForGeneratedScript(path);
-
-                if (File.Exists(scriptPath))
-                {
-                    AssetDatabase.MoveAssetToTrash(scriptPath);
-                }
-            }
-        }
-
-        private static void HandleMoved(string[] to, string[] from)
-        {
-            for (int i = 0; i < to.Length; i++)
-            {
-                string pathTo = to[i];
-                string pathFrom = from[i];
-
-                HandleMoved(pathTo, pathFrom);
+                GenerateAssembly(path);
             }
         }
 
         private static void HandleMoved(string to, string from)
         {
+            HandleDeleted(to);
+
+            if (IsCSharpFile(from) && IsAssemblyHasGeneratedScript(from) && Utf8JsonEditorUtility.IsSerializableScript(to))
+            {
+                GenerateAssembly(from);
+            }
         }
 
+        private static void GenerateAssembly(string path)
+        {
+            string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
+            
+            Utf8JsonEditorUtility.GenerateAssetFromAssembly(assemblyPath);
+        }
+        
         private static bool IsCSharpFile(string path)
         {
-            return Path.GetExtension(path) == ".cs";
+            string extension = Path.GetExtension(path);
+
+            return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool IsAssemblyHasGeneratedScript(string path)
+        {
+            string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
+
+            return Utf8JsonEditorUtility.IsAssemblyHasGeneratedScript(assemblyPath);
         }
     }
 }

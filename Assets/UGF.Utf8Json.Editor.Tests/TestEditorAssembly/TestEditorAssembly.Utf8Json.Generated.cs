@@ -21,8 +21,8 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
         public TestEditorTargetFormatter()
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
-            {{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2}, };
-            this.____stringByteKeys = new byte[][]{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"), };
+            {{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("FloatValue"), 3}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Bounds"), 4}, };
+            this.____stringByteKeys = new byte[][]{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"), };
         }
 
         public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
@@ -39,6 +39,10 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             writer.WriteString(value.StringValue);
             writer.WriteRaw(this.____stringByteKeys[2]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
+            writer.WriteRaw(this.____stringByteKeys[3]);
+            writer.WriteSingle(value.FloatValue);
+            writer.WriteRaw(this.____stringByteKeys[4]);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
             writer.WriteEndObject();
         }
 
@@ -55,6 +59,10 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             var __StringValue__b__ = false;
             var __Vector2__ = default(Vector2);
             var __Vector2__b__ = false;
+            var __FloatValue__ = default(float);
+            var __FloatValue__b__ = false;
+            var __Bounds__ = default(Bounds);
+            var __Bounds__b__ = false;
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
             while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
@@ -81,6 +89,14 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                         __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Vector2__b__ = true;
                         break;
+                    case 3:
+                        __FloatValue__ = reader.ReadSingle();
+                        __FloatValue__b__ = true;
+                        break;
+                    case 4:
+                        __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Bounds__b__ = true;
+                        break;
                     default:
                         reader.ReadNextBlock();
                         break;
@@ -97,6 +113,10 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 ____result.StringValue = __StringValue__;
             if (__Vector2__b__)
                 ____result.Vector2 = __Vector2__;
+            if (__FloatValue__b__)
+                ____result.FloatValue = __FloatValue__;
+            if (__Bounds__b__)
+                ____result.Bounds = __Bounds__;
             return ____result;
         }
     }

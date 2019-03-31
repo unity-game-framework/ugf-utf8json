@@ -57,18 +57,6 @@ namespace UGF.Utf8Json.Editor
             return formatters;
         }
 
-        public static List<string> GetSerializableScriptPathsFromAssembly(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-
-            if (!TryGetAssemblyByPath(path, out Assembly assembly))
-            {
-                throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
-            }
-
-            return GetSerializableScriptPathsFromAssembly(assembly);
-        }
-
         public static string GetPathForGeneratedScript(string path)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -91,6 +79,22 @@ namespace UGF.Utf8Json.Editor
             return builder.ToString();
         }
 
+        public static bool IsSerializableScript(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            string source = File.ReadAllText(path);
+
+            return CodeAnalysisEditorUtility.CheckAttribute(CodeAnalysisEditorUtility.ProjectCompilation, source, typeof(Utf8JsonSerializableAttribute));
+        }
+
+        public static bool IsAssemblyHasGeneratedScript(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            return File.Exists(GetPathForGeneratedScript(path));
+        }
+        
         private static List<string> GetSerializableScriptPathsFromAssembly(Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));

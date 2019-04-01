@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
-using UnityEditor.Compilation;
 using Utf8Json.UniversalCodeGenerator;
 using Assembly = UnityEditor.Compilation.Assembly;
 
@@ -32,7 +32,9 @@ namespace UGF.Utf8Json.Editor
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            if (!TryGetAssemblyByPath(path, out Assembly assembly))
+            string assemblyName = Path.GetFileNameWithoutExtension(path);
+
+            if (!AssemblyEditorUtility.TryFindCompilationAssemblyByName(assemblyName, out Assembly assembly))
             {
                 throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
             }
@@ -94,39 +96,26 @@ namespace UGF.Utf8Json.Editor
 
             return File.Exists(GetPathForGeneratedScript(path));
         }
-        
+
         private static List<string> GetSerializableScriptPathsFromAssembly(Assembly assembly)
         {
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 
-            return CodeAnalysisEditorUtility.CheckAttributeAllPaths(CodeAnalysisEditorUtility.ProjectCompilation, assembly.sourceFiles, typeof(Utf8JsonSerializableAttribute));
-        }
+            var paths = new List<string>();
+            string[] sourceFiles = assembly.sourceFiles;
 
-        private static bool TryGetAssemblyByPath(string path, out Assembly assembly)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-
-            return TryGetAssemblyByName(Path.GetFileNameWithoutExtension(path), out assembly);
-        }
-
-        private static bool TryGetAssemblyByName(string name, out Assembly assembly)
-        {
-            if (name == null) throw new ArgumentNullException(nameof(name));
-
-            Assembly[] assemblies = CompilationPipeline.GetAssemblies();
-
-            for (int i = 0; i < assemblies.Length; i++)
+            for (int i = 0; i < sourceFiles.Length; i++)
             {
-                assembly = assemblies[i];
+                string sourcePath = sourceFiles[i];
+                string source = File.ReadAllText(sourcePath);
 
-                if (assembly.name == name)
+                if (CodeAnalysisEditorUtility.CheckAttribute(CodeAnalysisEditorUtility.ProjectCompilation, source, typeof(Utf8JsonSerializableAttribute)))
                 {
-                    return true;
+                    paths.Add(sourcePath);
                 }
             }
 
-            assembly = null;
-            return false;
+            return paths;
         }
     }
 }

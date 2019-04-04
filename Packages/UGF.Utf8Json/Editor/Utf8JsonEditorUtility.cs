@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
+using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using Utf8Json.UniversalCodeGenerator;
@@ -49,14 +55,24 @@ namespace UGF.Utf8Json.Editor
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
 
-            HashSet<string> usings = CodeAnalysisEditorUtility.CollectUsingNamesFromPaths(sourcePaths);
+            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            SyntaxGenerator generator = CodeAnalysisEditorUtility.Generator;
+            SyntaxNode formatterAttribute = generator.Attribute(compilation, typeof(Utf8JsonFormatterAttribute));
+
+            var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToKind(generator, formatterAttribute, SyntaxKind.ClassDeclaration);
+
+            HashSet<string> usings = UsingDirectivesCollectUniqueNames(sourcePaths);
             string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot);
+            CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
 
-            formatters = CodeAnalysisEditorUtility.AddUsings(formatters, usings);
-            formatters = CodeAnalysisEditorUtility.AddAttributeToClassDeclaration(CodeAnalysisEditorUtility.ProjectCompilation, formatters, typeof(Utf8JsonFormatterAttribute), false);
-            formatters = CodeAnalysisEditorUtility.AddLeadingTrivia(formatters, new[] { $"// ReSharper disable all{Environment.NewLine}" });
+            unit = unit.AddUsings(usings.Select(x => SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(x))
+                .NormalizeWhitespace()
+                .WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed)).ToArray());
 
-            return formatters;
+            unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
+            unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
+
+            return unit.ToFullString();
         }
 
         public static string GetPathForGeneratedScript(string path)
@@ -85,9 +101,16 @@ namespace UGF.Utf8Json.Editor
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            string source = File.ReadAllText(path);
+            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            SyntaxTree tree = SyntaxFactory.ParseSyntaxTree(File.ReadAllText(path));
+            SemanticModel model = compilation.AddSyntaxTrees(tree).GetSemanticModel(tree);
+            ITypeSymbol typeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonSerializableAttribute).FullName);
 
-            return CodeAnalysisEditorUtility.CheckAttribute(CodeAnalysisEditorUtility.ProjectCompilation, source, typeof(Utf8JsonSerializableAttribute));
+            var walker = new CodeGenerateWalkerCheckAttribute(model, typeSymbol);
+
+            walker.Visit(tree.GetRoot());
+
+            return walker.Result;
         }
 
         public static bool IsAssemblyHasGeneratedScript(string path)
@@ -106,16 +129,30 @@ namespace UGF.Utf8Json.Editor
 
             for (int i = 0; i < sourceFiles.Length; i++)
             {
-                string sourcePath = sourceFiles[i];
-                string source = File.ReadAllText(sourcePath);
+                string path = sourceFiles[i];
 
-                if (CodeAnalysisEditorUtility.CheckAttribute(CodeAnalysisEditorUtility.ProjectCompilation, source, typeof(Utf8JsonSerializableAttribute)))
+                if (IsSerializableScript(path))
                 {
-                    paths.Add(sourcePath);
+                    paths.Add(path);
                 }
             }
 
             return paths;
+        }
+
+        private static HashSet<string> UsingDirectivesCollectUniqueNames(List<string> sourcePaths)
+        {
+            var walker = new CodeGenerateWalkerCollectUsingDirectives();
+
+            for (int i = 0; i < sourcePaths.Count; i++)
+            {
+                string path = sourcePaths[i];
+                SyntaxTree tree = SyntaxFactory.ParseSyntaxTree(File.ReadAllText(path));
+
+                walker.Visit(tree.GetRoot());
+            }
+
+            return CodeGenerateEditorUtility.UsingDirectivesCollectUniqueNames(walker.UsingDirectives);
         }
     }
 }

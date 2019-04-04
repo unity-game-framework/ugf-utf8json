@@ -1,28 +1,45 @@
+// THIS IS GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
 using UGF.Utf8Json.Runtime;
 using UnityEngine;
-
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 219
 #pragma warning disable 168
+
 namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
     using System;
     using Utf8Json;
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute]
+
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
+
         public TestEditorTargetFormatter()
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
-            {{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("FloatValue"), 3}, {global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Bounds"), 4}, };
-            this.____stringByteKeys = new byte[][]{global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"), global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"), };
+            {
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("FloatValue"), 3},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Bounds"), 4},
+            };
+
+            this.____stringByteKeys = new byte[][]
+            {
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"),
+                
+            };
         }
 
         public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
@@ -32,6 +49,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 writer.WriteNull();
                 return;
             }
+            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteBoolean(value.BoolValue);
@@ -43,6 +61,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             writer.WriteSingle(value.FloatValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
+            
             writer.WriteEndObject();
         }
 
@@ -52,6 +71,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             {
                 return null;
             }
+            
 
             var __BoolValue__ = default(bool);
             var __BoolValue__b__ = false;
@@ -63,6 +83,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             var __FloatValue__b__ = false;
             var __Bounds__ = default(Bounds);
             var __Bounds__b__ = false;
+
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
             while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
@@ -103,26 +124,25 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 }
 
                 NEXT_LOOP:
-                    continue;
+                continue;
             }
 
             var ____result = new global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget();
-            if (__BoolValue__b__)
-                ____result.BoolValue = __BoolValue__;
-            if (__StringValue__b__)
-                ____result.StringValue = __StringValue__;
-            if (__Vector2__b__)
-                ____result.Vector2 = __Vector2__;
-            if (__FloatValue__b__)
-                ____result.FloatValue = __FloatValue__;
-            if (__Bounds__b__)
-                ____result.Bounds = __Bounds__;
+            if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
+            if(__StringValue__b__) ____result.StringValue = __StringValue__;
+            if(__Vector2__b__) ____result.Vector2 = __Vector2__;
+            if(__FloatValue__b__) ____result.FloatValue = __FloatValue__;
+            if(__Bounds__b__) ____result.Bounds = __Bounds__;
+
             return ____result;
         }
     }
+
 }
+
 #pragma warning disable 168
 #pragma warning restore 219
 #pragma warning restore 414
 #pragma warning restore 618
 #pragma warning restore 612
+

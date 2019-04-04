@@ -2,8 +2,9 @@
     "name": "UGF.Utf8Json.Editor",
     "references": [
         "GUID:7d88aca9857e23b4e868d9ace8e59be2",
-        "GUID:47c3349eaf0910446a6e557ee1a6748f",
         "GUID:3261026f398ac504fa7bfd69a915d0d0",
+        "GUID:3686f1ecbde070e4dbd247e1291c142f",
+        "GUID:47c3349eaf0910446a6e557ee1a6748f",
         "GUID:37d43482ba9b4804cab3b97251fc8943"
     ],
     "optionalUnityReferences": [],

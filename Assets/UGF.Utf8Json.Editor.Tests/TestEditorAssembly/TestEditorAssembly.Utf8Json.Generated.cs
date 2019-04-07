@@ -1,4 +1,4 @@
-// THIS IS GENERATED CODE. DO NOT EDIT.
+// THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
 using UGF.Utf8Json.Runtime;
@@ -15,6 +15,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
     using Utf8Json;
 
 
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute]
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -145,4 +146,3 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
 #pragma warning restore 414
 #pragma warning restore 618
 #pragma warning restore 612
-

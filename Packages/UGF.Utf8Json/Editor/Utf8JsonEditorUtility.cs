@@ -45,7 +45,17 @@ namespace UGF.Utf8Json.Editor
                 throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
             }
 
-            List<string> sourcePaths = assembly.sourceFiles.Where(IsSerializableScript).ToList();
+            var sourcePaths = new List<string>();
+
+            for (int i = 0; i < assembly.sourceFiles.Length; i++)
+            {
+                string sourcePath = assembly.sourceFiles[i];
+
+                if (IsSerializableScript(sourcePath))
+                {
+                    sourcePaths.Add(sourcePath);
+                }
+            }
 
             return GenerateFormatters(sourcePaths, assembly.name);
         }
@@ -62,7 +72,7 @@ namespace UGF.Utf8Json.Editor
             SyntaxNode attributeNode = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
 
             var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToKind(generator, attributeNode, SyntaxKind.ClassDeclaration);
+            var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attributeNode, declaration => declaration.IsKind(SyntaxKind.ClassDeclaration));
             var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
 
             for (int i = 0; i < sourcePaths.Count; i++)

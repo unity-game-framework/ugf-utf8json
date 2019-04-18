@@ -1,8 +1,8 @@
 using NUnit.Framework;
+using UGF.Utf8Json.Runtime.Resolvers.Unity;
 using UnityEngine;
 using Utf8Json;
 using Utf8Json.Resolvers;
-using Utf8Json.Unity;
 
 namespace UGF.Utf8Json.Runtime.Tests
 {

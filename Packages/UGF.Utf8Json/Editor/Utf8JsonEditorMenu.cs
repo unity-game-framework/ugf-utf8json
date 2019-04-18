@@ -3,10 +3,10 @@ using UnityEditorInternal;
 
 namespace UGF.Utf8Json.Editor
 {
-    internal static class Utf8JsonEditorContextMenu
+    internal static class Utf8JsonEditorMenu
     {
         [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate Formatters", false, 1000)]
-        private static void AssemblyUtf8JsonGenerateFormattersMenu(MenuCommand menuCommand)
+        private static void AssemblyGenerateFormattersMenu(MenuCommand menuCommand)
         {
             var importer = (AssemblyDefinitionImporter)menuCommand.context;
 

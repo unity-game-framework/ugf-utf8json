@@ -8,8 +8,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
-using UGF.Code.Analysis.Editor;
-using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using Utf8Json.UniversalCodeGenerator;

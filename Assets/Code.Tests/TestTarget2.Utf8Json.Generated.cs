@@ -8,12 +8,8 @@ using Utf8Json;
 
 // ReSharper disable all
 
-namespace Code.Tests.Formatters.Code.Tests
+namespace Code.Tests
 {
-    using System;
-    using Utf8Json;
-
-
     public sealed class TestTarget2Formatter : global::Utf8Json.IJsonFormatter<global::Code.Tests.TestTarget2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;

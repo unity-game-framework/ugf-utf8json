@@ -1,13 +1,14 @@
-﻿#pragma warning disable 618
+﻿using System;
+using Utf8Json;
+
+namespace UGF.Utf8Json.Runtime.Resolvers.Unity
+{
+#pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 168
 
-// ReSharper disable all
-
-namespace Utf8Json.Unity
-{
-    using System;
+    // ReSharper disable all
 
     public class UnityResolver : global::Utf8Json.IJsonFormatterResolver
     {
@@ -76,32 +77,31 @@ namespace Utf8Json.Unity
 
             switch (key)
             {
-                case 0: return new Utf8Json.Unity.Vector2Formatter();
-                case 1: return new Utf8Json.Unity.Vector3Formatter();
-                case 2: return new Utf8Json.Unity.Vector4Formatter();
-                case 3: return new Utf8Json.Unity.QuaternionFormatter();
-                case 4: return new Utf8Json.Unity.ColorFormatter();
-                case 5: return new Utf8Json.Unity.BoundsFormatter();
-                case 6: return new Utf8Json.Unity.RectFormatter();
-                case 7: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector2>();
-                case 8: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector3>();
-                case 9: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector4>();
-                case 10: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Quaternion>();
-                case 11: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Color>();
-                case 12: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Bounds>();
-                case 13: return new Utf8Json.Formatters.ArrayFormatter<UnityEngine.Rect>();
-                case 14: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector2>(new Utf8Json.Unity.Vector2Formatter());
-                case 15: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector3>(new Utf8Json.Unity.Vector3Formatter());
-                case 16: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector4>(new Utf8Json.Unity.Vector4Formatter());
-                case 17: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Quaternion>(new Utf8Json.Unity.QuaternionFormatter());
-                case 18: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Color>(new Utf8Json.Unity.ColorFormatter());
-                case 19: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Bounds>(new Utf8Json.Unity.BoundsFormatter());
-                case 20: return new Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Rect>(new Utf8Json.Unity.RectFormatter());
+                case 0: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector2Formatter();
+                case 1: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector3Formatter();
+                case 2: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector4Formatter();
+                case 3: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.QuaternionFormatter();
+                case 4: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.ColorFormatter();
+                case 5: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.BoundsFormatter();
+                case 6: return new global::UGF.Utf8Json.Runtime.Resolvers.Unity.RectFormatter();
+                case 7: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector2>();
+                case 8: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector3>();
+                case 9: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Vector4>();
+                case 10: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Quaternion>();
+                case 11: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Color>();
+                case 12: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Bounds>();
+                case 13: return new global::Utf8Json.Formatters.ArrayFormatter<UnityEngine.Rect>();
+                case 14: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector2>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector2Formatter());
+                case 15: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector3>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector3Formatter());
+                case 16: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Vector4>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.Vector4Formatter());
+                case 17: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Quaternion>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.QuaternionFormatter());
+                case 18: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Color>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.ColorFormatter());
+                case 19: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Bounds>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.BoundsFormatter());
+                case 20: return new global::Utf8Json.Formatters.StaticNullableFormatter<UnityEngine.Rect>(new global::UGF.Utf8Json.Runtime.Resolvers.Unity.RectFormatter());
                 default: return null;
             }
         }
     }
-}
 
 #pragma warning disable 168
 #pragma warning restore 414
@@ -112,11 +112,6 @@ namespace Utf8Json.Unity
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 168
-
-namespace Utf8Json.Unity
-{
-    using System;
-    using Utf8Json;
 
     public sealed class Vector2Formatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.Vector2>
     {
@@ -737,9 +732,9 @@ namespace Utf8Json.Unity
             return ____result;
         }
     }
-}
 
 #pragma warning disable 168
 #pragma warning restore 414
 #pragma warning restore 618
 #pragma warning restore 612
+}

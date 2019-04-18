@@ -5,7 +5,7 @@ using UnityEngine;
 namespace UGF.Utf8Json.Editor.ExternalType
 {
     [Serializable]
-    public class Utf8JsonExternalTypeAsset
+    public class Utf8JsonExternalTypeAssetInfo
     {
         [SerializeField] private string m_type;
         [SerializeField] private List<string> m_members = new List<string>();

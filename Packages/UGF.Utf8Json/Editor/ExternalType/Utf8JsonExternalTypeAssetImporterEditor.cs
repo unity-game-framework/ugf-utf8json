@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UGF.Types.Editor;
 using UGF.Types.Editor.IMGUI;
 using UnityEditor;
@@ -13,7 +14,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
         public override bool showImportedObject { get; } = false;
         protected override bool useAssetDrawPreview { get; } = false;
 
-        private Utf8JsonExternalTypeAssetImporter m_importer;
+        private SerializedObject m_extraSerializedObject;
+        private AssetImporter m_importer;
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyType;
         private SerializedProperty m_propertyMembers;
@@ -25,17 +27,41 @@ namespace UGF.Utf8Json.Editor.ExternalType
             public readonly GUIContent TypeLabelContent = new GUIContent("Type");
         }
 
+        private sealed class Extra : ScriptableObject
+        {
+            [SerializeField] private Utf8JsonExternalTypeAssetInfo m_info = new Utf8JsonExternalTypeAssetInfo();
+
+            public Utf8JsonExternalTypeAssetInfo Info { get { return m_info; } }
+        }
+
         public override void OnEnable()
         {
             base.OnEnable();
 
-            m_importer = (Utf8JsonExternalTypeAssetImporter)target;
+            m_extraSerializedObject = new SerializedObject(CreateInstance<Extra>());
+            m_importer = (AssetImporter)target;
+
+            SerializedProperty propertyInfo = m_extraSerializedObject.FindProperty("m_info");
+
             m_propertyScript = serializedObject.FindProperty("m_Script");
+            m_propertyType = propertyInfo.FindPropertyRelative("m_type");
+            m_propertyMembers = propertyInfo.FindPropertyRelative("m_members");
 
-            SerializedProperty asset = serializedObject.FindProperty("m_asset");
+            LoadExtra();
+        }
 
-            m_propertyType = asset.FindPropertyRelative("m_type");
-            m_propertyMembers = asset.FindPropertyRelative("m_members");
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            DestroyImmediate(m_extraSerializedObject.targetObject);
+
+            m_extraSerializedObject.Dispose();
+        }
+
+        public override bool HasModified()
+        {
+            return base.HasModified() || m_extraSerializedObject.hasModifiedProperties;
         }
 
         public override void OnInspectorGUI()
@@ -59,7 +85,29 @@ namespace UGF.Utf8Json.Editor.ExternalType
         {
             base.Apply();
 
-            m_importer.Save();
+            SaveExtra();
+
+            AssetDatabase.ImportAsset(m_importer.assetPath);
+        }
+
+        private void LoadExtra()
+        {
+            var asset = (TextAsset)assetTarget;
+            var extra = (Extra)m_extraSerializedObject.targetObject;
+
+            JsonUtility.FromJsonOverwrite(asset.text, extra.Info);
+
+            m_extraSerializedObject.Update();
+        }
+
+        private void SaveExtra()
+        {
+            m_extraSerializedObject.ApplyModifiedProperties();
+
+            var extra = (Extra)m_extraSerializedObject.targetObject;
+            string text = JsonUtility.ToJson(extra.Info, true);
+
+            File.WriteAllText(m_importer.assetPath, text);
         }
 
         private void TypeDropdown()
@@ -94,7 +142,6 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private void OnDropdownTypeSelected(Type type)
         {
             m_propertyType.stringValue = type.AssemblyQualifiedName;
-            m_propertyType.serializedObject.ApplyModifiedProperties();
         }
     }
 }

@@ -1,5 +1,7 @@
 using System;
-using Container;
+using System.Reflection;
+using UGF.Code.Generate.Editor.Container;
+using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
@@ -8,9 +10,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
         public static bool IsValidExternalType(Type type)
         {
             bool isContainer = CodeGenerateContainerEditorUtility.IsValidType(type);
-            bool hasCtor = type.GetConstructor(Type.EmptyTypes) != null;
+            bool hasDefaultConstructor = type.GetConstructor(Type.EmptyTypes) != null || type.IsValueType;
+            bool notAttribute = !typeof(Attribute).IsAssignableFrom(type);
+            bool notUnity = !typeof(Object).IsAssignableFrom(type);
+            bool notObsolete = !type.IsDefined(typeof(ObsoleteAttribute));
 
-            return isContainer && hasCtor;
+            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete;
         }
     }
 }

@@ -2,6 +2,7 @@
   "dependencies": {
     "com.ugf.code.analysis": "file:../../ugf-code-analysis/Packages/UGF.Code.Analysis",
     "com.ugf.code.generate": "file:../../ugf-code-generate/Packages/UGF.Code.Generate",
+    "com.ugf.types": "file:../../ugf-types/Packages/UGF.Types",
     "com.unity.package-manager-ui": "2.1.2",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

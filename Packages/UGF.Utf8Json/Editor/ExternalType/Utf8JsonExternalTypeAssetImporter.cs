@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
-    [ScriptedImporter(0, "utf8json-ext")]
+    [ScriptedImporter(0, "utf8json-external")]
     public class Utf8JsonExternalTypeAssetImporter : ScriptedImporter
     {
         public override void OnImportAsset(AssetImportContext context)

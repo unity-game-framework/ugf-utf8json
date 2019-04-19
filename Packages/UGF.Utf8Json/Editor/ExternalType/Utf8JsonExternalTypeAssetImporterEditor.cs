@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UGF.Code.Generate.Editor.Container;
 using UGF.Types.Editor;
 using UGF.Types.Editor.IMGUI;
 using UnityEditor;
@@ -25,6 +26,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private sealed class Styles
         {
             public readonly GUIContent TypeLabelContent = new GUIContent("Type");
+            public readonly GUIStyle Box = new GUIStyle("Box");
         }
 
         private sealed class Extra : ScriptableObject
@@ -76,7 +78,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
 
-            TypeDropdown();
+            DrawTypeDropdown();
+            DrawMembers();
 
             ApplyRevertGUI();
         }
@@ -90,37 +93,22 @@ namespace UGF.Utf8Json.Editor.ExternalType
             AssetDatabase.ImportAsset(m_importer.assetPath);
         }
 
-        private void LoadExtra()
-        {
-            var asset = (TextAsset)assetTarget;
-            var extra = (Extra)m_extraSerializedObject.targetObject;
-
-            JsonUtility.FromJsonOverwrite(asset.text, extra.Info);
-
-            m_extraSerializedObject.Update();
-        }
-
-        private void SaveExtra()
-        {
-            m_extraSerializedObject.ApplyModifiedProperties();
-
-            var extra = (Extra)m_extraSerializedObject.targetObject;
-            string text = JsonUtility.ToJson(extra.Info, true);
-
-            File.WriteAllText(m_importer.assetPath, text);
-        }
-
-        private void TypeDropdown()
+        private void DrawTypeDropdown()
         {
             Rect rect = EditorGUILayout.GetControlRect();
             Rect rectButton = EditorGUI.PrefixLabel(rect, m_styles.TypeLabelContent);
 
-            var typeButtonContent = new GUIContent(m_propertyType.stringValue);
+            Type type = Type.GetType(m_propertyType.stringValue);
+            GUIContent typeButtonContent = type != null ? new GUIContent(type.Name) : new GUIContent("None");
 
             if (EditorGUI.DropdownButton(rectButton, typeButtonContent, FocusType.Keyboard))
             {
                 ShowDropdown(rectButton);
             }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Type Info", EditorStyles.boldLabel);
+            EditorGUILayout.HelpBox(m_propertyType.stringValue, MessageType.None);
         }
 
         private void ShowDropdown(Rect rect)
@@ -142,6 +130,100 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private void OnDropdownTypeSelected(Type type)
         {
             m_propertyType.stringValue = type.AssemblyQualifiedName;
+
+            UpdateMembers(type);
+        }
+
+        private void DrawMembers()
+        {
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Members", EditorStyles.boldLabel);
+
+            using (new GUILayout.VerticalScope(m_styles.Box))
+            {
+                for (int i = 0; i < m_propertyMembers.arraySize; i++)
+                {
+                    SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(i);
+                    SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
+                    SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+
+                    propertyState.boolValue = EditorGUILayout.Toggle(propertyName.stringValue, propertyState.boolValue);
+                }
+
+                if (m_propertyMembers.arraySize == 0)
+                {
+                    EditorGUILayout.LabelField("Empty");
+                }
+
+                EditorGUILayout.Space();
+
+                using (new GUILayout.HorizontalScope())
+                {
+                    if (GUILayout.Button("Select all"))
+                    {
+                        SetMembersState(true);
+                    }
+
+                    if (GUILayout.Button("Deselect all"))
+                    {
+                        SetMembersState(false);
+                    }
+
+                    GUILayout.FlexibleSpace();
+                }
+            }
+        }
+
+        private void SetMembersState(bool state)
+        {
+            for (int i = 0; i < m_propertyMembers.arraySize; i++)
+            {
+                SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(i);
+                SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+
+                propertyState.boolValue = state;
+            }
+        }
+
+        private void UpdateMembers(Type type)
+        {
+            CodeGenerateContainer container = Utf8JsonExternalTypeEditorUtility.CreateContainer(type);
+
+            m_propertyMembers.ClearArray();
+
+            for (int i = 0; i < container.Fields.Count; i++)
+            {
+                CodeGenerateContainerField field = container.Fields[i];
+
+                m_propertyMembers.InsertArrayElementAtIndex(m_propertyMembers.arraySize);
+
+                SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(m_propertyMembers.arraySize - 1);
+                SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
+                SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+
+                propertyName.stringValue = field.Name;
+                propertyState.boolValue = true;
+            }
+        }
+
+        private void LoadExtra()
+        {
+            var asset = (TextAsset)assetTarget;
+            var extra = (Extra)m_extraSerializedObject.targetObject;
+
+            JsonUtility.FromJsonOverwrite(asset.text, extra.Info);
+
+            m_extraSerializedObject.Update();
+        }
+
+        private void SaveExtra()
+        {
+            m_extraSerializedObject.ApplyModifiedProperties();
+
+            var extra = (Extra)m_extraSerializedObject.targetObject;
+            string text = JsonUtility.ToJson(extra.Info, true);
+
+            File.WriteAllText(m_importer.assetPath, text);
         }
     }
 }

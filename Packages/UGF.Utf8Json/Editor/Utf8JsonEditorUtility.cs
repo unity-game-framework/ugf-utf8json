@@ -13,6 +13,7 @@ using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
+using UnityEngine;
 using Utf8Json.UniversalCodeGenerator;
 using Assembly = UnityEditor.Compilation.Assembly;
 
@@ -71,7 +72,10 @@ namespace UGF.Utf8Json.Editor
 
             string formatters = GenerateFormatters(sourcePaths, assembly.name);
 
-            //FileUtil.DeleteFileOrDirectory(tempPath);
+            if (!string.IsNullOrEmpty(tempPath))
+            {
+                FileUtil.DeleteFileOrDirectory(tempPath);
+            }
 
             return formatters;
         }

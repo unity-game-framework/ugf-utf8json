@@ -3,16 +3,19 @@
 
 using UGF.Utf8Json.Runtime;
 using UnityEngine;
-
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 219
 #pragma warning disable 168
 
-namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly
+namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
-    [Utf8JsonFormatter]
+    using System;
+    using Utf8Json;
+
+
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute]
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;

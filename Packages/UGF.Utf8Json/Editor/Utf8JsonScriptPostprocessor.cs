@@ -54,15 +54,22 @@ namespace UGF.Utf8Json.Editor
         private static void GenerateAssembly(string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
-            
+
             Utf8JsonEditorUtility.GenerateAssetFromAssembly(assemblyPath);
         }
-        
+
         private static bool IsCSharpFile(string path)
         {
             string extension = Path.GetExtension(path);
 
             return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool IsExternalFile(string path)
+        {
+            string extension = Path.GetExtension(path);
+
+            return !string.IsNullOrEmpty(extension) && extension.Equals(".utf8json-external", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool IsAssemblyHasGeneratedScript(string path)

@@ -24,6 +24,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
             string temp = FileUtil.GetUniqueTempPathInProject();
 
+            Directory.CreateDirectory(temp);
+
             for (int i = 0; i < externals.Count; i++)
             {
                 string path = externals[i];

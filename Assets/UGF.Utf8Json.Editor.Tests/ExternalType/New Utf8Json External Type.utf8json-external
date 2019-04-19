@@ -1,5 +1,5 @@
 {
-    "m_type": "UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget, TestEditorAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "m_type": "UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTargetExternal, TestEditorAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
     "m_members": [
         {
             "m_name": "BoolValue",

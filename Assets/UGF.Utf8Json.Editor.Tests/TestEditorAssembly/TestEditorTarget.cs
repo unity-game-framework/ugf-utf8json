@@ -3,7 +3,7 @@
 namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
     using UnityEngine;
-    
+
     [Utf8JsonSerializable]
     public class TestEditorTarget
     {

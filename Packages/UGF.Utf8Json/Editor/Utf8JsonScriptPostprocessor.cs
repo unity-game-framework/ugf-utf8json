@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -7,55 +8,71 @@ namespace UGF.Utf8Json.Editor
 {
     internal sealed class Utf8JsonScriptPostprocessor : AssetPostprocessor
     {
+        private static HashSet<string> m_assemblies = new HashSet<string>();
+
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
             for (int i = 0; i < importedAssets.Length; i++)
             {
-                HandleImported(importedAssets[i]);
+                HandleImported(m_assemblies, importedAssets[i]);
             }
 
             for (int i = 0; i < deletedAssets.Length; i++)
             {
-                HandleDeleted(deletedAssets[i]);
+                HandleDeleted(m_assemblies, deletedAssets[i]);
             }
 
             for (int i = 0; i < movedAssets.Length; i++)
             {
-                HandleMoved(movedAssets[i], movedFromAssetPaths[i]);
+                HandleMoved(m_assemblies, movedAssets[i], movedFromAssetPaths[i]);
+            }
+
+            if (m_assemblies.Count > 0)
+            {
+                foreach (string assembly in m_assemblies)
+                {
+                    Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
+                }
+
+                m_assemblies.Clear();
             }
         }
 
-        private static void HandleImported(string path)
+        private static void HandleImported(ICollection<string> assemblies, string path)
         {
             if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path) && Utf8JsonEditorUtility.IsSerializableScript(path))
             {
-                GenerateAssembly(path);
+                GetAssembly(assemblies, path);
+            }
+
+            if (IsExternalFile(path) && IsAssemblyHasGeneratedScript(path))
+            {
             }
         }
 
-        private static void HandleDeleted(string path)
+        private static void HandleDeleted(ICollection<string> assemblies, string path)
         {
             if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path))
             {
-                GenerateAssembly(path);
+                GetAssembly(assemblies, path);
             }
         }
 
-        private static void HandleMoved(string to, string from)
+        private static void HandleMoved(ICollection<string> assemblies, string to, string from)
         {
-            HandleDeleted(to);
+            HandleDeleted(assemblies, to);
 
             if (IsCSharpFile(from) && IsAssemblyHasGeneratedScript(from) && Utf8JsonEditorUtility.IsSerializableScript(to))
             {
-                GenerateAssembly(from);
+                GetAssembly(assemblies, from);
             }
         }
 
-        private static void GenerateAssembly(string path)
+        private static void GetAssembly(ICollection<string> assemblies, string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
 
-            Utf8JsonEditorUtility.GenerateAssetFromAssembly(assemblyPath);
+            assemblies.Add(assemblyPath);
         }
 
         private static bool IsCSharpFile(string path)

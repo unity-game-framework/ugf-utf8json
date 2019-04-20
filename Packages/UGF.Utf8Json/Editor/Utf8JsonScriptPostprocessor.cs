@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
 
@@ -8,7 +9,7 @@ namespace UGF.Utf8Json.Editor
 {
     internal sealed class Utf8JsonScriptPostprocessor : AssetPostprocessor
     {
-        private static HashSet<string> m_assemblies = new HashSet<string>();
+        private static readonly HashSet<string> m_assemblies = new HashSet<string>();
 
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
         {
@@ -40,13 +41,9 @@ namespace UGF.Utf8Json.Editor
 
         private static void HandleImported(ICollection<string> assemblies, string path)
         {
-            if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path) && Utf8JsonEditorUtility.IsSerializableScript(path))
+            if (IsCSharpFile(path) && IsAssemblyHasGeneratedScript(path) && IsTargetScript(path))
             {
                 GetAssembly(assemblies, path);
-            }
-
-            if (IsExternalFile(path) && IsAssemblyHasGeneratedScript(path))
-            {
             }
         }
 
@@ -62,7 +59,7 @@ namespace UGF.Utf8Json.Editor
         {
             HandleDeleted(assemblies, to);
 
-            if (IsCSharpFile(from) && IsAssemblyHasGeneratedScript(from) && Utf8JsonEditorUtility.IsSerializableScript(to))
+            if (IsCSharpFile(from) && IsAssemblyHasGeneratedScript(from) && IsTargetScript(to))
             {
                 GetAssembly(assemblies, from);
             }
@@ -82,18 +79,16 @@ namespace UGF.Utf8Json.Editor
             return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private static bool IsExternalFile(string path)
-        {
-            string extension = Path.GetExtension(path);
-
-            return !string.IsNullOrEmpty(extension) && extension.Equals(".utf8json-external", StringComparison.InvariantCultureIgnoreCase);
-        }
-
         private static bool IsAssemblyHasGeneratedScript(string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
 
             return Utf8JsonEditorUtility.IsAssemblyHasGeneratedScript(assemblyPath);
+        }
+
+        private static bool IsTargetScript(string path)
+        {
+            return Utf8JsonEditorUtility.IsSerializableScript(path) || Utf8JsonExternalTypeEditorUtility.IsExternalTypeDefineScript(path);
         }
     }
 }

@@ -5,38 +5,30 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
-using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UnityEditor;
-using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
     public static class Utf8JsonExternalTypeEditorUtility
     {
-        public static string GenerateExternalContainers(IReadOnlyList<string> externals, ICollection<string> paths, SyntaxGenerator generator = null)
+        public static string GenerateExternalContainers(IReadOnlyList<Type> types, ICollection<string> paths, CSharpCompilation compilation, SyntaxGenerator generator)
         {
-            if (generator == null)
-            {
-                generator = CodeAnalysisEditorUtility.Generator;
-            }
-
             string temp = FileUtil.GetUniqueTempPathInProject();
 
             Directory.CreateDirectory(temp);
 
-            for (int i = 0; i < externals.Count; i++)
+            for (int i = 0; i < types.Count; i++)
             {
-                string path = externals[i];
-                var info = JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>(File.ReadAllText(path));
+                Type type = types[i];
 
-                if (IsValidExternalTypeInfo(info))
+                if (IsValidExternalType(type))
                 {
-                    CodeGenerateContainer container = CreateContainer(info);
+                    SyntaxNode unit = CodeGenerateContainerEditorUtility.CreateUnit(compilation, generator, type);
 
-                    string sourcePath = $"{temp}/{container.Name}.cs";
-                    string source = container.Generate(generator).NormalizeWhitespace().ToFullString();
+                    string sourcePath = $"{temp}/{Guid.NewGuid()}.cs";
+                    string source = unit.NormalizeWhitespace().ToFullString();
 
                     File.WriteAllText(sourcePath, source);
 
@@ -47,40 +39,6 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return temp;
         }
 
-        public static CodeGenerateContainer CreateContainer(Type type)
-        {
-            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            CodeGenerateContainer container = CodeGenerateContainerEditorUtility.Create(compilation, type);
-
-            return container;
-        }
-
-        public static CodeGenerateContainer CreateContainer(Utf8JsonExternalTypeAssetInfo info)
-        {
-            Type type = Type.GetType(info.Type, true);
-            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            CodeGenerateContainer container = CodeGenerateContainerEditorUtility.Create(compilation, type);
-
-            var result = new CodeGenerateContainer(type.Name, type.IsValueType);
-
-            for (int i = 0; i < container.Fields.Count; i++)
-            {
-                CodeGenerateContainerField field = container.Fields[i];
-
-                if (IsInfoContainsMember(info, field.Name))
-                {
-                    result.Fields.Add(field);
-                }
-            }
-
-            return result;
-        }
-
-        public static bool IsValidExternalTypeInfo(Utf8JsonExternalTypeAssetInfo info)
-        {
-            return Type.GetType(info.Type) != null;
-        }
-
         public static bool IsValidExternalType(Type type)
         {
             bool isContainer = CodeGenerateContainerEditorUtility.IsValidType(type);
@@ -89,21 +47,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
             bool notUnity = !typeof(Object).IsAssignableFrom(type);
             bool notObsolete = !type.IsDefined(typeof(ObsoleteAttribute));
             bool hasMembers = type.GetFields().Length > 0 || type.GetProperties().Length > 0;
+            bool isSpecial = type.IsSpecialName;
 
-            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete && hasMembers;
-        }
-
-        private static bool IsInfoContainsMember(Utf8JsonExternalTypeAssetInfo info, string name)
-        {
-            for (int i = 0; i < info.Members.Count; i++)
-            {
-                if (info.Members[i].Name == name)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete && hasMembers && !isSpecial;
         }
     }
 }

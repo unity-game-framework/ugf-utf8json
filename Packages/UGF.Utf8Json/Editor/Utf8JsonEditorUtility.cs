@@ -86,7 +86,7 @@ namespace UGF.Utf8Json.Editor
             return formatters;
         }
 
-        public static string GenerateFormatters(List<string> sourcePaths, string namespaceRoot, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateFormatters(IReadOnlyList<string> sourcePaths, string namespaceRoot, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));

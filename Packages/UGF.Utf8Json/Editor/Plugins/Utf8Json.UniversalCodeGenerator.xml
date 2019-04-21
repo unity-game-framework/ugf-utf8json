@@ -9,7 +9,7 @@
             Provides utility to work with Utf8Json UniversalCodeGenerator.
             </summary>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.List{System.String},System.String,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
             <summary>
             Generates resolver and formatters from the specified files and other arguments.
             </summary>
@@ -17,7 +17,7 @@
             <param name="resolverName">The generated resolver name.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Boolean,System.String,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String,System.String)">
             <summary>
             Generates resolver and formatters from the specified files and other arguments.
             </summary>
@@ -28,14 +28,14 @@
             <param name="resolverName">The generated resolver name.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.String)">
             <summary>
             Generates formatters without resolver from the specified files and other arguments.
             </summary>
             <param name="inputFiles">The collection of input .cs files.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.List{System.String},System.Boolean,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String)">
             <summary>
             Generates formatters without resolver from the specified files and other arguments.
             </summary>

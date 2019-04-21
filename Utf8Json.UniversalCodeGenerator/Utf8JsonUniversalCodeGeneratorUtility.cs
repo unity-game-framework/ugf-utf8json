@@ -17,7 +17,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="inputFiles">The collection of input .cs files.</param>
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string Generate(List<string> inputFiles, string resolverName, string namespaceRoot)
+        public static string Generate(IEnumerable<string> inputFiles, string resolverName, string namespaceRoot)
         {
             return Generate(inputFiles, null, null, false, resolverName, namespaceRoot);
         }
@@ -31,7 +31,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string Generate(List<string> inputFiles, List<string> inputDirectories, List<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
+        public static string Generate(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
         {
             return InternalGenerate(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, resolverName, namespaceRoot));
         }
@@ -41,11 +41,11 @@ namespace Utf8Json.UniversalCodeGenerator
         /// </summary>
         /// <param name="inputFiles">The collection of input .cs files.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(List<string> inputFiles, string namespaceRoot)
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, string namespaceRoot)
         {
             return GenerateFormatters(inputFiles, null, null, false, namespaceRoot);
         }
-        
+
         /// <summary>
         /// Generates formatters without resolver from the specified files and other arguments.
         /// </summary>
@@ -54,16 +54,16 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(List<string> inputFiles, List<string> inputDirectories, List<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json")
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json")
         {
             return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot));
         }
 
-        internal static CommandlineArguments InternalGetArguments(List<string> inputFiles, List<string> inputDirectories = null, List<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
+        internal static CommandlineArguments InternalGetArguments(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories = null, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
         {
             if (inputFiles == null) throw new ArgumentNullException(nameof(inputFiles));
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Resolver name must be specified.", nameof(resolverName));
-            
+
             return new CommandlineArguments
             {
                 InputFiles = new List<string>(inputFiles),

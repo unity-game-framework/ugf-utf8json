@@ -98,10 +98,33 @@ namespace UGF.Utf8Json.Editor.ExternalType
             bool notAttribute = !typeof(Attribute).IsAssignableFrom(type);
             bool notUnity = !typeof(Object).IsAssignableFrom(type);
             bool notObsolete = !type.IsDefined(typeof(ObsoleteAttribute));
-            bool hasMembers = type.GetFields().Length > 0 || type.GetProperties().Length > 0;
             bool isSpecial = type.IsSpecialName;
 
-            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete && hasMembers && !isSpecial;
+            bool hasValidFields = false;
+            bool hasValidProperties = false;
+
+            FieldInfo[] fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            for (int i = 0; i < fields.Length; i++)
+            {
+                if (CodeGenerateContainerEditorUtility.IsValidField(fields[i]))
+                {
+                    hasValidFields = true;
+                }
+            }
+
+            for (int i = 0; i < properties.Length; i++)
+            {
+                if (CodeGenerateContainerEditorUtility.IsValidProperty(properties[i]))
+                {
+                    hasValidProperties = true;
+                }
+            }
+
+            bool hasMembers = hasValidFields || hasValidProperties;
+
+            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete && !isSpecial && hasMembers;
         }
     }
 }

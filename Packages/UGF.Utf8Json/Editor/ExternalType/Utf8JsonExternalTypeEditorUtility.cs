@@ -7,34 +7,44 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor.Container;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
     public static class Utf8JsonExternalTypeEditorUtility
     {
-        public static void GenerateExternalContainers(string path, IReadOnlyList<Type> types, ICollection<string> paths, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
+        public static string ExternalTypeAssetExtension { get; } = ".utf8json-external";
+
+        public static void GenerateExternalContainers(string path, IReadOnlyList<string> externals, ICollection<string> paths, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
-            if (types == null) throw new ArgumentNullException(nameof(types));
+            if (externals == null) throw new ArgumentNullException(nameof(externals));
             if (paths == null) throw new ArgumentNullException(nameof(paths));
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
-            for (int i = 0; i < types.Count; i++)
+            for (int i = 0; i < externals.Count; i++)
             {
-                Type type = types[i];
+                string externalPath = externals[i];
+                Utf8JsonExternalTypeAssetInfo info = GetExternalTypeAssetInfoFromPath(externalPath);
 
-                if (IsValidExternalType(type))
+                if (info.IsValid())
                 {
-                    SyntaxNode unit = CodeGenerateContainerEditorUtility.CreateUnit(compilation, generator, type);
+                    Type type = info.GetTargetType();
 
-                    string sourcePath = $"{path}/{Guid.NewGuid():N}.cs";
-                    string source = unit.NormalizeWhitespace().ToFullString();
+                    if (IsValidExternalType(type))
+                    {
+                        CodeGenerateContainer container = CreateContainer(info, compilation);
+                        SyntaxNode unit = CodeGenerateContainerEditorUtility.CreateUnit(generator, container, type.Namespace);
 
-                    File.WriteAllText(sourcePath, source);
+                        string sourcePath = $"{path}/{Guid.NewGuid():N}.cs";
+                        string source = unit.NormalizeWhitespace().ToFullString();
 
-                    paths.Add(sourcePath);
+                        File.WriteAllText(sourcePath, source);
+
+                        paths.Add(sourcePath);
+                    }
                 }
             }
         }
@@ -49,7 +59,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
         public static CodeGenerateContainer CreateContainer(Utf8JsonExternalTypeAssetInfo info, CSharpCompilation compilation = null)
         {
-            if (info.IsValid()) throw new ArgumentException("The specified info not valid.", nameof(info));
+            if (!info.IsValid()) throw new ArgumentException("The specified info not valid.", nameof(info));
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
 
             Type type = Type.GetType(info.Type, true);
@@ -68,6 +78,15 @@ namespace UGF.Utf8Json.Editor.ExternalType
             }
 
             return result;
+        }
+
+        public static Utf8JsonExternalTypeAssetInfo GetExternalTypeAssetInfoFromPath(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+
+            string source = File.ReadAllText(path);
+
+            return JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>(source);
         }
 
         public static bool IsValidExternalType(Type type)

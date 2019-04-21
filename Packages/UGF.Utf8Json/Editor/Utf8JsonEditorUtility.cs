@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
+using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using Utf8Json.UniversalCodeGenerator;
@@ -61,7 +62,26 @@ namespace UGF.Utf8Json.Editor
                 }
             }
 
+            var externals = new List<string>();
+            string externalsTempPath = string.Empty;
+
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtension);
+
+            if (externals.Count > 0)
+            {
+                externalsTempPath = FileUtil.GetUniqueTempPathInProject();
+
+                Directory.CreateDirectory(externalsTempPath);
+
+                Utf8JsonExternalTypeEditorUtility.GenerateExternalContainers(externalsTempPath, externals, sourcePaths, compilation, generator);
+            }
+
             string formatters = GenerateFormatters(sourcePaths, assembly.name, compilation, generator);
+
+            if (!string.IsNullOrEmpty(externalsTempPath))
+            {
+                FileUtil.DeleteFileOrDirectory(externalsTempPath);
+            }
 
             return formatters;
         }

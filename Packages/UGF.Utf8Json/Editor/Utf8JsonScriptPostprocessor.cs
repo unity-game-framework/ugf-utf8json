@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
 
@@ -96,8 +97,9 @@ namespace UGF.Utf8Json.Editor
         private static bool IsExternalFile(string path)
         {
             string extension = Path.GetExtension(path);
+            string extensionTarget = Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtension;
 
-            return !string.IsNullOrEmpty(extension) && extension.Equals(".utf8json-external", StringComparison.InvariantCultureIgnoreCase);
+            return !string.IsNullOrEmpty(extension) && extension.Equals(extensionTarget, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool IsAssemblyHasGeneratedScript(string path)

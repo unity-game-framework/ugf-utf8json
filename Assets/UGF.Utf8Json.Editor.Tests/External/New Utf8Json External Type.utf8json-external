@@ -19,7 +19,7 @@
         },
         {
             "m_name": "Bounds",
-            "m_state": false
+            "m_state": true
         }
     ]
 }

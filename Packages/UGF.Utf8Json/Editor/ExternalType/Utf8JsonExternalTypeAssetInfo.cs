@@ -23,6 +23,11 @@ namespace UGF.Utf8Json.Editor.ExternalType
             public bool State { get { return m_state; } set { m_state = value; } }
         }
 
+        public Type GetTargetType()
+        {
+            return System.Type.GetType(m_type, true);
+        }
+
         public bool Contains(string memberName)
         {
             for (int i = 0; i < m_members.Count; i++)

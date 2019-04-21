@@ -4,6 +4,7 @@ using System.IO;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
 
 namespace UGF.Utf8Json.Editor
 {
@@ -30,12 +31,23 @@ namespace UGF.Utf8Json.Editor
 
             if (m_assemblies.Count > 0)
             {
-                foreach (string assembly in m_assemblies)
+                AssetDatabase.StartAssetEditing();
+
+                try
                 {
-                    Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
+                    foreach (string assembly in m_assemblies)
+                    {
+                        Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogException(exception);
                 }
 
                 m_assemblies.Clear();
+
+                AssetDatabase.StopAssetEditing();
             }
         }
 

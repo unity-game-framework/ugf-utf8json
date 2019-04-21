@@ -27,6 +27,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private sealed class Styles
         {
             public readonly GUIContent TypeLabelContent = new GUIContent("Type");
+            public readonly GUIContent TypeDropdownNone = new GUIContent("None");
             public readonly GUIStyle Box = new GUIStyle("Box");
         }
 
@@ -109,7 +110,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
             Rect rectButton = EditorGUI.PrefixLabel(rect, m_styles.TypeLabelContent);
 
             Type type = Type.GetType(m_propertyType.stringValue);
-            GUIContent typeButtonContent = type != null ? new GUIContent(type.Name) : new GUIContent("None");
+            GUIContent typeButtonContent = type != null ? new GUIContent(type.Name) : m_styles.TypeDropdownNone;
 
             if (EditorGUI.DropdownButton(rectButton, typeButtonContent, FocusType.Keyboard))
             {
@@ -154,9 +155,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
         private void OnDropdownTypeSelected(Type type)
         {
-            UpdateMembers(type.AssemblyQualifiedName);
-
             m_propertyType.stringValue = type.AssemblyQualifiedName;
+
+            UpdateMembers(type.AssemblyQualifiedName);
         }
 
         private void DrawMembers()
@@ -171,8 +172,11 @@ namespace UGF.Utf8Json.Editor.ExternalType
                     SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(i);
                     SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
                     SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+                    SerializedProperty propertyType = propertyMember.FindPropertyRelative("m_type");
 
-                    propertyState.boolValue = EditorGUILayout.Toggle(propertyName.stringValue, propertyState.boolValue);
+                    var label = new GUIContent(propertyName.stringValue, propertyType.stringValue);
+
+                    propertyState.boolValue = EditorGUILayout.Toggle(label, propertyState.boolValue);
                 }
 
                 if (m_propertyMembers.arraySize == 0)
@@ -238,13 +242,13 @@ namespace UGF.Utf8Json.Editor.ExternalType
                     SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(m_propertyMembers.arraySize - 1);
                     SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
                     SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+                    SerializedProperty propertyType = propertyMember.FindPropertyRelative("m_type");
 
                     propertyName.stringValue = field.Name;
                     propertyState.boolValue = true;
+                    propertyType.stringValue = field.Type;
                 }
             }
-
-            m_propertyMembers.serializedObject.ApplyModifiedProperties();
         }
 
         private void LoadExtra()

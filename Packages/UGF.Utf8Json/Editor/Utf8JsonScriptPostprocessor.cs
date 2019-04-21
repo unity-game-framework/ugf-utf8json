@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
 
@@ -88,7 +87,7 @@ namespace UGF.Utf8Json.Editor
 
         private static bool IsTargetScript(string path)
         {
-            return Utf8JsonEditorUtility.IsSerializableScript(path) || Utf8JsonExternalTypeEditorUtility.IsExternalTypeDefineScript(path);
+            return Utf8JsonEditorUtility.IsSerializableScript(path);
         }
     }
 }

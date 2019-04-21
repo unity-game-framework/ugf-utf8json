@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
-using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using Utf8Json.UniversalCodeGenerator;
@@ -58,16 +57,7 @@ namespace UGF.Utf8Json.Editor
                 }
             }
 
-            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            SyntaxGenerator generator = CodeAnalysisEditorUtility.Generator;
-
-            string tempPath = Utf8JsonExternalTypeEditorUtility.GenerateExternalContainers(sourcePaths, compilation, generator);
             string formatters = GenerateFormatters(sourcePaths, assembly.name);
-
-            if (!string.IsNullOrEmpty(tempPath))
-            {
-                FileUtil.DeleteFileOrDirectory(tempPath);
-            }
 
             return formatters;
         }
@@ -125,21 +115,12 @@ namespace UGF.Utf8Json.Editor
             return builder.ToString();
         }
 
-        public static bool IsSerializableScript(string path)
+        public static bool IsSerializableScript(string path, CSharpCompilation compilation = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
 
-            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-
-            SyntaxTree tree = SyntaxFactory.ParseSyntaxTree(File.ReadAllText(path));
-            SemanticModel model = compilation.AddSyntaxTrees(tree).GetSemanticModel(tree);
-            ITypeSymbol typeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonSerializableAttribute).FullName);
-
-            var walker = new CodeGenerateWalkerCheckAttribute(model, typeSymbol);
-
-            walker.Visit(tree.GetRoot());
-
-            return walker.Result;
+            return CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, path, typeof(Utf8JsonSerializableAttribute));
         }
 
         public static bool IsAssemblyHasGeneratedScript(string path)

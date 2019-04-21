@@ -19,12 +19,14 @@ namespace UGF.Utf8Json.Editor
 {
     public static class Utf8JsonEditorUtility
     {
-        public static void GenerateAssetFromAssembly(string path, bool import = true)
+        public static void GenerateAssetFromAssembly(string path, bool import = true, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             string sourcePath = GetPathForGeneratedScript(path);
-            string source = GenerateFromAssembly(path);
+            string source = GenerateFromAssembly(path, compilation, generator);
 
             File.WriteAllText(sourcePath, source);
 
@@ -34,9 +36,11 @@ namespace UGF.Utf8Json.Editor
             }
         }
 
-        public static string GenerateFromAssembly(string path)
+        public static string GenerateFromAssembly(string path, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             string assemblyName = Path.GetFileNameWithoutExtension(path);
 
@@ -57,18 +61,17 @@ namespace UGF.Utf8Json.Editor
                 }
             }
 
-            string formatters = GenerateFormatters(sourcePaths, assembly.name);
+            string formatters = GenerateFormatters(sourcePaths, assembly.name, compilation, generator);
 
             return formatters;
         }
 
-        public static string GenerateFormatters(List<string> sourcePaths, string namespaceRoot)
+        public static string GenerateFormatters(List<string> sourcePaths, string namespaceRoot, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
-
-            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            SyntaxGenerator generator = CodeAnalysisEditorUtility.Generator;
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
             SyntaxNode attributeNode = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));

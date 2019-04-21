@@ -44,6 +44,11 @@ namespace UGF.Utf8Json.Editor
             {
                 GetAssembly(assemblies, path);
             }
+
+            if (IsExternalFile(path) && IsAssemblyHasGeneratedScript(path))
+            {
+                GetAssembly(assemblies, path);
+            }
         }
 
         private static void HandleDeleted(ICollection<string> assemblies, string path)
@@ -52,13 +57,23 @@ namespace UGF.Utf8Json.Editor
             {
                 GetAssembly(assemblies, path);
             }
+
+            if (IsExternalFile(path) && IsAssemblyHasGeneratedScript(path))
+            {
+                GetAssembly(assemblies, path);
+            }
         }
 
         private static void HandleMoved(ICollection<string> assemblies, string to, string from)
         {
-            HandleDeleted(assemblies, to);
+            HandleImported(assemblies, to);
 
             if (IsCSharpFile(from) && IsAssemblyHasGeneratedScript(from) && IsTargetScript(to))
+            {
+                GetAssembly(assemblies, from);
+            }
+
+            if (IsExternalFile(from) && IsAssemblyHasGeneratedScript(from))
             {
                 GetAssembly(assemblies, from);
             }
@@ -76,6 +91,13 @@ namespace UGF.Utf8Json.Editor
             string extension = Path.GetExtension(path);
 
             return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool IsExternalFile(string path)
+        {
+            string extension = Path.GetExtension(path);
+
+            return !string.IsNullOrEmpty(extension) && extension.Equals(".utf8json-external", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool IsAssemblyHasGeneratedScript(string path)

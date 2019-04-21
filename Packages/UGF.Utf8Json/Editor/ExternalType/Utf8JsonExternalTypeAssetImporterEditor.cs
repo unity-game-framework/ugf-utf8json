@@ -21,6 +21,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private SerializedProperty m_propertyType;
         private SerializedProperty m_propertyMembers;
         private TypesDropdown m_dropdown;
+        private bool m_validType;
         private Styles m_styles;
 
         private sealed class Styles
@@ -50,6 +51,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
             m_propertyMembers = propertyInfo.FindPropertyRelative("m_members");
 
             LoadExtra();
+
+            ValidateType(m_propertyType.stringValue);
         }
 
         public override void OnDisable()
@@ -93,6 +96,13 @@ namespace UGF.Utf8Json.Editor.ExternalType
             AssetDatabase.ImportAsset(m_importer.assetPath);
         }
 
+        protected override void ResetValues()
+        {
+            base.ResetValues();
+
+            m_extraSerializedObject?.Update();
+        }
+
         private void DrawTypeDropdown()
         {
             Rect rect = EditorGUILayout.GetControlRect();
@@ -108,7 +118,22 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Type Info", EditorStyles.boldLabel);
-            EditorGUILayout.HelpBox(m_propertyType.stringValue, MessageType.None);
+
+            if (m_validType)
+            {
+                EditorGUILayout.HelpBox(m_propertyType.stringValue, MessageType.None);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(m_propertyType.stringValue))
+                {
+                    EditorGUILayout.HelpBox("Type not specified.", MessageType.None);
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox($"Invalid type: `{m_propertyType.stringValue}`.", MessageType.Warning);
+                }
+            }
         }
 
         private void ShowDropdown(Rect rect)
@@ -129,9 +154,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
         private void OnDropdownTypeSelected(Type type)
         {
-            m_propertyType.stringValue = type.AssemblyQualifiedName;
+            UpdateMembers(type.AssemblyQualifiedName);
 
-            // UpdateMembers(type);
+            m_propertyType.stringValue = type.AssemblyQualifiedName;
         }
 
         private void DrawMembers()
@@ -185,31 +210,41 @@ namespace UGF.Utf8Json.Editor.ExternalType
             }
         }
 
+        private Type ValidateType(string typeName)
+        {
+            Type type = Type.GetType(typeName);
+
+            m_validType = type != null && Utf8JsonExternalTypeEditorUtility.IsValidExternalType(type);
+
+            return type;
+        }
+
         private void UpdateMembers(string typeName)
         {
             m_propertyMembers.ClearArray();
 
-            Type type = Type.GetType(typeName);
+            Type type = ValidateType(typeName);
 
-            if (type != null && Utf8JsonExternalTypeEditorUtility.IsValidExternalType(type))
+            if (m_validType)
             {
+                CodeGenerateContainer container = Utf8JsonExternalTypeEditorUtility.CreateContainer(type);
+
+                for (int i = 0; i < container.Fields.Count; i++)
+                {
+                    CodeGenerateContainerField field = container.Fields[i];
+
+                    m_propertyMembers.InsertArrayElementAtIndex(m_propertyMembers.arraySize);
+
+                    SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(m_propertyMembers.arraySize - 1);
+                    SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
+                    SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+
+                    propertyName.stringValue = field.Name;
+                    propertyState.boolValue = true;
+                }
             }
 
-            CodeGenerateContainer container = null;
-
-            for (int i = 0; i < container.Fields.Count; i++)
-            {
-                CodeGenerateContainerField field = container.Fields[i];
-
-                m_propertyMembers.InsertArrayElementAtIndex(m_propertyMembers.arraySize);
-
-                SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(m_propertyMembers.arraySize - 1);
-                SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
-                SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
-
-                propertyName.stringValue = field.Name;
-                propertyState.boolValue = true;
-            }
+            m_propertyMembers.serializedObject.ApplyModifiedProperties();
         }
 
         private void LoadExtra()

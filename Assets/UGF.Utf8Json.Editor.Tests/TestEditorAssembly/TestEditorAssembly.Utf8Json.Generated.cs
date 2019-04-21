@@ -15,7 +15,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
     using Utf8Json;
 
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute]
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget))]
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -39,7 +39,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"),
-                
+
             };
         }
 
@@ -50,7 +50,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 writer.WriteNull();
                 return;
             }
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteBoolean(value.BoolValue);
@@ -62,7 +62,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             writer.WriteSingle(value.FloatValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
-            
+
             writer.WriteEndObject();
         }
 
@@ -72,7 +72,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             {
                 return null;
             }
-            
+
 
             var __BoolValue__ = default(bool);
             var __BoolValue__b__ = false;

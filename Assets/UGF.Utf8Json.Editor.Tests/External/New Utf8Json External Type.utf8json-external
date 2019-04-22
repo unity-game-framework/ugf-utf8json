@@ -3,28 +3,28 @@
     "m_members": [
         {
             "m_name": "BoolValue",
-            "m_state": true,
-            "m_type": "bool"
+            "m_type": "bool",
+            "m_active": true
         },
         {
             "m_name": "StringValue",
-            "m_state": true,
-            "m_type": "string"
+            "m_type": "string",
+            "m_active": true
         },
         {
             "m_name": "Vector2",
-            "m_state": true,
-            "m_type": "global::UnityEngine.Vector2"
+            "m_type": "global::UnityEngine.Vector2",
+            "m_active": true
         },
         {
             "m_name": "FloatValue",
-            "m_state": true,
-            "m_type": "float"
+            "m_type": "float",
+            "m_active": true
         },
         {
             "m_name": "Bounds",
-            "m_state": true,
-            "m_type": "global::UnityEngine.Bounds"
+            "m_type": "global::UnityEngine.Bounds",
+            "m_active": true
         }
     ]
 }

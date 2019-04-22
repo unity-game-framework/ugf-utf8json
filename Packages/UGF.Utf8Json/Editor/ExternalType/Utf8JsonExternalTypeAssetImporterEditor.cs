@@ -171,12 +171,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
                 {
                     SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(i);
                     SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
-                    SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
                     SerializedProperty propertyType = propertyMember.FindPropertyRelative("m_type");
+                    SerializedProperty propertyActive = propertyMember.FindPropertyRelative("m_active");
 
                     var label = new GUIContent(propertyName.stringValue, propertyType.stringValue);
 
-                    propertyState.boolValue = EditorGUILayout.Toggle(label, propertyState.boolValue);
+                    propertyActive.boolValue = EditorGUILayout.Toggle(label, propertyActive.boolValue);
                 }
 
                 if (m_propertyMembers.arraySize == 0)
@@ -208,9 +208,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
             for (int i = 0; i < m_propertyMembers.arraySize; i++)
             {
                 SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(i);
-                SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
+                SerializedProperty propertyActive = propertyMember.FindPropertyRelative("m_active");
 
-                propertyState.boolValue = state;
+                propertyActive.boolValue = state;
             }
         }
 
@@ -241,12 +241,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
                     SerializedProperty propertyMember = m_propertyMembers.GetArrayElementAtIndex(m_propertyMembers.arraySize - 1);
                     SerializedProperty propertyName = propertyMember.FindPropertyRelative("m_name");
-                    SerializedProperty propertyState = propertyMember.FindPropertyRelative("m_state");
                     SerializedProperty propertyType = propertyMember.FindPropertyRelative("m_type");
+                    SerializedProperty propertyActive = propertyMember.FindPropertyRelative("m_active");
 
                     propertyName.stringValue = field.Name;
-                    propertyState.boolValue = true;
                     propertyType.stringValue = field.Type;
+                    propertyActive.boolValue = true;
                 }
             }
         }

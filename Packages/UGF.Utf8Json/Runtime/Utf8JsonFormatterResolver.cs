@@ -1,55 +1,27 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime
 {
-    public class Utf8JsonFormatterResolver : IUtf8JsonFormatterResolver, IJsonFormatterResolver, IEnumerable<KeyValuePair<Type, IJsonFormatter>>
+    public class Utf8JsonFormatterResolver : IUtf8JsonFormatterResolver
     {
-        public IReadOnlyDictionary<Type, IJsonFormatter> Formatters { get; }
+        public Dictionary<Type, IJsonFormatter> Formatters { get; } = new Dictionary<Type, IJsonFormatter>();
 
-        private readonly Dictionary<Type, IJsonFormatter> m_formatters = new Dictionary<Type, IJsonFormatter>();
-
-        public Utf8JsonFormatterResolver()
-        {
-            Formatters = new ReadOnlyDictionary<Type, IJsonFormatter>(m_formatters);
-        }
-
-        public void Add(Type type, IJsonFormatter formatter)
-        {
-            m_formatters.Add(type, formatter);
-        }
-
-        public void Remove(Type type)
-        {
-            m_formatters.Remove(type);
-        }
-
-        public void Clear()
-        {
-            m_formatters.Clear();
-        }
+        IReadOnlyDictionary<Type, IJsonFormatter> IUtf8JsonFormatterResolver.Formatters { get { return Formatters; } }
 
         public IJsonFormatter<T> GetFormatter<T>()
         {
-            return Utf8JsonFormatterResolverCache<T>.GetFormatter(this);
-        }
+            IJsonFormatter<T> formatter = Utf8JsonFormatterCache<T>.Formatter;
 
-        public Dictionary<Type, IJsonFormatter>.Enumerator GetEnumerator()
-        {
-            return m_formatters.GetEnumerator();
-        }
+            if (formatter == null && Formatters.TryGetValue(typeof(T), out IJsonFormatter formatterBase) && formatterBase is IJsonFormatter<T> formatterGeneric)
+            {
+                formatter = formatterGeneric;
 
-        IEnumerator<KeyValuePair<Type, IJsonFormatter>> IEnumerable<KeyValuePair<Type, IJsonFormatter>>.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+                Utf8JsonFormatterCache<T>.Formatter = formatter;
+            }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return formatter;
         }
     }
 }

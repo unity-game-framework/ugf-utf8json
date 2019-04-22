@@ -17,12 +17,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
         public struct MemberInfo
         {
             [SerializeField] private string m_name;
-            [SerializeField] private bool m_state;
             [SerializeField] private string m_type;
+            [SerializeField] private bool m_active;
 
             public string Name { get { return m_name; } set { m_name = value; } }
-            public bool State { get { return m_state; } set { m_state = value; } }
             public string Type { get { return m_type; } set { m_type = value; } }
+            public bool Active { get { return m_active; } set { m_active = value; } }
         }
 
         public Type GetTargetType()
@@ -34,7 +34,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
         {
             for (int i = 0; i < m_members.Count; i++)
             {
-                if (m_members[i].Name == memberName)
+                MemberInfo member = m_members[i];
+
+                if (member.Active && member.Name == memberName)
                 {
                     return true;
                 }

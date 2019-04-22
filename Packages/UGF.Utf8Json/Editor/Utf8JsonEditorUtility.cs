@@ -94,10 +94,10 @@ namespace UGF.Utf8Json.Editor
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
-            SyntaxNode attributeNode = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
+            var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
 
             var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attributeNode, declaration => declaration.IsKind(SyntaxKind.ClassDeclaration));
+            var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
             var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
 
             for (int i = 0; i < sourcePaths.Count; i++)

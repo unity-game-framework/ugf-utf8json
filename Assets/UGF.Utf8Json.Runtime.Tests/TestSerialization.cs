@@ -1,20 +1,15 @@
 using NUnit.Framework;
-using UGF.Utf8Json.Runtime.Resolvers.Unity;
 using UnityEngine;
 using Utf8Json;
-using Utf8Json.Resolvers;
 
 namespace UGF.Utf8Json.Runtime.Tests
 {
+    [Utf8JsonSerializable]
     public class TestSerialization
     {
         private readonly string m_targetSerialized = "{\"Name\":\"Target\",\"BoolValue\":true,\"FloatValue\":50.5,\"IntValue\":50}";
         private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
-        
-        static TestSerialization()
-        {
-            CompositeResolver.Register(UnityResolver.Instance, BuiltinResolver.Instance);
-        }
+        private Utf8JsonFormatterResolver m_resolver;
 
         public class Target
         {
@@ -23,20 +18,27 @@ namespace UGF.Utf8Json.Runtime.Tests
             public float FloatValue { get; set; } = 50.5F;
             public int IntValue { get; set; } = 50;
         }
-        
+
         public class Target2
         {
             public Vector2 Vector2 { get; set; } = Vector2.one;
             public Bounds Bounds { get; set; } = new Bounds(Vector3.one, Vector3.one);
         }
-        
+
+        [SetUp]
+        public void Setup()
+        {
+            m_resolver = Utf8JsonUtility.CreateDefaultResolver();
+            m_resolver.CacheFormatters();
+        }
+
         [Test]
         public void Serialize()
         {
             var target = new Target();
 
-            string data = JsonSerializer.ToJsonString(target, CompositeResolver.Instance);
-            
+            string data = JsonSerializer.ToJsonString(target, m_resolver);
+
             Assert.AreEqual(m_targetSerialized, data);
         }
 
@@ -45,16 +47,16 @@ namespace UGF.Utf8Json.Runtime.Tests
         {
             var target = new Target2();
 
-            string data = JsonSerializer.ToJsonString(target, CompositeResolver.Instance);
-            
+            string data = JsonSerializer.ToJsonString(target, m_resolver);
+
             Assert.AreEqual(m_target2Serialized, data);
         }
 
         [Test]
         public void Deserialize()
         {
-            var target = JsonSerializer.Deserialize<Target>(m_targetSerialized, CompositeResolver.Instance);
-            
+            var target = JsonSerializer.Deserialize<Target>(m_targetSerialized, m_resolver);
+
             Assert.NotNull(target);
             Assert.AreEqual("Target", target.Name);
             Assert.AreEqual(true, target.BoolValue);
@@ -65,8 +67,8 @@ namespace UGF.Utf8Json.Runtime.Tests
         [Test]
         public void Deserialize2()
         {
-            var target = JsonSerializer.Deserialize<Target2>(m_target2Serialized, CompositeResolver.Instance);
-            
+            var target = JsonSerializer.Deserialize<Target2>(m_target2Serialized, m_resolver);
+
             Assert.NotNull(target);
             Assert.AreEqual(Vector2.one, target.Vector2);
             Assert.AreEqual(new Bounds(Vector3.one, Vector3.one), target.Bounds);

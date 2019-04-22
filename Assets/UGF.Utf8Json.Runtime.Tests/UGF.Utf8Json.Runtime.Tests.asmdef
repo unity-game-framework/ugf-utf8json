@@ -1,7 +1,8 @@
 {
     "name": "UGF.Utf8Json.Runtime.Tests",
     "references": [
-        "GUID:7d88aca9857e23b4e868d9ace8e59be2"
+        "GUID:7d88aca9857e23b4e868d9ace8e59be2",
+        "GUID:47c3349eaf0910446a6e557ee1a6748f"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

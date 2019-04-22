@@ -7,5 +7,6 @@ namespace UGF.Utf8Json.Runtime
     public interface IUtf8JsonFormatterResolver : IJsonFormatterResolver
     {
         IReadOnlyDictionary<Type, IJsonFormatter> Formatters { get; }
+        IReadOnlyList<IJsonFormatterResolver> Resolvers { get; }
     }
 }

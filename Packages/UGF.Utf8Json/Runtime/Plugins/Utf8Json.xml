@@ -426,6 +426,6 @@
         <member name="F:Utf8Json.Resolvers.StandardResolver.AllowPrivateExcludeNullCamelCase">
             <summary>AllowPrivate:True,  ExcludeNull:True,  NameMutate:CamelCase</summary>
         </member>
-        <!-- 正しくない形式の XML コメントがメンバー "F:Utf8Json.Resolvers.StandardResolver.AllowPrivateExcludeNullSnakeCase" で無視されました -->
+        <!-- Badly formed XML comment ignored for member "F:Utf8Json.Resolvers.StandardResolver.AllowPrivateExcludeNullSnakeCase" -->
     </members>
 </doc>

@@ -36,7 +36,7 @@ namespace UGF.Utf8Json.Runtime
             }
         }
 
-        public static void SetFormatterCache(IJsonFormatter formatter, Type targetType)
+        public static void SetFormatterCache(Type targetType, IJsonFormatter formatter)
         {
             Type type = typeof(Utf8JsonFormatterCache<>).MakeGenericType(targetType);
             FieldInfo field = type.GetField("Formatter");

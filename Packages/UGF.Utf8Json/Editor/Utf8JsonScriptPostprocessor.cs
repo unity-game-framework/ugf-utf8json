@@ -118,7 +118,7 @@ namespace UGF.Utf8Json.Editor
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
 
-            return Utf8JsonEditorUtility.IsAssemblyHasGeneratedScript(assemblyPath);
+            return !string.IsNullOrEmpty(assemblyPath) && Utf8JsonEditorUtility.IsAssemblyHasGeneratedScript(assemblyPath);
         }
 
         private static bool IsTargetScript(string path)

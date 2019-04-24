@@ -16,7 +16,7 @@ namespace UGF.Utf8Json.Runtime
         {
             foreach (KeyValuePair<Type, IJsonFormatter> pair in Formatters)
             {
-                Utf8JsonUtility.SetFormatterCache(pair.Value, pair.Key);
+                Utf8JsonUtility.SetFormatterCache(pair.Key, pair.Value);
             }
         }
 

@@ -71,7 +71,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
             {
                 CodeGenerateContainerField field = container.Fields[i];
 
-                if (info.Contains(field.Name))
+                if (info.TryGetMember(field.Name, out Utf8JsonExternalTypeAssetInfo.MemberInfo member) && member.Active)
                 {
                     result.Fields.Add(field);
                 }

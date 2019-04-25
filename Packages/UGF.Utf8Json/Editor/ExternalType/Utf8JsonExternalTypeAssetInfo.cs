@@ -30,18 +30,19 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return System.Type.GetType(m_type, true);
         }
 
-        public bool Contains(string memberName)
+        public bool TryGetMember(string name, out MemberInfo member)
         {
             for (int i = 0; i < m_members.Count; i++)
             {
-                MemberInfo member = m_members[i];
+                member = m_members[i];
 
-                if (member.Active && member.Name == memberName)
+                if (member.Name == name)
                 {
                     return true;
                 }
             }
 
+            member = default;
             return false;
         }
 

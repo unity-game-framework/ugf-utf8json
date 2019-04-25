@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
+using UGF.Utf8Json.Editor.Analysis;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;

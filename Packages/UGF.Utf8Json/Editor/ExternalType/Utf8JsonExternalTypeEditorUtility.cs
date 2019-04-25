@@ -111,6 +111,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
                 if (CodeGenerateContainerEditorUtility.IsValidField(fields[i]))
                 {
                     hasValidFields = true;
+                    break;
                 }
             }
 
@@ -119,6 +120,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
                 if (CodeGenerateContainerEditorUtility.IsValidProperty(properties[i]))
                 {
                     hasValidProperties = true;
+                    break;
                 }
             }
 

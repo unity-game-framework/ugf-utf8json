@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UGF.Assemblies.Runtime;
 using UGF.Types.Runtime;
+using UGF.Utf8Json.Runtime.ExternalType;
 using UGF.Utf8Json.Runtime.Resolvers.Unity;
 using Utf8Json;
 using Utf8Json.Resolvers;
@@ -11,11 +12,19 @@ namespace UGF.Utf8Json.Runtime
 {
     public static class Utf8JsonUtility
     {
-        public static Utf8JsonFormatterResolver CreateDefaultResolver()
+        public static Utf8JsonFormatterResolver CreateDefaultResolver(bool includeExternal = true, bool includeExternalDefines = true, Assembly assembly = null)
         {
             var resolver = new Utf8JsonFormatterResolver();
 
-            CreateFormatters(resolver.Formatters);
+            if (includeExternal)
+            {
+                GetFormatters(resolver.Formatters, assembly);
+            }
+
+            if (includeExternalDefines)
+            {
+                Utf8JsonExternalTypeUtility.GetFormatters(resolver.Formatters, assembly);
+            }
 
             resolver.Resolvers.Add(UnityResolver.Instance);
             resolver.Resolvers.Add(BuiltinResolver.Instance);
@@ -23,7 +32,7 @@ namespace UGF.Utf8Json.Runtime
             return resolver;
         }
 
-        public static void CreateFormatters(IDictionary<Type, IJsonFormatter> formatters, Assembly assembly = null)
+        public static void GetFormatters(IDictionary<Type, IJsonFormatter> formatters, Assembly assembly = null)
         {
             foreach (Type type in AssemblyUtility.GetBrowsableTypes<Utf8JsonFormatterAttribute>(assembly))
             {

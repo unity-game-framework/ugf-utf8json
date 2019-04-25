@@ -23,7 +23,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         {
             var formatters = new Dictionary<Type, IJsonFormatter>();
 
-            Utf8JsonUtility.CreateFormatters(formatters, typeof(TestTarget).Assembly);
+            Utf8JsonUtility.GetFormatters(formatters, typeof(TestTarget).Assembly);
 
             Assert.AreEqual(1, formatters.Count);
         }

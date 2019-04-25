@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Resolvers.Unity
@@ -7,8 +9,6 @@ namespace UGF.Utf8Json.Runtime.Resolvers.Unity
 #pragma warning disable 612
 #pragma warning disable 414
 #pragma warning disable 168
-
-    // ReSharper disable all
 
     public class UnityResolver : global::Utf8Json.IJsonFormatterResolver
     {

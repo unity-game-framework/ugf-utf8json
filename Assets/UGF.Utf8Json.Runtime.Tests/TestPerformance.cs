@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using NUnit.Framework;
 using UGF.Utf8Json.Runtime.Tests.TestAssembly;
 using Unity.PerformanceTesting;
@@ -13,8 +11,8 @@ namespace UGF.Utf8Json.Runtime.Tests
     {
         private Utf8JsonFormatterResolver m_resolver;
         private TestTarget m_target;
-        private TextAsset m_targetJson;
-        private TextAsset m_targetBytes;
+        private string m_targetJson;
+        private byte[] m_targetBytes;
         private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("Test.Serialize");
         private ProfilerMarker m_serializeMethodStringMarker = new ProfilerMarker("Test.Serialize.String");
 
@@ -24,8 +22,8 @@ namespace UGF.Utf8Json.Runtime.Tests
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
             m_resolver.CacheFormatters();
             m_target = new TestTarget();
-            m_targetJson = Resources.Load<TextAsset>("TestTargetJson");
-            m_targetBytes = Resources.Load<TextAsset>("TestTargetBytes");
+            m_targetJson = Resources.Load<TextAsset>("TestTargetJson").text;
+            m_targetBytes = Resources.Load<TextAsset>("TestTargetBytes").bytes;
         }
 
         [Test, PerformanceTest]
@@ -99,12 +97,12 @@ namespace UGF.Utf8Json.Runtime.Tests
 
         private void DeserializeMethod()
         {
-            JsonSerializer.Deserialize<TestTarget>(m_targetBytes.bytes, m_resolver);
+            JsonSerializer.Deserialize<TestTarget>(m_targetBytes, m_resolver);
         }
 
         private void DeserializeMethodString()
         {
-            JsonSerializer.Deserialize<TestTarget>(m_targetJson.text, m_resolver);
+            JsonSerializer.Deserialize<TestTarget>(m_targetJson, m_resolver);
         }
     }
 }

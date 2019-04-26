@@ -30,6 +30,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 1},
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("FloatValue"), 2},
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("IntValue"), 3},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Flags"), 4},
             };
 
             this.____stringByteKeys = new byte[][]
@@ -38,6 +39,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("BoolValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("IntValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Flags"),
                 
             };
         }
@@ -59,6 +61,8 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             writer.WriteSingle(value.FloatValue);
             writer.WriteRaw(this.____stringByteKeys[3]);
             writer.WriteInt32(value.IntValue);
+            writer.WriteRaw(this.____stringByteKeys[4]);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
             
             writer.WriteEndObject();
         }
@@ -79,6 +83,8 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             var __FloatValue__b__ = false;
             var __IntValue__ = default(int);
             var __IntValue__b__ = false;
+            var __Flags__ = default(HideFlags);
+            var __Flags__b__ = false;
 
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -110,6 +116,10 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                         __IntValue__ = reader.ReadInt32();
                         __IntValue__b__ = true;
                         break;
+                    case 4:
+                        __Flags__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Flags__b__ = true;
+                        break;
                     default:
                         reader.ReadNextBlock();
                         break;
@@ -124,6 +134,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
             if(__FloatValue__b__) ____result.FloatValue = __FloatValue__;
             if(__IntValue__b__) ____result.IntValue = __IntValue__;
+            if(__Flags__b__) ____result.Flags = __Flags__;
 
             return ____result;
         }

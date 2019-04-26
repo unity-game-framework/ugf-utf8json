@@ -15,11 +15,17 @@ namespace UGF.Utf8Json.Runtime
     /// </summary>
     public static class Utf8JsonUtility
     {
-        public static Utf8JsonFormatterResolver CreateDefaultResolver(bool includeExternal = true, bool includeExternalDefines = true, Assembly assembly = null)
+        /// <summary>
+        /// Creates default resolver with Builtin and Unity resolvers, also with found formatters.
+        /// </summary>
+        /// <param name="includeFormatters">The value determines whether to include formatters marked with <see cref="Utf8JsonFormatterAttribute"/>.</param>
+        /// <param name="includeExternalDefines">The value determines whether to include formatters from the external type defines.</param>
+        /// <param name="assembly">The assembly to search for formatters.</param>
+        public static Utf8JsonFormatterResolver CreateDefaultResolver(bool includeFormatters = true, bool includeExternalDefines = true, Assembly assembly = null)
         {
             var resolver = new Utf8JsonFormatterResolver();
 
-            if (includeExternal)
+            if (includeFormatters)
             {
                 GetFormatters(resolver.Formatters, assembly);
             }
@@ -31,6 +37,7 @@ namespace UGF.Utf8Json.Runtime
 
             resolver.Resolvers.Add(UnityResolver.Instance);
             resolver.Resolvers.Add(BuiltinResolver.Instance);
+            resolver.Resolvers.Add(EnumResolver.UnderlyingValue);
 
             return resolver;
         }

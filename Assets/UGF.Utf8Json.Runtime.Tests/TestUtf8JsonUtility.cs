@@ -15,7 +15,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             Utf8JsonFormatterResolver resolver = Utf8JsonUtility.CreateDefaultResolver();
 
             Assert.NotNull(resolver);
-            Assert.AreEqual(2, resolver.Resolvers.Count);
+            Assert.AreEqual(3, resolver.Resolvers.Count);
         }
 
         [Test]

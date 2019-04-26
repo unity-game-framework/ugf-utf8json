@@ -30,6 +30,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("IntValue"), 3},
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 4},
                 { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Bounds"), 5},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Flags"), 6},
             };
 
             this.____stringByteKeys = new byte[][]
@@ -40,6 +41,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("IntValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Flags"),
                 
             };
         }
@@ -65,6 +67,8 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[5]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
+            writer.WriteRaw(this.____stringByteKeys[6]);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
             
             writer.WriteEndObject();
         }
@@ -89,6 +93,8 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             var __Vector2__b__ = false;
             var __Bounds__ = default(Bounds);
             var __Bounds__b__ = false;
+            var __Flags__ = default(HideFlags);
+            var __Flags__b__ = false;
 
             var ____count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -128,6 +134,10 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                         __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Bounds__b__ = true;
                         break;
+                    case 6:
+                        __Flags__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Flags__b__ = true;
+                        break;
                     default:
                         reader.ReadNextBlock();
                         break;
@@ -144,6 +154,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             if(__IntValue__b__) ____result.IntValue = __IntValue__;
             if(__Vector2__b__) ____result.Vector2 = __Vector2__;
             if(__Bounds__b__) ____result.Bounds = __Bounds__;
+            if(__Flags__b__) ____result.Flags = __Flags__;
 
             return ____result;
         }

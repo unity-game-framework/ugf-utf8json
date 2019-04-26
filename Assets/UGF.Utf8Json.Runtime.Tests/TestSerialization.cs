@@ -7,7 +7,7 @@ namespace UGF.Utf8Json.Runtime.Tests
     [Utf8JsonSerializable]
     public class TestSerialization
     {
-        private readonly string m_targetSerialized = "{\"Name\":\"Target\",\"BoolValue\":true,\"FloatValue\":50.5,\"IntValue\":50}";
+        private readonly string m_targetSerialized = "{\"Name\":\"Target\",\"BoolValue\":true,\"FloatValue\":50.5,\"IntValue\":50,\"Flags\":52}";
         private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
         private Utf8JsonFormatterResolver m_resolver;
 
@@ -17,6 +17,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             public bool BoolValue { get; set; } = true;
             public float FloatValue { get; set; } = 50.5F;
             public int IntValue { get; set; } = 50;
+            public HideFlags Flags { get; set; } = HideFlags.DontSave;
         }
 
         public class Target2
@@ -62,6 +63,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             Assert.AreEqual(true, target.BoolValue);
             Assert.AreEqual(50.5F, target.FloatValue);
             Assert.AreEqual(50, target.IntValue);
+            Assert.AreEqual(HideFlags.DontSave, target.Flags);
         }
 
         [Test]

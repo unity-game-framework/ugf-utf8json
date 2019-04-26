@@ -10,6 +10,8 @@ namespace UGF.Utf8Json.Runtime.ExternalType
 
         public void GetFormatters(IDictionary<Type, IJsonFormatter> formatters)
         {
+            if (formatters == null) throw new ArgumentNullException(nameof(formatters));
+
             foreach (KeyValuePair<Type, IJsonFormatter> pair in Formatters)
             {
                 formatters.Add(pair.Key, pair.Value);

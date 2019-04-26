@@ -94,11 +94,28 @@ namespace UGF.Utf8Json.Editor.ExternalType
             if (type == null) throw new ArgumentNullException(nameof(type));
 
             bool isContainer = CodeGenerateContainerEditorUtility.IsValidType(type);
-            bool hasDefaultConstructor = type.GetConstructor(Type.EmptyTypes) != null || type.IsValueType;
-            bool notAttribute = !typeof(Attribute).IsAssignableFrom(type);
-            bool notUnity = !typeof(Object).IsAssignableFrom(type);
-            bool notObsolete = !type.IsDefined(typeof(ObsoleteAttribute));
+
+            if (!isContainer)
+            {
+                return false;
+            }
+
+            bool hasDefaultConstructor = type.IsValueType || type.GetConstructor(Type.EmptyTypes) != null;
+
+            if (!hasDefaultConstructor)
+            {
+                return false;
+            }
+
+            bool isAttribute = typeof(Attribute).IsAssignableFrom(type);
+            bool isUnity = typeof(Object).IsAssignableFrom(type);
+            bool isObsolete = type.IsDefined(typeof(ObsoleteAttribute));
             bool isSpecial = type.IsSpecialName;
+
+            if (isAttribute || isUnity || isObsolete || isSpecial)
+            {
+                return false;
+            }
 
             bool hasValidFields = false;
             bool hasValidProperties = false;
@@ -126,7 +143,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
 
             bool hasMembers = hasValidFields || hasValidProperties;
 
-            return isContainer && hasDefaultConstructor && notAttribute && notUnity && notObsolete && !isSpecial && hasMembers;
+            if (!hasMembers)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

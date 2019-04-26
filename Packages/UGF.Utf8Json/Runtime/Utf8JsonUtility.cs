@@ -10,6 +10,9 @@ using Utf8Json.Resolvers;
 
 namespace UGF.Utf8Json.Runtime
 {
+    /// <summary>
+    /// Provides utilities to work with Utf8 Json serialization.
+    /// </summary>
     public static class Utf8JsonUtility
     {
         public static Utf8JsonFormatterResolver CreateDefaultResolver(bool includeExternal = true, bool includeExternalDefines = true, Assembly assembly = null)
@@ -34,6 +37,8 @@ namespace UGF.Utf8Json.Runtime
 
         public static void GetFormatters(IDictionary<Type, IJsonFormatter> formatters, Assembly assembly = null)
         {
+            if (formatters == null) throw new ArgumentNullException(nameof(formatters));
+
             foreach (Type type in AssemblyUtility.GetBrowsableTypes<Utf8JsonFormatterAttribute>(assembly))
             {
                 var attribute = type.GetCustomAttribute<Utf8JsonFormatterAttribute>();
@@ -47,6 +52,8 @@ namespace UGF.Utf8Json.Runtime
 
         public static void SetFormatterCache(Type targetType, IJsonFormatter formatter)
         {
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+
             Type type = typeof(Utf8JsonFormatterCache<>).MakeGenericType(targetType);
             FieldInfo field = type.GetField("Formatter");
 
@@ -55,6 +62,8 @@ namespace UGF.Utf8Json.Runtime
 
         public static bool TryGetFormatterCache(Type targetType, out IJsonFormatter formatter)
         {
+            if (targetType == null) throw new ArgumentNullException(nameof(targetType));
+
             Type type = typeof(Utf8JsonFormatterCache<>).MakeGenericType(targetType);
             FieldInfo field = type.GetField("Formatter");
             object value = field.GetValue(null);

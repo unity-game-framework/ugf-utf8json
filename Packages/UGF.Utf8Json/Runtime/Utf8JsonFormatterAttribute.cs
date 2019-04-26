@@ -13,7 +13,7 @@ namespace UGF.Utf8Json.Runtime
 
         public Utf8JsonFormatterAttribute(Type targetType)
         {
-            TargetType = targetType;
+            TargetType = targetType ?? throw new ArgumentNullException(nameof(targetType));
         }
     }
 }

@@ -16,7 +16,7 @@ namespace UGF.Utf8Json.Runtime
     public static class Utf8JsonUtility
     {
         /// <summary>
-        /// Creates default resolver with Builtin and Unity resolvers, also with found formatters.
+        /// Creates default resolver with Unity, Builtin and Enum resolvers, also with found formatters.
         /// </summary>
         /// <param name="includeFormatters">The value determines whether to include formatters marked with <see cref="Utf8JsonFormatterAttribute"/>.</param>
         /// <param name="includeExternalDefines">The value determines whether to include formatters from the external type defines.</param>
@@ -42,6 +42,11 @@ namespace UGF.Utf8Json.Runtime
             return resolver;
         }
 
+        /// <summary>
+        /// Gets collection of the formatters that marked with <see cref="Utf8JsonFormatterAttribute"/>.
+        /// </summary>
+        /// <param name="formatters">The collection to add found formatters to.</param>
+        /// <param name="assembly">The assembly to search.</param>
         public static void GetFormatters(IDictionary<Type, IJsonFormatter> formatters, Assembly assembly = null)
         {
             if (formatters == null) throw new ArgumentNullException(nameof(formatters));
@@ -57,6 +62,11 @@ namespace UGF.Utf8Json.Runtime
             }
         }
 
+        /// <summary>
+        /// Sets the specified formatter to the static formatter cache by the specified target type.
+        /// </summary>
+        /// <param name="targetType">The target of the formatter.</param>
+        /// <param name="formatter">The formatter to set. (Can be Null)</param>
         public static void SetFormatterCache(Type targetType, IJsonFormatter formatter)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
@@ -67,6 +77,11 @@ namespace UGF.Utf8Json.Runtime
             field.SetValue(null, formatter);
         }
 
+        /// <summary>
+        /// Tries to get formatter for the specified target type from the static formatter cache.
+        /// </summary>
+        /// <param name="targetType">The target of the formatter.</param>
+        /// <param name="formatter">The cached formatter.</param>
         public static bool TryGetFormatterCache(Type targetType, out IJsonFormatter formatter)
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));

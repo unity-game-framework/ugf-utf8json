@@ -37,13 +37,5 @@ namespace UGF.Utf8Json.Editor.Tests
 
             Assert.True(result);
         }
-
-        [Test]
-        public void IsAssemblyHasGeneratedScript()
-        {
-            bool result = Utf8JsonEditorUtility.IsAssemblyHasGeneratedScript("Assets/UGF.Utf8Json.Runtime.Tests/TestAssembly/TestAssembly.asmdef");
-
-            Assert.True(result);
-        }
     }
 }

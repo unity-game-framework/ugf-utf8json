@@ -39,12 +39,13 @@ namespace UGF.Utf8Json.Editor.Tests.ExternalType
         }
 
         [Test]
-        public void GetExternalTypeAssetInfoFromPath()
+        public void TryGetExternalTypeAssetInfoFromPath()
         {
             string path = "Assets/UGF.Utf8Json.Editor.Tests/ExternalType/TestExternalTypeInfo.txt";
 
-            Utf8JsonExternalTypeAssetInfo info = Utf8JsonExternalTypeEditorUtility.GetExternalTypeAssetInfoFromPath(path);
+            bool result = Utf8JsonExternalTypeEditorUtility.TryGetExternalTypeAssetInfoFromPath(path, out Utf8JsonExternalTypeAssetInfo info);
 
+            Assert.True(result);
             Assert.NotNull(info);
         }
 

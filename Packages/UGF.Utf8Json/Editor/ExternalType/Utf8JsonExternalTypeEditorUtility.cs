@@ -12,10 +12,24 @@ using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
+    /// <summary>
+    /// Provides utilities to work with external types in editor.
+    /// </summary>
     public static class Utf8JsonExternalTypeEditorUtility
     {
+        /// <summary>
+        /// Gets the extension of the external type info file. (".utf8json-external")
+        /// </summary>
         public static string ExternalTypeAssetExtension { get; } = ".utf8json-external";
 
+        /// <summary>
+        /// Generates formatter sources in the specified folder from the specified external info files.
+        /// </summary>
+        /// <param name="path">The path of the folder where to generate source files.</param>
+        /// <param name="externals">The collection of the external type info files.</param>
+        /// <param name="paths">The collection to add result path for each generated source.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
+        /// <param name="generator">The syntax generator used during generation.</param>
         public static void GenerateExternalContainers(string path, IReadOnlyList<string> externals, ICollection<string> paths, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -27,9 +41,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
             for (int i = 0; i < externals.Count; i++)
             {
                 string externalPath = externals[i];
-                Utf8JsonExternalTypeAssetInfo info = GetExternalTypeAssetInfoFromPath(externalPath);
 
-                if (info.IsValid())
+                if (TryGetExternalTypeAssetInfoFromPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.IsTargetTypeValid())
                 {
                     Type type = info.GetTargetType();
 
@@ -49,6 +62,11 @@ namespace UGF.Utf8Json.Editor.ExternalType
             }
         }
 
+        /// <summary>
+        /// Creates container from the specified valid type.
+        /// </summary>
+        /// <param name="type">The valid type to generate container.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
         public static CodeGenerateContainer CreateContainer(Type type, CSharpCompilation compilation = null)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
@@ -57,12 +75,17 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return CodeGenerateContainerEditorUtility.Create(compilation, type);
         }
 
+        /// <summary>
+        /// Creates container from the valid external type info.
+        /// </summary>
+        /// <param name="info">The external type info used to generated container.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
         public static CodeGenerateContainer CreateContainer(Utf8JsonExternalTypeAssetInfo info, CSharpCompilation compilation = null)
         {
-            if (!info.IsValid()) throw new ArgumentException("The specified info not valid.", nameof(info));
+            if (!info.IsTargetTypeValid()) throw new ArgumentException("The specified info not valid.", nameof(info));
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
 
-            Type type = Type.GetType(info.Type, true);
+            Type type = info.GetTargetType();
             CodeGenerateContainer container = CodeGenerateContainerEditorUtility.Create(compilation, type);
 
             var result = new CodeGenerateContainer(type.Name, type.IsValueType);
@@ -80,15 +103,37 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return result;
         }
 
-        public static Utf8JsonExternalTypeAssetInfo GetExternalTypeAssetInfoFromPath(string path)
+        /// <summary>
+        /// Tries to get external type info from the specified path.
+        /// </summary>
+        /// <param name="path">The path of the external type info file.</param>
+        /// <param name="info">The loaded info.</param>
+        public static bool TryGetExternalTypeAssetInfoFromPath(string path, out Utf8JsonExternalTypeAssetInfo info)
         {
-            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (File.Exists(path))
+            {
+                string source = File.ReadAllText(path);
 
-            string source = File.ReadAllText(path);
+                info = JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>(source);
 
-            return JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>(source);
+                return info != null;
+            }
+
+            info = null;
+            return false;
         }
 
+        /// <summary>
+        /// Determines whether the specified type valid to generate formatter.
+        /// <para>
+        /// The type can be valid for generating container only if:
+        /// <para>- Type is container.</para>
+        /// <para>- Type has default constructor.</para>
+        /// <para>- Type is not an attribute, unity object, marked as obsolete or special name type.</para>
+        /// <para>- Type has any container valid fields or properties.</para>
+        /// </para>
+        /// </summary>
+        /// <param name="type">The type to check.</param>
         public static bool IsValidExternalType(Type type)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));

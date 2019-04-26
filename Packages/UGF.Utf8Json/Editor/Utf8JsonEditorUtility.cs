@@ -19,8 +19,18 @@ using Assembly = UnityEditor.Compilation.Assembly;
 
 namespace UGF.Utf8Json.Editor
 {
+    /// <summary>
+    /// Provides utilities to work with Utf8 Json serialization in editor.
+    /// </summary>
     public static class Utf8JsonEditorUtility
     {
+        /// <summary>
+        /// Generates asset with the generated code for assembly from the specified path.
+        /// </summary>
+        /// <param name="path">The path of the assembly definition file.</param>
+        /// <param name="import">The value determines whether to force asset database import.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
+        /// <param name="generator">The syntax generator used during generation.</param>
         public static void GenerateAssetFromAssembly(string path, bool import = true, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
@@ -38,6 +48,12 @@ namespace UGF.Utf8Json.Editor
             }
         }
 
+        /// <summary>
+        /// Generates source of the generated code for assembly from the specified path.
+        /// </summary>
+        /// <param name="path">The path of the assembly definition file.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
+        /// <param name="generator">The syntax generator used during generation.</param>
         public static string GenerateFromAssembly(string path, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
@@ -87,6 +103,13 @@ namespace UGF.Utf8Json.Editor
             return formatters;
         }
 
+        /// <summary>
+        /// Generates source of the formatters from the specified path of the sources.
+        /// </summary>
+        /// <param name="sourcePaths">The collection of the source paths.</param>
+        /// <param name="namespaceRoot">The namespace root of the generated formatters.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
+        /// <param name="generator">The syntax generator used during generation.</param>
         public static string GenerateFormatters(IReadOnlyList<string> sourcePaths, string namespaceRoot, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
@@ -117,6 +140,10 @@ namespace UGF.Utf8Json.Editor
             return unit.ToFullString();
         }
 
+        /// <summary>
+        /// Gets path for generated source from the specified path.
+        /// </summary>
+        /// <param name="path">The path used to generated.</param>
         public static string GetPathForGeneratedScript(string path)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
@@ -139,19 +166,17 @@ namespace UGF.Utf8Json.Editor
             return builder.ToString();
         }
 
+        /// <summary>
+        /// Determines whether source from the specified path contains any declaration with the <see cref="Utf8JsonSerializableAttribute"/> attribute.
+        /// </summary>
+        /// <param name="path">The path of the source.</param>
+        /// <param name="compilation">The project compilation used during generation.</param>
         public static bool IsSerializableScript(string path, CSharpCompilation compilation = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
 
             return CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, path, typeof(Utf8JsonSerializableAttribute));
-        }
-
-        public static bool IsAssemblyHasGeneratedScript(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-
-            return File.Exists(GetPathForGeneratedScript(path));
         }
     }
 }

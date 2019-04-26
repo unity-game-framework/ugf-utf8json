@@ -56,10 +56,10 @@ namespace UGF.Utf8Json.Editor.Tests.ExternalType
         }
 
         [Test]
-        public void IsValid()
+        public void IsTargetTypeValid()
         {
-            bool result0 = m_info.IsValid();
-            bool result1 = JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>("{}").IsValid();
+            bool result0 = m_info.IsTargetTypeValid();
+            bool result1 = JsonUtility.FromJson<Utf8JsonExternalTypeAssetInfo>("{}").IsTargetTypeValid();
 
             Assert.True(result0);
             Assert.False(result1);

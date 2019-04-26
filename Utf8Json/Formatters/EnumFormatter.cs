@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 using Utf8Json.Internal;
 using System.Runtime.Serialization;
 
@@ -14,16 +13,6 @@ namespace Utf8Json.Formatters
         {
             var underlyingType = Enum.GetUnderlyingType(type);
 
-#if NETSTANDARD
-            isBoxed = false;
-            var dynamicMethod = new DynamicMethod("EnumSerializeByUnderlyingValue", null, new[] { typeof(JsonWriter).MakeByRefType(), type, typeof(IJsonFormatterResolver) }, type.Module, true);
-            var il = dynamicMethod.GetILGenerator();
-            il.Emit(OpCodes.Ldarg_0); // writer
-            il.Emit(OpCodes.Ldarg_1); // value
-            il.Emit(OpCodes.Call, typeof(JsonWriter).GetRuntimeMethod("Write" + underlyingType.Name, new[] { underlyingType }));
-            il.Emit(OpCodes.Ret);
-            return dynamicMethod.CreateDelegate(typeof(JsonSerializeAction<>).MakeGenericType(type));
-#else
             // Boxed
             isBoxed = true;
             JsonSerializeAction<object> f;
@@ -64,22 +53,12 @@ namespace Utf8Json.Formatters
                 throw new InvalidOperationException("Type is not Enum. Type:" + type);
             }
             return f;
-#endif
         }
 
         public static object GetDeserializeDelegate(Type type, out bool isBoxed)
         {
             var underlyingType = Enum.GetUnderlyingType(type);
 
-#if NETSTANDARD
-            isBoxed = false;
-            var dynamicMethod = new DynamicMethod("EnumDeserializeByUnderlyingValue", type, new[] { typeof(JsonReader).MakeByRefType(), typeof(IJsonFormatterResolver) }, type.Module, true);
-            var il = dynamicMethod.GetILGenerator();
-            il.Emit(OpCodes.Ldarg_0); // reader
-            il.Emit(OpCodes.Call, typeof(JsonReader).GetRuntimeMethod("Read" + underlyingType.Name, Type.EmptyTypes));
-            il.Emit(OpCodes.Ret);
-            return dynamicMethod.CreateDelegate(typeof(JsonDeserializeFunc<>).MakeGenericType(type));
-#else
             // Boxed
             isBoxed = true;
             JsonDeserializeFunc<object> f;
@@ -120,7 +99,6 @@ namespace Utf8Json.Formatters
                 throw new InvalidOperationException("Type is not Enum. Type:" + type);
             }
             return f;
-#endif
         }
     }
 }

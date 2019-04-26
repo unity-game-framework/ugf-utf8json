@@ -80,27 +80,32 @@ namespace UGF.Utf8Json.Runtime.Tests
             Measure.Method(DeserializeMethodString).WarmupCount(1).GC().Run();
         }
 
-        private void SerializeMethod()
+        [Test]
+        public void SerializeMethod()
         {
             JsonSerializer.Serialize(m_target, m_resolver);
         }
 
-        private void SerializeMethodUnsafe()
+        [Test]
+        public void SerializeMethodUnsafe()
         {
             JsonSerializer.SerializeUnsafe(m_target, m_resolver);
         }
 
-        private void SerializeMethodString()
+        [Test]
+        public void SerializeMethodString()
         {
             JsonSerializer.ToJsonString(m_target, m_resolver);
         }
 
-        private void DeserializeMethod()
+        [Test]
+        public void DeserializeMethod()
         {
             JsonSerializer.Deserialize<TestTarget>(m_targetBytes, m_resolver);
         }
 
-        private void DeserializeMethodString()
+        [Test]
+        public void DeserializeMethodString()
         {
             JsonSerializer.Deserialize<TestTarget>(m_targetJson, m_resolver);
         }

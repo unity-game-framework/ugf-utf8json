@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Utf8Json;
+using Utf8Json.Formatters;
 
 namespace UGF.Utf8Json.Runtime
 {
@@ -37,15 +38,17 @@ namespace UGF.Utf8Json.Runtime
 
                     Utf8JsonFormatterCache<T>.Formatter = formatter;
                 }
-
-                for (int i = 0; i < Resolvers.Count; i++)
+                else
                 {
-                    formatter = Resolvers[i].GetFormatter<T>();
-
-                    if (formatter != null)
+                    for (int i = 0; i < Resolvers.Count; i++)
                     {
-                        Utf8JsonFormatterCache<T>.Formatter = formatter;
-                        break;
+                        formatter = Resolvers[i].GetFormatter<T>();
+
+                        if (formatter != null)
+                        {
+                            Utf8JsonFormatterCache<T>.Formatter = formatter;
+                            break;
+                        }
                     }
                 }
             }

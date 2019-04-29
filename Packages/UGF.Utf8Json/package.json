@@ -1,7 +1,7 @@
 {
     "name": "com.ugf.utf8json",
     "displayName": "UGF.Utf8Json",
-    "version": "0.0.0-preview",
+    "version": "1.0.0",
     "unity": "2019.1",
     "description": "No description.",
     "author": {
@@ -10,6 +10,6 @@
     },
     "dependencies": {
         "com.ugf.types": "2.1.1",
-        "com.ugf.code.generate": "1.0.0-preview.1"
+        "com.ugf.code.generate": "1.0.0"
     }
 }

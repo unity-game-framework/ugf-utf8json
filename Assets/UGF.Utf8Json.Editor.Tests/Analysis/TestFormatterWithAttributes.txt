@@ -1,0 +1,10 @@
+namespace Test
+{
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::Test.Targets.TestTarget))]public class Formatter1 : global::Test.IJsonFormatter<global::Test.Targets.TestTarget>
+    {
+    }
+
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(Test.Targets.TestTarget))]public class Formatter2 : IJsonFormatter<Test.Targets.TestTarget>
+    {
+    }
+}

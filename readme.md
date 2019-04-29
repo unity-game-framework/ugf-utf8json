@@ -4,14 +4,15 @@ UGF.Utf8Json
 
 ## Info
 
-- **Version**: `0.0.0-preview`
+- **Version**: `1.0.0`
 - **Unity Version**: `2019.1.0`
 - **Scripting Runtime Version**: `.NET 4.x Equivalent`
 - **Api Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- N/A
+- [UGF.Types](https://github.com/unity-game-framework/ugf-types): `2.1.1`
+- [UGF.Code.Generate](https://github.com/unity-game-framework/ugf-code-generate): `1.0.0`
 
 ### Changelog
 
@@ -19,12 +20,12 @@ UGF.Utf8Json
 
 ### Registries
 
-- [Stable][2] (N/A)
-- [Develop][3] (N/A)
+- [Stable][2]
+- [Develop][3]
 
 ## Description
 
-Third-party package based on [Utf8Json](https://github.com/neuecc/Utf8Json).
+Third-party package based on [Utf8Json](https://github.com/neuecc/Utf8Json) (`1.3.7`).
 
 ## How to Install
 

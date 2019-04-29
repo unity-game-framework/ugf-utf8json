@@ -1,0 +1,15 @@
+{
+    "m_type": "UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTargetExternal, TestEditorAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "m_members": [
+        {
+            "m_name": "member0",
+            "m_type": "int",
+            "m_active": true
+        },
+        {
+            "m_name": "member1",
+            "m_type": "bool",
+            "m_active": false
+        }
+    ]
+}

@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Utf8Json.UniversalCodeGenerator</name>
+    </assembly>
+    <members>
+        <member name="T:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility">
+            <summary>
+            Provides utility to work with Utf8Json UniversalCodeGenerator.
+            </summary>
+        </member>
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
+            <summary>
+            Generates resolver and formatters from the specified files and other arguments.
+            </summary>
+            <param name="inputFiles">The collection of input .cs files.</param>
+            <param name="resolverName">The generated resolver name.</param>
+            <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+        </member>
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String,System.String)">
+            <summary>
+            Generates resolver and formatters from the specified files and other arguments.
+            </summary>
+            <param name="inputFiles">The collection of input .cs files.</param>
+            <param name="inputDirectories">The collection of directories with input .cs files.</param>
+            <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
+            <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
+            <param name="resolverName">The generated resolver name.</param>
+            <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+        </member>
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Generates formatters without resolver from the specified files and other arguments.
+            </summary>
+            <param name="inputFiles">The collection of input .cs files.</param>
+            <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+        </member>
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String)">
+            <summary>
+            Generates formatters without resolver from the specified files and other arguments.
+            </summary>
+            <param name="inputFiles">The collection of input .cs files.</param>
+            <param name="inputDirectories">The collection of directories with input .cs files.</param>
+            <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
+            <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
+            <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.FormatterTemplate">
+            <summary>
+            Class to produce the template output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplate.TransformText">
+            <summary>
+            Create the template output
+            </summary>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase">
+            <summary>
+            Base class for this transformation
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.GenerationEnvironment">
+            <summary>
+            The string builder that generation-time code is using to assemble generated output
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Errors">
+            <summary>
+            The error collection for the generation process
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.indentLengths">
+            <summary>
+            A list of the lengths of each indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.CurrentIndent">
+            <summary>
+            Gets the current indent we use when adding lines to the output
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Session">
+            <summary>
+            Current transformation session
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Write(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.WriteLine(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Error(System.String)">
+            <summary>
+            Raise an error
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.Warning(System.String)">
+            <summary>
+            Raise a warning
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.PushIndent(System.String)">
+            <summary>
+            Increase the indent
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.PopIndent">
+            <summary>
+            Remove the last indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.ClearIndent">
+            <summary>
+            Remove any indentation
+            </summary>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.ToStringInstanceHelper">
+            <summary>
+            Utility class to produce culture-oriented representation of an object as a string.
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.ToStringInstanceHelper.FormatProvider">
+            <summary>
+            Gets or sets format provider to be used by ToStringWithCulture method.
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+            <summary>
+            This is called from the compile/run appdomain to convert objects within an expression block to a string
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.FormatterTemplateBase.ToStringHelper">
+            <summary>
+            Helper to produce culture-oriented representation of an object as a string
+            </summary>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.ResolverTemplate">
+            <summary>
+            Class to produce the template output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplate.TransformText">
+            <summary>
+            Create the template output
+            </summary>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase">
+            <summary>
+            Base class for this transformation
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.GenerationEnvironment">
+            <summary>
+            The string builder that generation-time code is using to assemble generated output
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Errors">
+            <summary>
+            The error collection for the generation process
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.indentLengths">
+            <summary>
+            A list of the lengths of each indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.CurrentIndent">
+            <summary>
+            Gets the current indent we use when adding lines to the output
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Session">
+            <summary>
+            Current transformation session
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Write(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.WriteLine(System.String)">
+            <summary>
+            Write text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Write(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.WriteLine(System.String,System.Object[])">
+            <summary>
+            Write formatted text directly into the generated output
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Error(System.String)">
+            <summary>
+            Raise an error
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.Warning(System.String)">
+            <summary>
+            Raise a warning
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.PushIndent(System.String)">
+            <summary>
+            Increase the indent
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.PopIndent">
+            <summary>
+            Remove the last indent that was added with PushIndent
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.ClearIndent">
+            <summary>
+            Remove any indentation
+            </summary>
+        </member>
+        <member name="T:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.ToStringInstanceHelper">
+            <summary>
+            Utility class to produce culture-oriented representation of an object as a string.
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.ToStringInstanceHelper.FormatProvider">
+            <summary>
+            Gets or sets format provider to be used by ToStringWithCulture method.
+            </summary>
+        </member>
+        <member name="M:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.ToStringInstanceHelper.ToStringWithCulture(System.Object)">
+            <summary>
+            This is called from the compile/run appdomain to convert objects within an expression block to a string
+            </summary>
+        </member>
+        <member name="P:Utf8Json.CodeGenerator.Generator.ResolverTemplateBase.ToStringHelper">
+            <summary>
+            Helper to produce culture-oriented representation of an object as a string
+            </summary>
+        </member>
+    </members>
+</doc>

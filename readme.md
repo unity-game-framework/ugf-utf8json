@@ -24,7 +24,7 @@ UGF.Utf8Json
 
 ## Description
 
-Third-party package based on [Utf8Json](https://github.com/neuecc/Utf8Json).
+Third-party package based on [Utf8Json](https://github.com/neuecc/Utf8Json) (`1.3.7`).
 
 ## How to Install
 

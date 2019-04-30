@@ -117,6 +117,13 @@ namespace UGF.Utf8Json.Editor
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
+            var arguments = new Utf8JsonGenerateArguments
+            {
+                IgnoreReadOnly = true,
+                IsTypeRequireAttribute = true,
+                TypeRequiredAttributeShortName = "Utf8JsonSerializable"
+            };
+
             INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
             var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
 
@@ -129,7 +136,7 @@ namespace UGF.Utf8Json.Editor
                 walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
             }
 
-            string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot);
+            string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot, arguments);
             CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
 
             unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());

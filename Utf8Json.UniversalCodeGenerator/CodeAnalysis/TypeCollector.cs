@@ -66,7 +66,7 @@ namespace Utf8Json.UniversalCodeGenerator
             // "MessagePack.Nil",
 
             // and arrays
-            
+
             "short[]",
             "int[]",
             "long[]",
@@ -171,15 +171,16 @@ namespace Utf8Json.UniversalCodeGenerator
         readonly ReferenceSymbols typeReferences;
         readonly INamedTypeSymbol[] targetTypes;
         readonly bool disallowInternal;
+        private readonly Utf8JsonGenerateArguments arguments;
 
         // visitor workspace:
         HashSet<ITypeSymbol> alreadyCollected;
         List<ObjectSerializationInfo> collectedObjectInfo;
         List<GenericSerializationInfo> collectedGenericInfo;
 
-        // --- 
+        // ---
 
-        public TypeCollector(IEnumerable<string> inputFiles, IEnumerable<string> inputDirs, IEnumerable<string> conditinalSymbols, bool disallowInternal)
+        public TypeCollector(IEnumerable<string> inputFiles, IEnumerable<string> inputDirs, IEnumerable<string> conditinalSymbols, bool disallowInternal, Utf8JsonGenerateArguments arguments)
         {
             var compilation = RoslynExtensions.GetCompilationFromProject(inputFiles, inputDirs,
                 conditinalSymbols.Concat(new[] { CodegeneratorOnlyPreprocessorSymbol }).ToArray()
@@ -187,6 +188,7 @@ namespace Utf8Json.UniversalCodeGenerator
 
             this.typeReferences = new ReferenceSymbols(compilation);
             this.disallowInternal = disallowInternal;
+            this.arguments = arguments;
 
             targetTypes = compilation.GetNamedTypeSymbols()
                 .Where(x =>
@@ -234,6 +236,14 @@ namespace Utf8Json.UniversalCodeGenerator
             if (embeddedTypes.Contains(typeSymbol.ToString()))
             {
                 return;
+            }
+
+            if (arguments.IsTypeRequireAttribute)
+            {
+                if (typeSymbol.GetAttributes().FindAttributeShortName(arguments.TypeRequiredAttributeShortName) == null)
+                {
+                    return;
+                }
             }
 
             if (typeSymbol.TypeKind == TypeKind.Array)
@@ -407,6 +417,7 @@ namespace Utf8Json.UniversalCodeGenerator
                     ShortTypeName = item.Type.ToDisplayString(binaryWriteFormat)
                 };
                 if (!member.IsReadable && !member.IsWritable) continue;
+                if (arguments.IgnoreReadOnly && !member.IsWritable) continue;
 
                 stringMembers.Add(name, member);
 
@@ -432,6 +443,7 @@ namespace Utf8Json.UniversalCodeGenerator
                     ShortTypeName = item.Type.ToDisplayString(binaryWriteFormat)
                 };
                 if (!member.IsReadable && !member.IsWritable) continue;
+                if (arguments.IgnoreReadOnly && !member.IsWritable) continue;
 
                 stringMembers.Add(name, member);
                 CollectCore(item.Type); // recursive collect

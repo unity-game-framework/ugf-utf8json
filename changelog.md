@@ -9,10 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/0?closed=1)
 
 ### Added
-- Nothing.
+- `Utf8JsonGenerateArguments` to control formatters generation behaviour.
+    - `IgnoreReadOnly` determines whether to generate formatters for the read-only fields or properties.
+    - `IsTypeRequireAttribute` and `TypeRequiredAttributeShortName` to control target type to generate formatters.
+- `Utf8JsonUniversalCodeGeneratorUtility` additional generate arguments support.
 
 ### Changed
-- Nothing.
+- `Utf8JsonEditorUtility.GenerateFormatters` default generation behaviour has been changed.
+    - All read-only fields and properties will be ignored.
+    - Will generate only for those types that contains `Utf8JsonSerializable` attribute.
 
 ### Deprecated
 - Nothing.

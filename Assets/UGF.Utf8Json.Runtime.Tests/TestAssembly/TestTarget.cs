@@ -12,5 +12,6 @@ namespace UGF.Utf8Json.Runtime.Tests.TestAssembly
         public Vector2 Vector2 { get; set; } = Vector2.one;
         public Bounds Bounds { get; set; } = new Bounds(Vector3.one, Vector3.one);
         public HideFlags Flags { get; set; } = HideFlags.DontSave;
+        public int ReadOnly { get; } = 10;
     }
 }

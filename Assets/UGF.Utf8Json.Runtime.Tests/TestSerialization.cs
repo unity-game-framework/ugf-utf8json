@@ -4,13 +4,13 @@ using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Tests
 {
-    [Utf8JsonSerializable]
     public class TestSerialization
     {
         private readonly string m_targetSerialized = "{\"Name\":\"Target\",\"BoolValue\":true,\"FloatValue\":50.5,\"IntValue\":50,\"Flags\":52}";
         private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
         private Utf8JsonFormatterResolver m_resolver;
 
+        [Utf8JsonSerializable]
         public class Target
         {
             public string Name { get; set; } = "Target";
@@ -20,10 +20,17 @@ namespace UGF.Utf8Json.Runtime.Tests
             public HideFlags Flags { get; set; } = HideFlags.DontSave;
         }
 
+        [Utf8JsonSerializable]
         public class Target2
         {
             public Vector2 Vector2 { get; set; } = Vector2.one;
             public Bounds Bounds { get; set; } = new Bounds(Vector3.one, Vector3.one);
+        }
+
+        public class Target3
+        {
+            public string Name { get; set; } = "Target";
+            public bool BoolValue { get; set; } = true;
         }
 
         [SetUp]

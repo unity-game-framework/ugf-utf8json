@@ -17,9 +17,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="inputFiles">The collection of input .cs files.</param>
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string Generate(IEnumerable<string> inputFiles, string resolverName, string namespaceRoot)
+        /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
+        public static string Generate(IEnumerable<string> inputFiles, string resolverName, string namespaceRoot, Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
         {
-            return Generate(inputFiles, null, null, false, resolverName, namespaceRoot);
+            return Generate(inputFiles, null, null, false, resolverName, namespaceRoot, arguments);
         }
 
         /// <summary>
@@ -31,9 +32,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string Generate(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
+        /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
+        public static string Generate(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
         {
-            return InternalGenerate(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, resolverName, namespaceRoot));
+            return InternalGenerate(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, resolverName, namespaceRoot), arguments);
         }
 
         /// <summary>
@@ -41,9 +43,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// </summary>
         /// <param name="inputFiles">The collection of input .cs files.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(IEnumerable<string> inputFiles, string namespaceRoot)
+        /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, string namespaceRoot, Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
         {
-            return GenerateFormatters(inputFiles, null, null, false, namespaceRoot);
+            return GenerateFormatters(inputFiles, null, null, false, namespaceRoot, arguments);
         }
 
         /// <summary>
@@ -54,9 +57,10 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
-        public static string GenerateFormatters(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json")
+        /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
         {
-            return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot));
+            return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot), arguments);
         }
 
         internal static CommandlineArguments InternalGetArguments(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories = null, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
@@ -75,9 +79,9 @@ namespace Utf8Json.UniversalCodeGenerator
             };
         }
 
-        internal static string InternalGenerate(CommandlineArguments arguments)
+        internal static string InternalGenerate(CommandlineArguments arguments, Utf8JsonGenerateArguments arguments2)
         {
-            var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal);
+            var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
 
             (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo) = collector.Collect();
 
@@ -111,9 +115,9 @@ namespace Utf8Json.UniversalCodeGenerator
             return builder.ToString();
         }
 
-        internal static string InternalGenerateFormatters(CommandlineArguments arguments)
+        internal static string InternalGenerateFormatters(CommandlineArguments arguments, Utf8JsonGenerateArguments arguments2)
         {
-            var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal);
+            var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
 
             (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] _) = collector.Collect();
 

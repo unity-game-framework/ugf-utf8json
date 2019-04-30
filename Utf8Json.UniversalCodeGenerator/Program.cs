@@ -99,7 +99,7 @@ namespace Utf8Json.UniversalCodeGenerator
             var sw = Stopwatch.StartNew();
             Console.WriteLine("Project Compilation Start:" + string.Join(",", cmdArgs.InputFiles) + " " + string.Join(",", cmdArgs.InputDirectories));
 
-            var collector = new TypeCollector(cmdArgs.InputFiles, cmdArgs.InputDirectories, cmdArgs.ConditionalSymbols, !cmdArgs.AllowInternal);
+            var collector = new TypeCollector(cmdArgs.InputFiles, cmdArgs.InputDirectories, cmdArgs.ConditionalSymbols, !cmdArgs.AllowInternal, default(Utf8JsonGenerateArguments));
 
             Console.WriteLine("Project Compilation Complete:" + sw.Elapsed.ToString());
             Console.WriteLine();

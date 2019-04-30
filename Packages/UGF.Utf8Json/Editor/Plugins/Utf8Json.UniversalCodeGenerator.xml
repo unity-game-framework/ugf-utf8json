@@ -4,20 +4,41 @@
         <name>Utf8Json.UniversalCodeGenerator</name>
     </assembly>
     <members>
+        <member name="T:Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments">
+            <summary>
+            Represents arguments used to generate Utf8Json formatters.
+            </summary>
+        </member>
+        <member name="F:Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments.IgnoreReadOnly">
+            <summary>
+            The value that determines whether to ignore read-only fields and properties.
+            </summary>
+        </member>
+        <member name="F:Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments.IsTypeRequireAttribute">
+            <summary>
+            The value that determines whether target type must contains specific attribute.
+            </summary>
+        </member>
+        <member name="F:Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments.TypeRequiredAttributeShortName">
+            <summary>
+            The short name of attribute that type must contains.
+            </summary>
+        </member>
         <member name="T:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility">
             <summary>
             Provides utility to work with Utf8Json UniversalCodeGenerator.
             </summary>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.String,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.String,System.String,Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments)">
             <summary>
             Generates resolver and formatters from the specified files and other arguments.
             </summary>
             <param name="inputFiles">The collection of input .cs files.</param>
             <param name="resolverName">The generated resolver name.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+            <param name="arguments">The generate arguments to control additional generation behaviour.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.Generate(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String,System.String,Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments)">
             <summary>
             Generates resolver and formatters from the specified files and other arguments.
             </summary>
@@ -27,15 +48,17 @@
             <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
             <param name="resolverName">The generated resolver name.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+            <param name="arguments">The generate arguments to control additional generation behaviour.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.String,Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments)">
             <summary>
             Generates formatters without resolver from the specified files and other arguments.
             </summary>
             <param name="inputFiles">The collection of input .cs files.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+            <param name="arguments">The generate arguments to control additional generation behaviour.</param>
         </member>
-        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String)">
+        <member name="M:Utf8Json.UniversalCodeGenerator.Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.Boolean,System.String,Utf8Json.UniversalCodeGenerator.Utf8JsonGenerateArguments)">
             <summary>
             Generates formatters without resolver from the specified files and other arguments.
             </summary>
@@ -44,6 +67,7 @@
             <param name="conditionalSymbols">The collection of conditional compile symbols.</param>
             <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
             <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
+            <param name="arguments">The generate arguments to control additional generation behaviour.</param>
         </member>
         <member name="T:Utf8Json.CodeGenerator.Generator.FormatterTemplate">
             <summary>

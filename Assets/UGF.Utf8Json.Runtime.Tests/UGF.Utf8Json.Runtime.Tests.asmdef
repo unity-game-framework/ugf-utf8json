@@ -4,17 +4,19 @@
         "GUID:7d88aca9857e23b4e868d9ace8e59be2",
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
         "GUID:edf8d3a4b39829146b1c805ac920c1c0",
-        "GUID:84396ed649d0e264bafd81e48027919c"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "GUID:91836b14885b8a34196f4aa8303d7793"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Utf8Json.dll"
+    ],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

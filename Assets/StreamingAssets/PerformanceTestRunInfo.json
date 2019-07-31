@@ -11,10 +11,10 @@
         "XrDevice": ""
     },
     "EditorVersion": {
-        "FullVersion": "2019.1.0f2 (292b93d75a2c)",
-        "DateSeconds": 1554940994,
-        "Branch": "2019.1/staging",
-        "RevisionValue": 2698131
+        "FullVersion": "2019.2.0f1 (20c1667945cf)",
+        "DateSeconds": 1563521100,
+        "Branch": "2019.2/staging",
+        "RevisionValue": 2146662
     },
     "BuildSettings": {
         "Platform": "",
@@ -36,7 +36,7 @@
         "BlendWeights": ""
     },
     "PlayerSettings": {
-        "ScriptingBackend": "IL2CPP",
+        "ScriptingBackend": "Mono2x",
         "VrSupported": false,
         "MtRendering": true,
         "GraphicsJobs": false,
@@ -51,7 +51,7 @@
         "ScriptingRuntimeVersion": ""
     },
     "TestSuite": "",
-    "StartTime": 1556460306831.4412,
+    "StartTime": 1564602743261.4268,
     "EndTime": 0.0,
     "Results": []
 }

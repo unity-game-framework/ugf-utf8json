@@ -26,19 +26,19 @@ namespace UGF.Utf8Json.Runtime.Tests
             m_targetBytes = Resources.Load<TextAsset>("TestTargetBytes").bytes;
         }
 
-        [Test, PerformanceTest]
+        [Test, Performance]
         public void Serialize()
         {
             Measure.Method(SerializeMethod).WarmupCount(1).GC().Run();
         }
 
-        [Test, PerformanceTest]
+        [Test, Performance]
         public void SerializeUnsafe()
         {
             Measure.Method(SerializeMethodUnsafe).WarmupCount(1).GC().Run();
         }
 
-        [Test, PerformanceTest]
+        [Test, Performance]
         public void SerializeString()
         {
             Measure.Method(SerializeMethodString).WarmupCount(1).GC().Run();
@@ -68,13 +68,13 @@ namespace UGF.Utf8Json.Runtime.Tests
             m_serializeMethodStringMarker.End();
         }
 
-        [Test, PerformanceTest]
+        [Test, Performance]
         public void Deserialize()
         {
             Measure.Method(DeserializeMethod).WarmupCount(1).GC().Run();
         }
 
-        [Test, PerformanceTest]
+        [Test, Performance]
         public void DeserializeString()
         {
             Measure.Method(DeserializeMethodString).WarmupCount(1).GC().Run();

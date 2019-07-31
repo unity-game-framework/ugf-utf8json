@@ -5,9 +5,6 @@
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
         "GUID:67e52fe5dbb27a8428b65548925ff5aa"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
     "includePlatforms": [
         "Editor"
     ],
@@ -16,6 +13,8 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

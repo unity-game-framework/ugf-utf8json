@@ -11,6 +11,7 @@
 //     コードが再生成されると失われます。
 // </auto-generated>
 // ------------------------------------------------------------------------------
+
 namespace Utf8Json.CodeGenerator.Generator
 {
     using System.Linq;
@@ -61,7 +62,10 @@ namespace Utf8Json.CodeGenerator.Generator
 
 #line default
 #line hidden
-            this.Write("()\n        {\n\n        }\n\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\n        {\n            return FormatterCache<T>.formatter;\n        }\n\n        static class FormatterCache<T>\n        {\n            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;\n\n            static FormatterCache()\n            {\n                var f = ");
+            this.Write("()\r\n        {\r\n\r\n        }\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +
+                       "        {\r\n            return FormatterCache<T>.formatter;\r\n        }\r\n\r\n        static class FormatterCache<T>\r\n" +
+                       "        {\r\n            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;\r\n\r\n            static FormatterCache()\r\n" +
+                       "            {\r\n                var f = ");
 
 #line 36 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\ResolverTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));

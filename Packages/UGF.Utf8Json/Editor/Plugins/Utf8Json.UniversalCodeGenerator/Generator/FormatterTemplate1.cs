@@ -11,6 +11,7 @@
 //     コードが再生成されると失われます。
 // </auto-generated>
 // ------------------------------------------------------------------------------
+
 namespace Utf8Json.CodeGenerator.Generator
 {
     using System.Linq;
@@ -77,7 +78,7 @@ namespace Utf8Json.CodeGenerator.Generator
                 {
 #line default
 #line hidden
-                    this.Write("                { JsonWriter.GetEncodedPropertyNameWithoutQuotation(\"");
+                    this.Write("                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation(\"");
 
 #line 29 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
                     this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -113,7 +114,7 @@ namespace Utf8Json.CodeGenerator.Generator
                     {
 #line default
 #line hidden
-                        this.Write("                JsonWriter.GetEncodedPropertyNameWithBeginObject(\"");
+                        this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject(\"");
 
 #line 37 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
                         this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -128,7 +129,7 @@ namespace Utf8Json.CodeGenerator.Generator
                     {
 #line default
 #line hidden
-                        this.Write("                JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator(\"");
+                        this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator(\"");
 
 #line 39 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
                         this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
@@ -144,7 +145,7 @@ namespace Utf8Json.CodeGenerator.Generator
 #line default
 #line hidden
                 this.Write("                \r\n            };\r\n        }\r\n\r\n        public void Serialize(ref " +
-                           "JsonWriter writer, ");
+                           "global::Utf8Json.JsonWriter writer, ");
 
 #line 44 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
                 this.Write(this.ToStringHelper.ToStringWithCulture(objInfo.FullName));
@@ -202,7 +203,7 @@ namespace Utf8Json.CodeGenerator.Generator
 
 #line default
 #line hidden
-                this.Write(" Deserialize(ref JsonReader reader, global::Utf8Json.IJsonFormatterResolver forma" +
+                this.Write(" Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver forma" +
                            "tterResolver)\r\n        {\r\n            if (reader.ReadIsNull())\r\n            {\r\n");
 
 #line 66 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
@@ -277,8 +278,12 @@ namespace Utf8Json.CodeGenerator.Generator
 
 #line default
 #line hidden
-                    this.Write(
-                        "\n            var ____count = 0;\n            reader.ReadIsBeginObjectWithVerify();\n            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))\n            {\n                var stringKey = reader.ReadPropertyNameSegmentRaw();\n                int key;\n                if (!____keyMapping.TryGetValueSafe(stringKey, out key))\n                {\n                    reader.ReadNextBlock();\n                    goto NEXT_LOOP;\n                }\n\n                switch (key)\n                {\n");
+                    this.Write("\r\n            var ____count = 0;\r\n            reader.ReadIsBeginObjectWithVerify();\r\n" +
+                               "            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))\r\n            {\r\n" +
+                               "                var stringKey = reader.ReadPropertyNameSegmentRaw();\r\n                int key;\r\n" +
+                               "                if (!____keyMapping.TryGetValueSafe(stringKey, out key))\r\n                {\r\n" +
+                               "                    reader.ReadNextBlock();\r\n                    goto NEXT_LOOP;\r\n                }\r\n\r\n" +
+                               "                switch (key)\r\n                {\r\n");
 
 #line 96 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
                     index = 0;

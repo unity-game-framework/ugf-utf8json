@@ -13,15 +13,19 @@ namespace Utf8Json.UniversalCodeGenerator
 {
     class CommandlineArguments
     {
-        public List<string> InputFiles { get; private set; }
-        public List<string> InputDirectories { get; private set; }
-        public string OutputPath { get; private set; }
-        public List<string> ConditionalSymbols { get; private set; }
-        public string ResolverName { get; private set; }
-        public string NamespaceRoot { get; private set; }
-        public bool AllowInternal { get; private set; }
+        public List<string> InputFiles { get; set; }
+        public List<string> InputDirectories { get; set; }
+        public string OutputPath { get; set; }
+        public List<string> ConditionalSymbols { get; set; }
+        public string ResolverName { get; set; }
+        public string NamespaceRoot { get; set; }
+        public bool AllowInternal { get; set; }
 
         public bool IsParsed { get; set; }
+
+        public CommandlineArguments()
+        {
+        }
 
         public CommandlineArguments(string[] args)
         {
@@ -93,7 +97,7 @@ namespace Utf8Json.UniversalCodeGenerator
             var sw = Stopwatch.StartNew();
             Console.WriteLine("Project Compilation Start:" + string.Join(",", cmdArgs.InputFiles) + " " + string.Join(",", cmdArgs.InputDirectories));
 
-            var collector = new TypeCollector(cmdArgs.InputFiles, cmdArgs.InputDirectories, cmdArgs.ConditionalSymbols, !cmdArgs.AllowInternal);
+            var collector = new TypeCollector(cmdArgs.InputFiles, cmdArgs.InputDirectories, cmdArgs.ConditionalSymbols, !cmdArgs.AllowInternal, default(Utf8JsonGenerateArguments));
 
             Console.WriteLine("Project Compilation Complete:" + sw.Elapsed.ToString());
             Console.WriteLine();

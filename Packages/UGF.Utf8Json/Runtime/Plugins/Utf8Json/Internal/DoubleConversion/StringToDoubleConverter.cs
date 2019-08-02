@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,13 +20,7 @@ namespace Utf8Json.Internal.DoubleConversion
             this.offset = offset;
         }
 
-        public byte Value
-        {
-            get
-            {
-                return buffer[offset];
-            }
-        }
+        public byte Value { get { return buffer[offset]; } }
 
         public static Iterator operator ++(Iterator self)
         {
@@ -99,8 +95,7 @@ namespace Utf8Json.Internal.DoubleConversion
     // C# API
     internal static partial class StringToDoubleConverter
     {
-        [ThreadStatic]
-        static byte[] kBuffer;
+        [ThreadStatic] static byte[] kBuffer;
 
         static byte[] GetBuffer()
         {
@@ -111,8 +106,7 @@ namespace Utf8Json.Internal.DoubleConversion
             return kBuffer;
         }
 
-        [ThreadStatic]
-        static byte[] fallbackBuffer;
+        [ThreadStatic] static byte[] fallbackBuffer;
 
         static byte[] GetFallbackBuffer()
         {
@@ -160,10 +154,12 @@ namespace Utf8Json.Internal.DoubleConversion
         static readonly byte[] kWhitespaceTable7 = new byte[] { 32, 13, 10, 9, 11, 12 };
         static readonly int kWhitespaceTable7Length = kWhitespaceTable7.Length;
 
-        static readonly UInt16[] kWhitespaceTable16 = new UInt16[]{
-              160, 8232, 8233, 5760, 6158, 8192, 8193, 8194, 8195,
-              8196, 8197, 8198, 8199, 8200, 8201, 8202, 8239, 8287, 12288, 65279
+        static readonly UInt16[] kWhitespaceTable16 = new UInt16[]
+        {
+            160, 8232, 8233, 5760, 6158, 8192, 8193, 8194, 8195,
+            8196, 8197, 8198, 8199, 8200, 8201, 8202, 8239, 8287, 12288, 65279
         };
+
         static readonly int kWhitespaceTable16Length = kWhitespaceTable16.Length;
 
         static bool isWhitespace(int x)
@@ -196,8 +192,8 @@ namespace Utf8Json.Internal.DoubleConversion
         }
 
         static bool ConsumeSubString(ref Iterator current,
-                                        Iterator end,
-                                        byte[] substring)
+            Iterator end,
+            byte[] substring)
         {
             for (int i = 1; i < substring.Length; i++)
             {
@@ -211,11 +207,10 @@ namespace Utf8Json.Internal.DoubleConversion
             return true;
         }
 
-
         // Consumes first character of the str is equal to ch
         static bool ConsumeFirstCharacter(ref Iterator iter,
-                                         byte[] str,
-                                         int offset)
+            byte[] str,
+            int offset)
         {
             return iter.Value == str[offset];
         }
@@ -226,10 +221,10 @@ namespace Utf8Json.Internal.DoubleConversion
         }
 
         static double StringToIeee(
-                    Iterator input,
-                    int length,
-                    bool read_as_double,
-                    out int processed_characters_count)
+            Iterator input,
+            int length,
+            bool read_as_double,
+            out int processed_characters_count)
         {
             Iterator current = input;
             Iterator end = input + length;
@@ -267,7 +262,7 @@ namespace Utf8Json.Internal.DoubleConversion
             }
 
             // The longest form of simplified number is: "-<significant digits>.1eXXX\0".
-            byte[] buffer = GetBuffer();  // NOLINT: size is known at compile time.
+            byte[] buffer = GetBuffer(); // NOLINT: size is known at compile time.
             int buffer_pos = 0;
 
             // Exponent will be adjusted if insignificant digits of the integer part
@@ -401,7 +396,7 @@ namespace Utf8Json.Internal.DoubleConversion
                 }
                 else
                 {
-                    insignificant_digits++;  // Move the digit into the exponential part.
+                    insignificant_digits++; // Move the digit into the exponential part.
                     nonzero_digit_dropped = nonzero_digit_dropped || current != '0';
                 }
                 // octal = octal && *current < '8';
@@ -445,7 +440,7 @@ namespace Utf8Json.Internal.DoubleConversion
                             processed_characters_count = (current - input);
                             return SignedZero(sign);
                         }
-                        exponent--;  // Move this 0 into the exponent.
+                        exponent--; // Move this 0 into the exponent.
                     }
                 }
 
@@ -542,7 +537,8 @@ namespace Utf8Json.Internal.DoubleConversion
                         num = num * 10 + digit;
                     }
                     ++current;
-                } while (current != end && current >= '0' && current <= '9');
+                }
+                while (current != end && current >= '0' && current <= '9');
 
                 exponent += (exponen_sign == '-' ? -num : num);
             }

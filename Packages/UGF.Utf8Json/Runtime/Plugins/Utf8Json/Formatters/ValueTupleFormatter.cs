@@ -38,7 +38,7 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary1 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
             };
             nameCache2 = new byte[][]
             {
@@ -47,8 +47,8 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary2 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
             };
             nameCache3 = new byte[][]
             {
@@ -58,9 +58,9 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary3 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
             };
             nameCache4 = new byte[][]
             {
@@ -71,10 +71,10 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary4 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
             };
             nameCache5 = new byte[][]
             {
@@ -86,11 +86,11 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary5 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
             };
             nameCache6 = new byte[][]
             {
@@ -103,12 +103,12 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary6 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
             };
             nameCache7 = new byte[][]
             {
@@ -122,13 +122,13 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary7 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item7"), 6 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item7"), 6 },
             };
             nameCache8 = new byte[][]
             {
@@ -143,14 +143,14 @@ namespace Utf8Json.Formatters.Internal
             };
             dictionary8 = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item7"), 6 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Rest"), 7 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item1"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item2"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item3"), 2 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item4"), 3 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item5"), 4 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item6"), 5 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Item7"), 6 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Rest"), 7 },
             };
         }
     }
@@ -158,7 +158,6 @@ namespace Utf8Json.Formatters.Internal
 
 namespace Utf8Json.Formatters
 {
-
     public sealed class ValueTupleFormatter<T1> : IJsonFormatter<ValueTuple<T1>>
     {
         static readonly byte[][] cache = TupleFormatterHelper.nameCache1;
@@ -203,7 +202,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1>(item1);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2> : IJsonFormatter<ValueTuple<T1, T2>>
     {
@@ -255,7 +253,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2>(item1, item2);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3> : IJsonFormatter<ValueTuple<T1, T2, T3>>
     {
@@ -313,7 +310,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3>(item1, item2, item3);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3, T4> : IJsonFormatter<ValueTuple<T1, T2, T3, T4>>
     {
@@ -377,7 +373,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3, T4>(item1, item2, item3, item4);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3, T4, T5> : IJsonFormatter<ValueTuple<T1, T2, T3, T4, T5>>
     {
@@ -447,7 +442,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3, T4, T5>(item1, item2, item3, item4, item5);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3, T4, T5, T6> : IJsonFormatter<ValueTuple<T1, T2, T3, T4, T5, T6>>
     {
@@ -523,7 +517,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3, T4, T5, T6>(item1, item2, item3, item4, item5, item6);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3, T4, T5, T6, T7> : IJsonFormatter<ValueTuple<T1, T2, T3, T4, T5, T6, T7>>
     {
@@ -605,7 +598,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3, T4, T5, T6, T7>(item1, item2, item3, item4, item5, item6, item7);
         }
     }
-
 
     public sealed class ValueTupleFormatter<T1, T2, T3, T4, T5, T6, T7, TRest> : IJsonFormatter<ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>> where TRest : struct
     {
@@ -693,7 +685,6 @@ namespace Utf8Json.Formatters
             return new ValueTuple<T1, T2, T3, T4, T5, T6, T7, TRest>(item1, item2, item3, item4, item5, item6, item7, item8);
         }
     }
-
 }
 
 #endif

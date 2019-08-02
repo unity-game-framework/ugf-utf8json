@@ -5,9 +5,9 @@
 using System;
 using System.Text;
 using Utf8Json.Internal;
-
 #if NETSTANDARD
 using System.Runtime.CompilerServices;
+
 #endif
 
 namespace Utf8Json
@@ -22,19 +22,13 @@ namespace Utf8Json
 #if NETSTANDARD
         internal
 #endif
-        byte[] buffer;
+            byte[] buffer;
 #if NETSTANDARD
         internal
 #endif
-        int offset;
+            int offset;
 
-        public int CurrentOffset
-        {
-            get
-            {
-                return offset;
-            }
-        }
+        public int CurrentOffset { get { return offset; } }
 
         public void AdvanceOffset(int offset)
         {
@@ -120,13 +114,13 @@ namespace Utf8Json
 #endif
         public void WriteRaw(byte[] rawValue)
         {
-// #if NETSTANDARD
+            // #if NETSTANDARD
             // UnsafeMemory.WriteRaw(ref this, rawValue);
-// #else
+            // #else
             BinaryUtil.EnsureCapacity(ref buffer, offset, rawValue.Length);
             Buffer.BlockCopy(rawValue, 0, buffer, offset, rawValue.Length);
             offset += rawValue.Length;
-// #endif
+            // #endif
         }
 
 #if NETSTANDARD

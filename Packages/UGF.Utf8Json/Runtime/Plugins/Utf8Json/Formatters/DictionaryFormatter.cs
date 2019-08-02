@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-
 #if NETSTANDARD
 using System.Collections.Concurrent;
+
 #endif
 
 namespace Utf8Json.Formatters
@@ -147,7 +147,6 @@ namespace Utf8Json.Formatters
             return intermediateCollection;
         }
     }
-
 
     public sealed class DictionaryFormatter<TKey, TValue> : DictionaryFormatterBase<TKey, TValue, Dictionary<TKey, TValue>, Dictionary<TKey, TValue>.Enumerator, Dictionary<TKey, TValue>>
     {
@@ -375,7 +374,6 @@ namespace Utf8Json.Formatters
     public sealed class NonGenericInterfaceDictionaryFormatter : IJsonFormatter<System.Collections.IDictionary>
     {
         public static readonly IJsonFormatter<System.Collections.IDictionary> Default = new NonGenericInterfaceDictionaryFormatter();
-
 
         public void Serialize(ref JsonWriter writer, System.Collections.IDictionary value, IJsonFormatterResolver formatterResolver)
         {

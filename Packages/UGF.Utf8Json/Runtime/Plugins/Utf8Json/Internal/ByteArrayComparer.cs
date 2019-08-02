@@ -77,26 +77,26 @@ namespace Utf8Json.Internal
                         if (*(short*)(p1 + 1) != *(short*)(p2 + 1)) return false;
                         return *(int*)(p1 + 3) == *(int*)(p2 + 3);
                     default:
+                    {
+                        var x1 = p1;
+                        var x2 = p2;
+
+                        byte* xEnd = p1 + xsCount - 8;
+                        byte* yEnd = p2 + ysCount - 8;
+
+                        while (x1 < xEnd)
                         {
-                            var x1 = p1;
-                            var x2 = p2;
-
-                            byte* xEnd = p1 + xsCount - 8;
-                            byte* yEnd = p2 + ysCount - 8;
-
-                            while (x1 < xEnd)
+                            if (*(long*)x1 != *(long*)x2)
                             {
-                                if (*(long*)x1 != *(long*)x2)
-                                {
-                                    return false;
-                                }
-
-                                x1 += 8;
-                                x2 += 8;
+                                return false;
                             }
 
-                            return *(long*)xEnd == *(long*)yEnd;
+                            x1 += 8;
+                            x2 += 8;
                         }
+
+                        return *(long*)xEnd == *(long*)yEnd;
+                    }
                 }
             }
         }
@@ -139,6 +139,5 @@ namespace Utf8Json.Internal
         }
 
 #endif
-
     }
 }

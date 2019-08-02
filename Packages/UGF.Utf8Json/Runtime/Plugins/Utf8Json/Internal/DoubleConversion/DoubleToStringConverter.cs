@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using System.Globalization;
 
 namespace Utf8Json.Internal.DoubleConversion
@@ -74,14 +76,11 @@ namespace Utf8Json.Internal.DoubleConversion
     // C# API
     internal static partial class DoubleToStringConverter
     {
-        [ThreadStatic]
-        static byte[] decimalRepBuffer;
+        [ThreadStatic] static byte[] decimalRepBuffer;
 
-        [ThreadStatic]
-        static byte[] exponentialRepBuffer;
+        [ThreadStatic] static byte[] exponentialRepBuffer;
 
-        [ThreadStatic]
-        static byte[] toStringBuffer;
+        [ThreadStatic] static byte[] toStringBuffer;
 
         static byte[] GetDecimalRepBuffer(int size)
         {
@@ -147,6 +146,7 @@ namespace Utf8Json.Internal.DoubleConversion
             // result will be the most accurate number of this length. Longer
             // representations might be more accurate.
             FAST_DTOA_SHORTEST,
+
             // Same as FAST_DTOA_SHORTEST but for single-precision floats.
             FAST_DTOA_SHORTEST_SINGLE,
             // Computes a representation where the precision (number of digits) is
@@ -194,11 +194,12 @@ namespace Utf8Json.Internal.DoubleConversion
         static readonly Flags flags_ = Flags.UNIQUE_ZERO | Flags.EMIT_POSITIVE_EXPONENT_SIGN;
         static readonly char exponent_character_ = 'E';
         static readonly int decimal_in_shortest_low_ = -4; // C# ToString("G")
-        static readonly int decimal_in_shortest_high_ = 15;// C# ToString("G")
+        static readonly int decimal_in_shortest_high_ = 15; // C# ToString("G")
 
         const int kBase10MaximalLength = 17;
 
         const int kFastDtoaMaximalLength = 17;
+
         // Same for single-precision numbers.
         const int kFastDtoaMaximalSingleLength = 9;
 
@@ -227,12 +228,12 @@ namespace Utf8Json.Internal.DoubleConversion
         //    representable number to the input.
         //  Modifies the generated digits in the buffer to approach (round towards) w.
         static bool RoundWeed(byte[] buffer,
-                              int length,
-                              uint64_t distance_too_high_w,
-                              uint64_t unsafe_interval,
-                              uint64_t rest,
-                              uint64_t ten_kappa,
-                              uint64_t unit)
+            int length,
+            uint64_t distance_too_high_w,
+            uint64_t unsafe_interval,
+            uint64_t rest,
+            uint64_t ten_kappa,
+            uint64_t unit)
         {
             uint64_t small_distance = distance_too_high_w - unit;
             uint64_t big_distance = distance_too_high_w + unit;
@@ -307,9 +308,9 @@ namespace Utf8Json.Internal.DoubleConversion
             // Conceptually rest ~= too_high - buffer
             // We need to do the following tests in this order to avoid over- and
             // underflows.
-            while (rest < small_distance &&  // Negated condition 1
-                   unsafe_interval - rest >= ten_kappa &&  // Negated condition 2
-                   (rest + ten_kappa < small_distance ||  // buffer{-1} > w_high
+            while (rest < small_distance && // Negated condition 1
+                   unsafe_interval - rest >= ten_kappa && // Negated condition 2
+                   (rest + ten_kappa < small_distance || // buffer{-1} > w_high
                     small_distance - rest >= rest + ten_kappa - small_distance))
             {
                 buffer[length - 1]--;
@@ -349,9 +350,9 @@ namespace Utf8Json.Internal.DoubleConversion
         static readonly uint[] kSmallPowersOfTen = new uint[] { 0, 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
         static void BiggestPowerTen(uint32_t number,
-                                    int number_bits,
-                                    out uint32_t power,
-                                    out int exponent_plus_one)
+            int number_bits,
+            out uint32_t power,
+            out int exponent_plus_one)
         {
             // 1233/4096 is approximately 1/lg(10).
             int exponent_plus_one_guess = ((number_bits + 1) * 1233 >> 12);
@@ -410,11 +411,11 @@ namespace Utf8Json.Internal.DoubleConversion
         // represents w. However we have to pay attention to low, high and w's
         // imprecision.
         static bool DigitGen(DiyFp low,
-                             DiyFp w,
-                             DiyFp high,
-                             byte[] buffer,
-                             out int length,
-                             out int kappa)
+            DiyFp w,
+            DiyFp high,
+            byte[] buffer,
+            out int length,
+            out int kappa)
         {
             // low, w and high are imprecise, but by less than one ulp (unit in the last
             // place).
@@ -448,7 +449,7 @@ namespace Utf8Json.Internal.DoubleConversion
             uint32_t divisor;
             int divisor_exponent_plus_one;
             BiggestPowerTen(integrals, DiyFp.kSignificandSize - (-one.e),
-                            out divisor, out divisor_exponent_plus_one);
+                out divisor, out divisor_exponent_plus_one);
             kappa = divisor_exponent_plus_one;
             length = 0;
             // Loop invariant: buffer = too_high / 10^kappa  (integer division)
@@ -473,8 +474,8 @@ namespace Utf8Json.Internal.DoubleConversion
                     // Rounding down (by not emitting the remaining digits) yields a number
                     // that lies within the unsafe interval.
                     return RoundWeed(buffer, length, DiyFp.Minus(ref too_high, ref w).f,
-                                     unsafe_interval.f, rest,
-                                     (uint64_t)(divisor) << -one.e, unit);
+                        unsafe_interval.f, rest,
+                        (uint64_t)(divisor) << -one.e, unit);
                 }
                 divisor /= 10;
             }
@@ -485,7 +486,7 @@ namespace Utf8Json.Internal.DoubleConversion
             // data (like the interval or 'unit'), too.
             // Note that the multiplication by 10 does not overflow, because w.e >= -60
             // and thus one.e >= -60.
-            for (; ; )
+            for (;;)
             {
                 fractionals *= 10;
                 unit *= 10;
@@ -494,12 +495,12 @@ namespace Utf8Json.Internal.DoubleConversion
                 int digit = (int)(fractionals >> -one.e);
                 buffer[length] = (byte)((byte)'0' + digit);
                 (length)++;
-                fractionals &= one.f - 1;  // Modulo by one.
+                fractionals &= one.f - 1; // Modulo by one.
                 (kappa)--;
                 if (fractionals < unsafe_interval.f)
                 {
                     return RoundWeed(buffer, length, DiyFp.Minus(ref too_high, ref w).f * unit,
-                                     unsafe_interval.f, fractionals, one.f, unit);
+                        unsafe_interval.f, fractionals, one.f, unit);
                 }
             }
         }
@@ -516,10 +517,10 @@ namespace Utf8Json.Internal.DoubleConversion
         // digits might correctly yield 'v' when read again, the closest will be
         // computed.
         static bool Grisu3(double v,
-                           FastDtoaMode mode,
-                           byte[] buffer,
-                           out int length,
-                           out int decimal_exponent)
+            FastDtoaMode mode,
+            byte[] buffer,
+            out int length,
+            out int decimal_exponent)
         {
             DiyFp w = new Double(v).AsNormalizedDiyFp();
             // boundary_minus and boundary_plus are the boundaries between v and its
@@ -541,12 +542,12 @@ namespace Utf8Json.Internal.DoubleConversion
                 throw new Exception("Invalid Mode.");
             }
 
-            DiyFp ten_mk;  // Cached power of ten: 10^-k
-            int mk;        // -k
+            DiyFp ten_mk; // Cached power of ten: 10^-k
+            int mk; // -k
             int ten_mk_minimal_binary_exponent =
-               kMinimalTargetExponent - (w.e + DiyFp.kSignificandSize);
+                kMinimalTargetExponent - (w.e + DiyFp.kSignificandSize);
             int ten_mk_maximal_binary_exponent =
-               kMaximalTargetExponent - (w.e + DiyFp.kSignificandSize);
+                kMaximalTargetExponent - (w.e + DiyFp.kSignificandSize);
             PowersOfTenCache.GetCachedPowerForBinaryExponentRange(
                 ten_mk_minimal_binary_exponent,
                 ten_mk_maximal_binary_exponent,
@@ -579,17 +580,17 @@ namespace Utf8Json.Internal.DoubleConversion
             // decreased by 2.
             int kappa;
             bool result = DigitGen(scaled_boundary_minus, scaled_w, scaled_boundary_plus,
-                                   buffer, out length, out kappa);
+                buffer, out length, out kappa);
             decimal_exponent = -mk + kappa;
             return result;
         }
 
         static bool FastDtoa(double v,
-              FastDtoaMode mode,
-              // int requested_digits,
-              byte[] buffer,
-              out int length,
-              out int decimal_point)
+            FastDtoaMode mode,
+            // int requested_digits,
+            byte[] buffer,
+            out int length,
+            out int decimal_point)
         {
             bool result = false;
             int decimal_exponent = 0;
@@ -658,7 +659,7 @@ namespace Utf8Json.Internal.DoubleConversion
             int decimal_rep_length;
 
             var fastworked = DoubleToAscii(value, mode, 0, decimal_rep,
-                          out sign, out decimal_rep_length, out decimal_point);
+                out sign, out decimal_rep_length, out decimal_point);
 
             if (!fastworked)
             {
@@ -679,14 +680,14 @@ namespace Utf8Json.Internal.DoubleConversion
                 (exponent < decimal_in_shortest_high_))
             {
                 CreateDecimalRepresentation(decimal_rep, decimal_rep_length,
-                                            decimal_point,
-                                            Math.Max(0, decimal_rep_length - decimal_point),
-                                            ref result_builder);
+                    decimal_point,
+                    Math.Max(0, decimal_rep_length - decimal_point),
+                    ref result_builder);
             }
             else
             {
                 CreateExponentialRepresentation(decimal_rep, decimal_rep_length, exponent,
-                                                ref result_builder);
+                    ref result_builder);
             }
 
             return true;

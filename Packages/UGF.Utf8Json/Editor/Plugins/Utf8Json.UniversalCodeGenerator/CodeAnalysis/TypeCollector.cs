@@ -35,12 +35,13 @@ namespace Utf8Json.UniversalCodeGenerator
         const string CodegeneratorOnlyPreprocessorSymbol = "INCLUDE_ONLY_CODE_GENERATION";
 
         static readonly SymbolDisplayFormat binaryWriteFormat = new SymbolDisplayFormat(
-                genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-                miscellaneousOptions: SymbolDisplayMiscellaneousOptions.ExpandNullable,
-                typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameOnly);
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.ExpandNullable,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameOnly);
 
         static readonly SymbolDisplayFormat shortTypeNameFormat = new SymbolDisplayFormat(
-                typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes);
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes);
+
         static readonly HashSet<string> embeddedTypes = new HashSet<string>(new string[]
         {
             "short",
@@ -97,76 +98,76 @@ namespace Utf8Json.UniversalCodeGenerator
 
             // "System.Reactive.Unit",
         });
+
         static readonly Dictionary<string, string> knownGenericTypes = new Dictionary<string, string>
         {
-            {"System.Collections.Generic.List<>", "global::Utf8Json.Formatters.ListFormatter<TREPLACE>" },
-            {"System.Collections.Generic.LinkedList<>", "global::Utf8Json.Formatters.LinkedListFormatter<TREPLACE>"},
-            {"System.Collections.Generic.Queue<>", "global::Utf8Json.Formatters.QeueueFormatter<TREPLACE>"},
-            {"System.Collections.Generic.Stack<>", "global::Utf8Json.Formatters.StackFormatter<TREPLACE>"},
-            {"System.Collections.Generic.HashSet<>", "global::Utf8Json.Formatters.HashSetFormatter<TREPLACE>"},
-            {"System.Collections.ObjectModel.ReadOnlyCollection<>", "global::Utf8Json.Formatters.ReadOnlyCollectionFormatter<TREPLACE>"},
-            {"System.Collections.Generic.IList<>", "global::Utf8Json.Formatters.InterfaceListFormatter<TREPLACE>"},
-            {"System.Collections.Generic.ICollection<>", "global::Utf8Json.Formatters.InterfaceCollectionFormatter<TREPLACE>"},
-            {"System.Collections.Generic.IEnumerable<>", "global::Utf8Json.Formatters.InterfaceEnumerableFormatter<TREPLACE>"},
-            {"System.Collections.Generic.Dictionary<,>", "global::Utf8Json.Formatters.DictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Generic.IDictionary<,>", "global::Utf8Json.Formatters.InterfaceDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Generic.SortedDictionary<,>", "global::Utf8Json.Formatters.SortedDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Generic.SortedList<,>", "global::Utf8Json.Formatters.SortedListFormatter<TREPLACE>"},
-            {"System.Linq.ILookup<,>", "global::Utf8Json.Formatters.InterfaceLookupFormatter<TREPLACE>"},
-            {"System.Linq.IGrouping<,>", "global::Utf8Json.Formatters.InterfaceGroupingFormatter<TREPLACE>"},
-            {"System.Collections.ObjectModel.ObservableCollection<>", "global::Utf8Json.Formatters.ObservableCollectionFormatter<TREPLACE>"},
-            {"System.Collections.ObjectModel.ReadOnlyObservableCollection<>", "global::Utf8Json.Formatters.ReadOnlyObservableCollectionFormatter<TREPLACE>" },
-            {"System.Collections.Generic.IReadOnlyList<>", "global::Utf8Json.Formatters.InterfaceReadOnlyListFormatter<TREPLACE>"},
-            {"System.Collections.Generic.IReadOnlyCollection<>", "global::Utf8Json.Formatters.InterfaceReadOnlyCollectionFormatter<TREPLACE>"},
-            {"System.Collections.Generic.ISet<>", "global::Utf8Json.Formatters.InterfaceSetFormatter<TREPLACE>"},
-            {"System.Collections.Concurrent.ConcurrentBag<>", "global::Utf8Json.Formatters.ConcurrentBagFormatter<TREPLACE>"},
-            {"System.Collections.Concurrent.ConcurrentQueue<>", "global::Utf8Json.Formatters.ConcurrentQueueFormatter<TREPLACE>"},
-            {"System.Collections.Concurrent.ConcurrentStack<>", "global::Utf8Json.Formatters.ConcurrentStackFormatter<TREPLACE>"},
-            {"System.Collections.ObjectModel.ReadOnlyDictionary<,>", "global::Utf8Json.Formatters.ReadOnlyDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Generic.IReadOnlyDictionary<,>", "global::Utf8Json.Formatters.InterfaceReadOnlyDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Concurrent.ConcurrentDictionary<,>", "global::Utf8Json.Formatters.ConcurrentDictionaryFormatter<TREPLACE>"},
-            {"System.Lazy<>", "global::Utf8Json.Formatters.LazyFormatter<TREPLACE>"},
-            {"System.Threading.Tasks<>", "global::Utf8Json.Formatters.TaskValueFormatter<TREPLACE>"},
+            { "System.Collections.Generic.List<>", "global::Utf8Json.Formatters.ListFormatter<TREPLACE>" },
+            { "System.Collections.Generic.LinkedList<>", "global::Utf8Json.Formatters.LinkedListFormatter<TREPLACE>" },
+            { "System.Collections.Generic.Queue<>", "global::Utf8Json.Formatters.QeueueFormatter<TREPLACE>" },
+            { "System.Collections.Generic.Stack<>", "global::Utf8Json.Formatters.StackFormatter<TREPLACE>" },
+            { "System.Collections.Generic.HashSet<>", "global::Utf8Json.Formatters.HashSetFormatter<TREPLACE>" },
+            { "System.Collections.ObjectModel.ReadOnlyCollection<>", "global::Utf8Json.Formatters.ReadOnlyCollectionFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IList<>", "global::Utf8Json.Formatters.InterfaceListFormatter<TREPLACE>" },
+            { "System.Collections.Generic.ICollection<>", "global::Utf8Json.Formatters.InterfaceCollectionFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IEnumerable<>", "global::Utf8Json.Formatters.InterfaceEnumerableFormatter<TREPLACE>" },
+            { "System.Collections.Generic.Dictionary<,>", "global::Utf8Json.Formatters.DictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IDictionary<,>", "global::Utf8Json.Formatters.InterfaceDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Generic.SortedDictionary<,>", "global::Utf8Json.Formatters.SortedDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Generic.SortedList<,>", "global::Utf8Json.Formatters.SortedListFormatter<TREPLACE>" },
+            { "System.Linq.ILookup<,>", "global::Utf8Json.Formatters.InterfaceLookupFormatter<TREPLACE>" },
+            { "System.Linq.IGrouping<,>", "global::Utf8Json.Formatters.InterfaceGroupingFormatter<TREPLACE>" },
+            { "System.Collections.ObjectModel.ObservableCollection<>", "global::Utf8Json.Formatters.ObservableCollectionFormatter<TREPLACE>" },
+            { "System.Collections.ObjectModel.ReadOnlyObservableCollection<>", "global::Utf8Json.Formatters.ReadOnlyObservableCollectionFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IReadOnlyList<>", "global::Utf8Json.Formatters.InterfaceReadOnlyListFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IReadOnlyCollection<>", "global::Utf8Json.Formatters.InterfaceReadOnlyCollectionFormatter<TREPLACE>" },
+            { "System.Collections.Generic.ISet<>", "global::Utf8Json.Formatters.InterfaceSetFormatter<TREPLACE>" },
+            { "System.Collections.Concurrent.ConcurrentBag<>", "global::Utf8Json.Formatters.ConcurrentBagFormatter<TREPLACE>" },
+            { "System.Collections.Concurrent.ConcurrentQueue<>", "global::Utf8Json.Formatters.ConcurrentQueueFormatter<TREPLACE>" },
+            { "System.Collections.Concurrent.ConcurrentStack<>", "global::Utf8Json.Formatters.ConcurrentStackFormatter<TREPLACE>" },
+            { "System.Collections.ObjectModel.ReadOnlyDictionary<,>", "global::Utf8Json.Formatters.ReadOnlyDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Generic.IReadOnlyDictionary<,>", "global::Utf8Json.Formatters.InterfaceReadOnlyDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Concurrent.ConcurrentDictionary<,>", "global::Utf8Json.Formatters.ConcurrentDictionaryFormatter<TREPLACE>" },
+            { "System.Lazy<>", "global::Utf8Json.Formatters.LazyFormatter<TREPLACE>" },
+            { "System.Threading.Tasks<>", "global::Utf8Json.Formatters.TaskValueFormatter<TREPLACE>" },
 
-            {"System.Tuple<>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
-            {"System.Tuple<,,,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>"},
+            { "System.Tuple<>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
+            { "System.Tuple<,,,,,,,>", "global::Utf8Json.Formatters.TupleFormatter<TREPLACE>" },
 
-            {"System.ValueTuple<>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
-            {"System.ValueTuple<,,,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>"},
+            { "System.ValueTuple<>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
+            { "System.ValueTuple<,,,,,,,>", "global::Utf8Json.Formatters.ValueTupleFormatter<TREPLACE>" },
 
-            {"System.Collections.Generic.KeyValuePair<,>", "global::Utf8Json.Formatters.KeyValuePairFormatter<TREPLACE>"},
-            {"System.Threading.Tasks.ValueTask<>", "global::Utf8Json.Formatters.KeyValuePairFormatter<TREPLACE>"},
-            {"System.ArraySegment<>", "global::Utf8Json.Formatters.ArraySegmentFormatter<TREPLACE>"},
+            { "System.Collections.Generic.KeyValuePair<,>", "global::Utf8Json.Formatters.KeyValuePairFormatter<TREPLACE>" },
+            { "System.Threading.Tasks.ValueTask<>", "global::Utf8Json.Formatters.KeyValuePairFormatter<TREPLACE>" },
+            { "System.ArraySegment<>", "global::Utf8Json.Formatters.ArraySegmentFormatter<TREPLACE>" },
 
             // extensions
 
-            {"System.Collections.Immutable.ImmutableArray<>", "global::Utf8Json.ImmutableCollection.ImmutableArrayFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableList<>", "global::Utf8Json.ImmutableCollection.ImmutableListFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableDictionary<,>", "global::Utf8Json.ImmutableCollection.ImmutableDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableHashSet<>", "global::Utf8Json.ImmutableCollection.ImmutableHashSetFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableSortedDictionary<,>", "global::Utf8Json.ImmutableCollection.ImmutableSortedDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableSortedSet<>", "global::Utf8Json.ImmutableCollection.ImmutableSortedSetFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableQueue<>", "global::Utf8Json.ImmutableCollection.ImmutableQueueFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.ImmutableStack<>", "global::Utf8Json.ImmutableCollection.ImmutableStackFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.IImmutableList<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableListFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.IImmutableDictionary<,>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableDictionaryFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.IImmutableQueue<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableQueueFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.IImmutableSet<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableSetFormatter<TREPLACE>"},
-            {"System.Collections.Immutable.IImmutableStack<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableStackFormatter<TREPLACE>"},
+            { "System.Collections.Immutable.ImmutableArray<>", "global::Utf8Json.ImmutableCollection.ImmutableArrayFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableList<>", "global::Utf8Json.ImmutableCollection.ImmutableListFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableDictionary<,>", "global::Utf8Json.ImmutableCollection.ImmutableDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableHashSet<>", "global::Utf8Json.ImmutableCollection.ImmutableHashSetFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableSortedDictionary<,>", "global::Utf8Json.ImmutableCollection.ImmutableSortedDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableSortedSet<>", "global::Utf8Json.ImmutableCollection.ImmutableSortedSetFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableQueue<>", "global::Utf8Json.ImmutableCollection.ImmutableQueueFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.ImmutableStack<>", "global::Utf8Json.ImmutableCollection.ImmutableStackFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.IImmutableList<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableListFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.IImmutableDictionary<,>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableDictionaryFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.IImmutableQueue<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableQueueFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.IImmutableSet<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableSetFormatter<TREPLACE>" },
+            { "System.Collections.Immutable.IImmutableStack<>", "global::Utf8Json.ImmutableCollection.InterfaceImmutableStackFormatter<TREPLACE>" },
         };
-
 
         readonly ReferenceSymbols typeReferences;
         readonly INamedTypeSymbol[] targetTypes;
@@ -445,8 +446,8 @@ namespace Utf8Json.UniversalCodeGenerator
             {
                 ctorEnumerator =
                     type.Constructors.Where(x => x.DeclaredAccessibility == Accessibility.Public && !x.IsImplicitlyDeclared).OrderBy(x => x.Parameters.Length)
-                    .Concat(type.Constructors.Where(x => x.DeclaredAccessibility == Accessibility.Public).OrderByDescending(x => x.Parameters.Length).Take(1))
-                    .GetEnumerator();
+                        .Concat(type.Constructors.Where(x => x.DeclaredAccessibility == Accessibility.Public).OrderByDescending(x => x.Parameters.Length).Take(1))
+                        .GetEnumerator();
 
                 if (ctorEnumerator.MoveNext())
                 {
@@ -515,7 +516,8 @@ namespace Utf8Json.UniversalCodeGenerator
                         }
                         ctorParamIndex++;
                     }
-                } while (TryGetNextConstructor(ctorEnumerator, ref ctor));
+                }
+                while (TryGetNextConstructor(ctorEnumerator, ref ctor));
 
                 if (ctor == null)
                 {
@@ -576,7 +578,8 @@ namespace Utf8Json.UniversalCodeGenerator
                 }
 
                 symbol = symbol.ContainingType;
-            } while (symbol != null);
+            }
+            while (symbol != null);
 
             return true;
         }
@@ -587,7 +590,6 @@ namespace Utf8Json.UniversalCodeGenerator
         public CodeGeneratorResolveFailedException(string message)
             : base(message)
         {
-
         }
     }
 }

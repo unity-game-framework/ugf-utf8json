@@ -59,7 +59,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, DateTime? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             innerFormatter.Serialize(ref writer, value.Value, formatterResolver);
         }
@@ -434,7 +438,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, DateTimeOffset? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             innerFormatter.Serialize(ref writer, value.Value, formatterResolver);
         }
@@ -769,7 +777,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, TimeSpan? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             innerFormatter.Serialize(ref writer, value.Value, formatterResolver);
         }

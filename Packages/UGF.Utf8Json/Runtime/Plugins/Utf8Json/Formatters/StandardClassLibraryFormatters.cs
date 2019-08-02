@@ -10,11 +10,11 @@ using System.Text;
 using Utf8Json.Formatters.Internal;
 using Utf8Json.Internal;
 using System.Text.RegularExpressions;
-
 #if NETSTANDARD
 using System.Dynamic;
 using System.Numerics;
 using System.Threading.Tasks;
+
 #endif
 
 namespace Utf8Json.Formatters
@@ -27,7 +27,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, byte[] value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteString(Convert.ToBase64String(value, Base64FormattingOptions.None));
         }
@@ -47,7 +51,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, ArraySegment<byte> value, IJsonFormatterResolver formatterResolver)
         {
-            if (value.Array == null) { writer.WriteNull(); return; }
+            if (value.Array == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteString(Convert.ToBase64String(value.Array, value.Offset, value.Count, Base64FormattingOptions.None));
         }
@@ -283,7 +291,6 @@ namespace Utf8Json.Formatters
         public DecimalFormatter()
             : this(false)
         {
-
         }
 
         public DecimalFormatter(bool serializeAsString)
@@ -437,7 +444,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, StringBuilder value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
             writer.WriteString(value.ToString());
         }
 
@@ -455,7 +466,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, BitArray value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteBeginArray();
             for (int i = 0; i < value.Length; i++)
@@ -497,7 +512,6 @@ namespace Utf8Json.Formatters
         public TypeFormatter()
             : this(true, true, true)
         {
-
         }
 
         public TypeFormatter(bool serializeAssemblyQualifiedName, bool deserializeSubtractAssemblyQualifiedName, bool throwOnError)
@@ -509,7 +523,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, Type value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
             if (serializeAssemblyQualifiedName)
             {
                 writer.WriteString(value.AssemblyQualifiedName);
@@ -533,7 +551,6 @@ namespace Utf8Json.Formatters
             return Type.GetType(s, throwOnError);
         }
     }
-
 
 #if NETSTANDARD
 
@@ -611,7 +628,11 @@ namespace Utf8Json.Formatters
     {
         public void Serialize(ref JsonWriter writer, Lazy<T> value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
             formatterResolver.GetFormatterWithVerify<T>().Serialize(ref writer, value.Value, formatterResolver);
         }
 
@@ -621,11 +642,11 @@ namespace Utf8Json.Formatters
 
             // deserialize immediately(no delay, because capture byte[] causes memory leak)
             var v = formatterResolver.GetFormatterWithVerify<T>().Deserialize(ref reader, formatterResolver);
-// #if NETSTANDARD
-//             return new Lazy<T>(v.AsFunc());
-// #else
+            // #if NETSTANDARD
+            //             return new Lazy<T>(v.AsFunc());
+            // #else
             return new Lazy<T>(() => v);
-// #endif
+            // #endif
         }
     }
 
@@ -636,7 +657,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, Task value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             value.Wait(); // wait!
             writer.WriteNull();
@@ -654,7 +679,11 @@ namespace Utf8Json.Formatters
     {
         public void Serialize(ref JsonWriter writer, Task<T> value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             // value.Result -> wait...!
             formatterResolver.GetFormatterWithVerify<T>().Serialize(ref writer, value.Result, formatterResolver);
@@ -705,8 +734,8 @@ namespace Utf8Json.Formatters.Internal
             };
             keyValuePairAutomata = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Key"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Value"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Key"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Value"), 1 },
             };
         }
     }

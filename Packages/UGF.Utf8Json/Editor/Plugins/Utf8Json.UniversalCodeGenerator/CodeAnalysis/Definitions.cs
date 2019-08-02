@@ -26,13 +26,7 @@ namespace Utf8Json.UniversalCodeGenerator
         public string FormatterName => (Namespace == null ? Name : Namespace + "." + Name) + "Formatter";
         public bool HasConstructor { get; set; }
 
-        public int WriteCount
-        {
-            get
-            {
-                return Members.Count(x => x.IsReadable);
-            }
-        }
+        public int WriteCount { get { return Members.Count(x => x.IsReadable); } }
 
         public string GetConstructorString()
         {
@@ -95,6 +89,7 @@ namespace Utf8Json.UniversalCodeGenerator
             }
         }
     }
+
     public class GenericSerializationInfo : IResolverRegisterInfo, IEquatable<GenericSerializationInfo>
     {
         public string FullName { get; set; }

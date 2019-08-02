@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using System.Runtime.InteropServices;
 
 namespace Utf8Json.Internal.DoubleConversion
@@ -8,19 +10,15 @@ namespace Utf8Json.Internal.DoubleConversion
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
     internal struct UnionDoubleULong
     {
-        [FieldOffset(0)]
-        public double d;
-        [FieldOffset(0)]
-        public ulong u64;
+        [FieldOffset(0)] public double d;
+        [FieldOffset(0)] public ulong u64;
     }
 
     [StructLayout(LayoutKind.Explicit, Pack = 1)]
     internal struct UnionFloatUInt
     {
-        [FieldOffset(0)]
-        public float f;
-        [FieldOffset(0)]
-        public uint u32;
+        [FieldOffset(0)] public float f;
+        [FieldOffset(0)] public uint u32;
     }
 
     // https://github.com/google/double-conversion/blob/master/double-conversion/ieee.h
@@ -31,7 +29,7 @@ namespace Utf8Json.Internal.DoubleConversion
         public const ulong kExponentMask = (0x7FF0000000000000);
         public const ulong kSignificandMask = (0x000FFFFFFFFFFFFF);
         public const ulong kHiddenBit = (0x0010000000000000);
-        public const int kPhysicalSignificandSize = 52;  // Excludes the hidden bit.
+        public const int kPhysicalSignificandSize = 52; // Excludes the hidden bit.
         public const int kSignificandSize = 53;
 
         const int kExponentBias = 0x3FF + kPhysicalSignificandSize;
@@ -159,14 +157,14 @@ namespace Utf8Json.Internal.DoubleConversion
         {
             ulong d64 = AsUint64();
             return ((d64 & kExponentMask) == kExponentMask) &&
-                ((d64 & kSignificandMask) != 0);
+                   ((d64 & kSignificandMask) != 0);
         }
 
         public bool IsInfinite()
         {
             ulong d64 = AsUint64();
             return ((d64 & kExponentMask) == kExponentMask) &&
-                ((d64 & kSignificandMask) == 0);
+                   ((d64 & kSignificandMask) == 0);
         }
 
         public int Sign()
@@ -284,7 +282,7 @@ namespace Utf8Json.Internal.DoubleConversion
                 biased_exponent = (ulong)(exponent + kExponentBias);
             }
             return (significand & kSignificandMask) |
-                (biased_exponent << kPhysicalSignificandSize);
+                   (biased_exponent << kPhysicalSignificandSize);
         }
     }
 
@@ -300,7 +298,7 @@ namespace Utf8Json.Internal.DoubleConversion
         public const uint32_t kExponentMask = 0x7F800000;
         public const uint32_t kSignificandMask = 0x007FFFFF;
         public const uint32_t kHiddenBit = 0x00800000;
-        public const int kPhysicalSignificandSize = 23;  // Excludes the hidden bit.
+        public const int kPhysicalSignificandSize = 23; // Excludes the hidden bit.
         public const int kSignificandSize = 24;
 
         uint32_t d32_;
@@ -365,14 +363,14 @@ namespace Utf8Json.Internal.DoubleConversion
         {
             uint32_t d32 = AsUint32();
             return ((d32 & kExponentMask) == kExponentMask) &&
-                ((d32 & kSignificandMask) != 0);
+                   ((d32 & kSignificandMask) != 0);
         }
 
         public bool IsInfinite()
         {
             uint32_t d32 = AsUint32();
             return ((d32 & kExponentMask) == kExponentMask) &&
-                ((d32 & kSignificandMask) == 0);
+                   ((d32 & kSignificandMask) == 0);
         }
 
         public int Sign()
@@ -426,7 +424,10 @@ namespace Utf8Json.Internal.DoubleConversion
             return physical_significand_is_zero && (Exponent() != kDenormalExponent);
         }
 
-        public float value() { return new UnionFloatUInt { u32 = d32_ }.f; }
+        public float value()
+        {
+            return new UnionFloatUInt { u32 = d32_ }.f;
+        }
 
         public static float Infinity()
         {

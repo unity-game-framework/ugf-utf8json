@@ -22,6 +22,7 @@ namespace Utf8Json
             static readonly ThreadsafeTypeKeyHashTable<CompiledMethods> serializes = new ThreadsafeTypeKeyHashTable<CompiledMethods>(capacity: 64);
 
             delegate void SerializeJsonWriter(ref JsonWriter writer, object value, IJsonFormatterResolver resolver);
+
             delegate object DeserializeJsonReader(ref JsonReader reader, IJsonFormatterResolver resolver);
 
             static NonGeneric()
@@ -73,7 +74,11 @@ namespace Utf8Json
             /// </summary>
             public static void Serialize(Stream stream, object value)
             {
-                if (value == null) { Serialize<object>(stream, value); return; }
+                if (value == null)
+                {
+                    Serialize<object>(stream, value);
+                    return;
+                }
                 Serialize(value.GetType(), stream, value, defaultResolver);
             }
 
@@ -90,7 +95,11 @@ namespace Utf8Json
             /// </summary>
             public static void Serialize(Stream stream, object value, IJsonFormatterResolver resolver)
             {
-                if (value == null) { Serialize<object>(stream, value, resolver); return; }
+                if (value == null)
+                {
+                    Serialize<object>(stream, value, resolver);
+                    return;
+                }
                 Serialize(value.GetType(), stream, value, resolver);
             }
 
@@ -109,7 +118,10 @@ namespace Utf8Json
             /// </summary>
             public static System.Threading.Tasks.Task SerializeAsync(Stream stream, object value)
             {
-                if (value == null) { return SerializeAsync<object>(stream, value); }
+                if (value == null)
+                {
+                    return SerializeAsync<object>(stream, value);
+                }
                 return SerializeAsync(value.GetType(), stream, value, defaultResolver);
             }
 
@@ -126,7 +138,10 @@ namespace Utf8Json
             /// </summary>
             public static System.Threading.Tasks.Task SerializeAsync(Stream stream, object value, IJsonFormatterResolver resolver)
             {
-                if (value == null) { return SerializeAsync<object>(stream, value, resolver); }
+                if (value == null)
+                {
+                    return SerializeAsync<object>(stream, value, resolver);
+                }
                 return SerializeAsync(value.GetType(), stream, value, resolver);
             }
 

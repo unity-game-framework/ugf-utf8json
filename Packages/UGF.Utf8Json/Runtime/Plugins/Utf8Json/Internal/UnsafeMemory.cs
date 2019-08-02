@@ -506,7 +506,6 @@ namespace Utf8Json.Internal
 
             writer.offset += src.Length;
         }
-
     }
 
     public static partial class UnsafeMemory64
@@ -891,7 +890,6 @@ namespace Utf8Json.Internal
 
             writer.offset += src.Length;
         }
-
     }
 }
 

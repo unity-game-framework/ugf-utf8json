@@ -25,9 +25,9 @@ namespace Utf8Json.Internal
         public static bool IsAnonymous(this System.Reflection.TypeInfo type)
         {
             return type.GetCustomAttribute<CompilerGeneratedAttribute>() != null
-                && type.Name.Contains("AnonymousType")
-                && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
-                && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
+                   && type.Name.Contains("AnonymousType")
+                   && (type.Name.StartsWith("<>") || type.Name.StartsWith("VB$"))
+                   && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic;
         }
 
         public static IEnumerable<PropertyInfo> GetAllProperties(this Type type)

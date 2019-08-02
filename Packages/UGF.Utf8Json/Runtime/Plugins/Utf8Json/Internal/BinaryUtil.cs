@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 #if NETSTANDARD
 using System.Runtime.CompilerServices;
+
 #endif
 
 namespace Utf8Json.Internal

@@ -27,7 +27,6 @@ namespace Utf8Json
             {
                 if (defaultResolver == null)
                 {
-
 #if UTF8JSON_EMIT
                     defaultResolver = StandardResolver.Default;
 #else
@@ -42,13 +41,7 @@ namespace Utf8Json
         /// <summary>
         /// Is resolver decided?
         /// </summary>
-        public static bool IsInitialized
-        {
-            get
-            {
-                return defaultResolver != null;
-            }
-        }
+        public static bool IsInitialized { get { return defaultResolver != null; } }
 
         /// <summary>
         /// Set default resolver of Utf8Json APIs.
@@ -373,71 +366,71 @@ namespace Utf8Json
             switch (token)
             {
                 case JsonToken.BeginObject:
+                {
+                    writer.WriteBeginObject();
+                    writer.WriteRaw(newLine);
+                    var c = 0;
+                    while (reader.ReadIsInObject(ref c))
                     {
-                        writer.WriteBeginObject();
-                        writer.WriteRaw(newLine);
-                        var c = 0;
-                        while (reader.ReadIsInObject(ref c))
+                        if (c != 1)
                         {
-                            if (c != 1)
-                            {
-                                writer.WriteRaw((byte)',');
-                                writer.WriteRaw(newLine);
-                            }
-                            writer.WriteRaw(indent[depth + 1]);
-                            writer.WritePropertyName(reader.ReadPropertyName());
-                            writer.WriteRaw((byte)' ');
-                            WritePrittyPrint(ref reader, ref writer, depth + 1);
+                            writer.WriteRaw((byte)',');
+                            writer.WriteRaw(newLine);
                         }
-                        writer.WriteRaw(newLine);
-                        writer.WriteRaw(indent[depth]);
-                        writer.WriteEndObject();
+                        writer.WriteRaw(indent[depth + 1]);
+                        writer.WritePropertyName(reader.ReadPropertyName());
+                        writer.WriteRaw((byte)' ');
+                        WritePrittyPrint(ref reader, ref writer, depth + 1);
                     }
+                    writer.WriteRaw(newLine);
+                    writer.WriteRaw(indent[depth]);
+                    writer.WriteEndObject();
+                }
                     break;
                 case JsonToken.BeginArray:
+                {
+                    writer.WriteBeginArray();
+                    writer.WriteRaw(newLine);
+                    var c = 0;
+                    while (reader.ReadIsInArray(ref c))
                     {
-                        writer.WriteBeginArray();
-                        writer.WriteRaw(newLine);
-                        var c = 0;
-                        while (reader.ReadIsInArray(ref c))
+                        if (c != 1)
                         {
-                            if (c != 1)
-                            {
-                                writer.WriteRaw((byte)',');
-                                writer.WriteRaw(newLine);
-                            }
-                            writer.WriteRaw(indent[depth + 1]);
-                            WritePrittyPrint(ref reader, ref writer, depth + 1);
+                            writer.WriteRaw((byte)',');
+                            writer.WriteRaw(newLine);
                         }
-                        writer.WriteRaw(newLine);
-                        writer.WriteRaw(indent[depth]);
-                        writer.WriteEndArray();
+                        writer.WriteRaw(indent[depth + 1]);
+                        WritePrittyPrint(ref reader, ref writer, depth + 1);
                     }
+                    writer.WriteRaw(newLine);
+                    writer.WriteRaw(indent[depth]);
+                    writer.WriteEndArray();
+                }
                     break;
                 case JsonToken.Number:
-                    {
-                        var v = reader.ReadDouble();
-                        writer.WriteDouble(v);
-                    }
+                {
+                    var v = reader.ReadDouble();
+                    writer.WriteDouble(v);
+                }
                     break;
                 case JsonToken.String:
-                    {
-                        var v = reader.ReadString();
-                        writer.WriteString(v);
-                    }
+                {
+                    var v = reader.ReadString();
+                    writer.WriteString(v);
+                }
                     break;
                 case JsonToken.True:
                 case JsonToken.False:
-                    {
-                        var v = reader.ReadBoolean();
-                        writer.WriteBoolean(v);
-                    }
+                {
+                    var v = reader.ReadBoolean();
+                    writer.WriteBoolean(v);
+                }
                     break;
                 case JsonToken.Null:
-                    {
-                        reader.ReadIsNull();
-                        writer.WriteNull();
-                    }
+                {
+                    reader.ReadIsNull();
+                    writer.WriteNull();
+                }
                     break;
                 default:
                     break;
@@ -462,8 +455,7 @@ namespace Utf8Json
 
         static class MemoryPool
         {
-            [ThreadStatic]
-            static byte[] buffer = null;
+            [ThreadStatic] static byte[] buffer = null;
 
             public static byte[] GetBuffer()
             {

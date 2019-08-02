@@ -21,7 +21,7 @@ namespace Utf8Json.Formatters
             { typeof(Int32), 6 },
             { typeof(UInt32), 7 },
             { typeof(Int64), 8 },
-            { typeof(UInt64),9  },
+            { typeof(UInt64), 9 },
             { typeof(Single), 10 },
             { typeof(Double), 11 },
             { typeof(DateTime), 12 },
@@ -44,21 +44,51 @@ namespace Utf8Json.Formatters
             {
                 switch (key)
                 {
-                    case 0: writer.WriteBoolean((bool)value); return;
-                    case 1: CharFormatter.Default.Serialize(ref writer, (char)value, formatterResolver); return;
-                    case 2: writer.WriteSByte((sbyte)value); return;
-                    case 3: writer.WriteByte((byte)value); return;
-                    case 4: writer.WriteInt16((Int16)value); return;
-                    case 5: writer.WriteUInt16((UInt16)value); return;
-                    case 6: writer.WriteInt32((int)value); return;
-                    case 7: writer.WriteUInt32((UInt32)value); return;
-                    case 8: writer.WriteInt64((long)value); return;
-                    case 9: writer.WriteUInt64((UInt64)value); return;
-                    case 10: writer.WriteSingle((Single)value); return;
-                    case 11: writer.WriteDouble((double)value); return;
-                    case 12: ISO8601DateTimeFormatter.Default.Serialize(ref writer, (DateTime)value, formatterResolver); return;
-                    case 13: writer.WriteString((string)value); return;
-                    case 14: ByteArrayFormatter.Default.Serialize(ref writer, (byte[])value, formatterResolver); return;
+                    case 0:
+                        writer.WriteBoolean((bool)value);
+                        return;
+                    case 1:
+                        CharFormatter.Default.Serialize(ref writer, (char)value, formatterResolver);
+                        return;
+                    case 2:
+                        writer.WriteSByte((sbyte)value);
+                        return;
+                    case 3:
+                        writer.WriteByte((byte)value);
+                        return;
+                    case 4:
+                        writer.WriteInt16((Int16)value);
+                        return;
+                    case 5:
+                        writer.WriteUInt16((UInt16)value);
+                        return;
+                    case 6:
+                        writer.WriteInt32((int)value);
+                        return;
+                    case 7:
+                        writer.WriteUInt32((UInt32)value);
+                        return;
+                    case 8:
+                        writer.WriteInt64((long)value);
+                        return;
+                    case 9:
+                        writer.WriteUInt64((UInt64)value);
+                        return;
+                    case 10:
+                        writer.WriteSingle((Single)value);
+                        return;
+                    case 11:
+                        writer.WriteDouble((double)value);
+                        return;
+                    case 12:
+                        ISO8601DateTimeFormatter.Default.Serialize(ref writer, (DateTime)value, formatterResolver);
+                        return;
+                    case 13:
+                        writer.WriteString((string)value);
+                        return;
+                    case 14:
+                        ByteArrayFormatter.Default.Serialize(ref writer, (byte[])value, formatterResolver);
+                        return;
                     default:
                         break;
                 }
@@ -108,29 +138,29 @@ namespace Utf8Json.Formatters
             switch (token)
             {
                 case JsonToken.BeginObject:
+                {
+                    var dict = new Dictionary<string, object>();
+                    reader.ReadIsBeginObjectWithVerify();
+                    var count = 0;
+                    while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref count))
                     {
-                        var dict = new Dictionary<string, object>();
-                        reader.ReadIsBeginObjectWithVerify();
-                        var count = 0;
-                        while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref count))
-                        {
-                            var key = reader.ReadPropertyName();
-                            var value = Deserialize(ref reader, formatterResolver);
-                            dict.Add(key, value);
-                        }
-                        return dict;
+                        var key = reader.ReadPropertyName();
+                        var value = Deserialize(ref reader, formatterResolver);
+                        dict.Add(key, value);
                     }
+                    return dict;
+                }
                 case JsonToken.BeginArray:
+                {
+                    var list = new List<object>(4);
+                    reader.ReadIsBeginArrayWithVerify();
+                    var count = 0;
+                    while (!reader.ReadIsEndArrayWithSkipValueSeparator(ref count))
                     {
-                        var list = new List<object>(4);
-                        reader.ReadIsBeginArrayWithVerify();
-                        var count = 0;
-                        while (!reader.ReadIsEndArrayWithSkipValueSeparator(ref count))
-                        {
-                            list.Add(Deserialize(ref reader, formatterResolver));
-                        }
-                        return list;
+                        list.Add(Deserialize(ref reader, formatterResolver));
                     }
+                    return list;
+                }
                 case JsonToken.Number:
                     return reader.ReadDouble();
                 case JsonToken.String:

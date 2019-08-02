@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Utf8Json.Internal;
-
 #if NETSTANDARD
 using System.Runtime.CompilerServices;
+
 #endif
 
 namespace Utf8Json
@@ -20,14 +20,12 @@ namespace Utf8Json
         static readonly ArraySegment<byte> nullTokenSegment = new ArraySegment<byte>(new byte[] { 110, 117, 108, 108 }, 0, 4);
         static readonly byte[] bom = Encoding.UTF8.GetPreamble();
 
-
         readonly byte[] bytes;
         int offset;
 
         public JsonReader(byte[] bytes)
             : this(bytes, 0)
         {
-
         }
 
         public JsonReader(byte[] bytes, int offset)
@@ -75,7 +73,9 @@ namespace Utf8Json
                         break;
                 }
             }
-            catch { }
+            catch
+            {
+            }
 
             return new JsonParsingException("expected:'" + expected + "', actual:'" + actual + "', at offset:" + pos, bytes, pos, offset, actual);
         }
@@ -88,13 +88,7 @@ namespace Utf8Json
             return new JsonParsingException(message, bytes, pos, pos, actual);
         }
 
-        bool IsInRange
-        {
-            get
-            {
-                return offset < bytes.Length;
-            }
-        }
+        bool IsInRange { get { return offset < bytes.Length; } }
 
         public void AdvanceOffset(int offset)
         {
@@ -462,6 +456,7 @@ namespace Utf8Json
                 return false;
             }
         }
+
         public void ReadIsEndObjectWithVerify()
         {
             if (!ReadIsEndObject()) throw CreateParsingException("}");
@@ -1065,7 +1060,8 @@ namespace Utf8Json
                     {
                         ReadNextCore(token);
                         token = GetCurrentJsonToken();
-                    } while (stack != 0 && !((int)token < 5)); // !(None, Begin/EndObject, Begin/EndArray)
+                    }
+                    while (stack != 0 && !((int)token < 5)); // !(None, Begin/EndObject, Begin/EndArray)
 
                     if (stack != 0)
                     {
@@ -1208,7 +1204,6 @@ namespace Utf8Json
             }
             else if (bytes[offset + 1] == '*')
             {
-
                 offset += 2; // '/' + '*';
                 for (int i = offset; i < bytes.Length; i++)
                 {
@@ -1225,11 +1220,9 @@ namespace Utf8Json
 
         internal static class StringBuilderCache
         {
-            [ThreadStatic]
-            static byte[] buffer;
+            [ThreadStatic] static byte[] buffer;
 
-            [ThreadStatic]
-            static char[] codePointStringBuffer;
+            [ThreadStatic] static char[] codePointStringBuffer;
 
             public static byte[] GetBuffer()
             {
@@ -1261,7 +1254,6 @@ namespace Utf8Json
         public JsonParsingException(string message)
             : base(message)
         {
-
         }
 
         public JsonParsingException(string message, byte[] underlyingBytes, int offset, int limit, string actualChar)

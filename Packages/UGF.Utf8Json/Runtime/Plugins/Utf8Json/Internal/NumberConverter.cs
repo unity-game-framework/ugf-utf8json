@@ -6,9 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Utf8Json.Internal.DoubleConversion;
-
 #if NETSTANDARD
 using System.Runtime.CompilerServices;
+
 #endif
 
 namespace Utf8Json.Internal
@@ -199,10 +199,23 @@ namespace Utf8Json.Internal
 
             if (num1 < 10000)
             {
-                if (num1 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 1); goto L1; }
-                if (num1 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 2); goto L2; }
-                if (num1 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 3); goto L3; }
-                BinaryUtil.EnsureCapacity(ref buffer, offset, 4); goto L4;
+                if (num1 < 10)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 1);
+                    goto L1;
+                }
+                if (num1 < 100)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 2);
+                    goto L2;
+                }
+                if (num1 < 1000)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 3);
+                    goto L3;
+                }
+                BinaryUtil.EnsureCapacity(ref buffer, offset, 4);
+                goto L4;
             }
             else
             {
@@ -210,10 +223,23 @@ namespace Utf8Json.Internal
                 num1 -= num2 * 10000;
                 if (num2 < 10000)
                 {
-                    if (num2 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 5); goto L5; }
-                    if (num2 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 6); goto L6; }
-                    if (num2 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 7); goto L7; }
-                    BinaryUtil.EnsureCapacity(ref buffer, offset, 8); goto L8;
+                    if (num2 < 10)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 5);
+                        goto L5;
+                    }
+                    if (num2 < 100)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 6);
+                        goto L6;
+                    }
+                    if (num2 < 1000)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 7);
+                        goto L7;
+                    }
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 8);
+                    goto L8;
                 }
                 else
                 {
@@ -221,10 +247,23 @@ namespace Utf8Json.Internal
                     num2 -= num3 * 10000;
                     if (num3 < 10000)
                     {
-                        if (num3 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 9); goto L9; }
-                        if (num3 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 10); goto L10; }
-                        if (num3 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 11); goto L11; }
-                        BinaryUtil.EnsureCapacity(ref buffer, offset, 12); goto L12;
+                        if (num3 < 10)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 9);
+                            goto L9;
+                        }
+                        if (num3 < 100)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 10);
+                            goto L10;
+                        }
+                        if (num3 < 1000)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 11);
+                            goto L11;
+                        }
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 12);
+                        goto L12;
                     }
                     else
                     {
@@ -232,10 +271,23 @@ namespace Utf8Json.Internal
                         num3 -= num4 * 10000;
                         if (num4 < 10000)
                         {
-                            if (num4 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 13); goto L13; }
-                            if (num4 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 14); goto L14; }
-                            if (num4 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 15); goto L15; }
-                            BinaryUtil.EnsureCapacity(ref buffer, offset, 16); goto L16;
+                            if (num4 < 10)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 13);
+                                goto L13;
+                            }
+                            if (num4 < 100)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 14);
+                                goto L14;
+                            }
+                            if (num4 < 1000)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 15);
+                                goto L15;
+                            }
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 16);
+                            goto L16;
                         }
                         else
                         {
@@ -243,10 +295,23 @@ namespace Utf8Json.Internal
                             num4 -= num5 * 10000;
                             if (num5 < 10000)
                             {
-                                if (num5 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 17); goto L17; }
-                                if (num5 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 18); goto L18; }
-                                if (num5 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 19); goto L19; }
-                                BinaryUtil.EnsureCapacity(ref buffer, offset, 20); goto L20;
+                                if (num5 < 10)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 17);
+                                    goto L17;
+                                }
+                                if (num5 < 100)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 18);
+                                    goto L18;
+                                }
+                                if (num5 < 1000)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 19);
+                                    goto L19;
+                                }
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 20);
+                                goto L20;
                             }
                             L20:
                             buffer[offset++] = (byte)('0' + (div = (num5 * 8389UL) >> 23));
@@ -377,10 +442,23 @@ namespace Utf8Json.Internal
 
             if (num1 < 10000)
             {
-                if (num1 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 1); goto L1; }
-                if (num1 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 2); goto L2; }
-                if (num1 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 3); goto L3; }
-                BinaryUtil.EnsureCapacity(ref buffer, offset, 4); goto L4;
+                if (num1 < 10)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 1);
+                    goto L1;
+                }
+                if (num1 < 100)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 2);
+                    goto L2;
+                }
+                if (num1 < 1000)
+                {
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 3);
+                    goto L3;
+                }
+                BinaryUtil.EnsureCapacity(ref buffer, offset, 4);
+                goto L4;
             }
             else
             {
@@ -388,10 +466,23 @@ namespace Utf8Json.Internal
                 num1 -= num2 * 10000;
                 if (num2 < 10000)
                 {
-                    if (num2 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 5); goto L5; }
-                    if (num2 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 6); goto L6; }
-                    if (num2 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 7); goto L7; }
-                    BinaryUtil.EnsureCapacity(ref buffer, offset, 8); goto L8;
+                    if (num2 < 10)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 5);
+                        goto L5;
+                    }
+                    if (num2 < 100)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 6);
+                        goto L6;
+                    }
+                    if (num2 < 1000)
+                    {
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 7);
+                        goto L7;
+                    }
+                    BinaryUtil.EnsureCapacity(ref buffer, offset, 8);
+                    goto L8;
                 }
                 else
                 {
@@ -399,10 +490,23 @@ namespace Utf8Json.Internal
                     num2 -= num3 * 10000;
                     if (num3 < 10000)
                     {
-                        if (num3 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 9); goto L9; }
-                        if (num3 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 10); goto L10; }
-                        if (num3 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 11); goto L11; }
-                        BinaryUtil.EnsureCapacity(ref buffer, offset, 12); goto L12;
+                        if (num3 < 10)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 9);
+                            goto L9;
+                        }
+                        if (num3 < 100)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 10);
+                            goto L10;
+                        }
+                        if (num3 < 1000)
+                        {
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 11);
+                            goto L11;
+                        }
+                        BinaryUtil.EnsureCapacity(ref buffer, offset, 12);
+                        goto L12;
                     }
                     else
                     {
@@ -410,10 +514,23 @@ namespace Utf8Json.Internal
                         num3 -= num4 * 10000;
                         if (num4 < 10000)
                         {
-                            if (num4 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 13); goto L13; }
-                            if (num4 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 14); goto L14; }
-                            if (num4 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 15); goto L15; }
-                            BinaryUtil.EnsureCapacity(ref buffer, offset, 16); goto L16;
+                            if (num4 < 10)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 13);
+                                goto L13;
+                            }
+                            if (num4 < 100)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 14);
+                                goto L14;
+                            }
+                            if (num4 < 1000)
+                            {
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 15);
+                                goto L15;
+                            }
+                            BinaryUtil.EnsureCapacity(ref buffer, offset, 16);
+                            goto L16;
                         }
                         else
                         {
@@ -421,10 +538,23 @@ namespace Utf8Json.Internal
                             num4 -= num5 * 10000;
                             if (num5 < 10000)
                             {
-                                if (num5 < 10) { BinaryUtil.EnsureCapacity(ref buffer, offset, 17); goto L17; }
-                                if (num5 < 100) { BinaryUtil.EnsureCapacity(ref buffer, offset, 18); goto L18; }
-                                if (num5 < 1000) { BinaryUtil.EnsureCapacity(ref buffer, offset, 19); goto L19; }
-                                BinaryUtil.EnsureCapacity(ref buffer, offset, 20); goto L20;
+                                if (num5 < 10)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 17);
+                                    goto L17;
+                                }
+                                if (num5 < 100)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 18);
+                                    goto L18;
+                                }
+                                if (num5 < 1000)
+                                {
+                                    BinaryUtil.EnsureCapacity(ref buffer, offset, 19);
+                                    goto L19;
+                                }
+                                BinaryUtil.EnsureCapacity(ref buffer, offset, 20);
+                                goto L20;
                             }
                             L20:
                             buffer[offset++] = (byte)('0' + (div = (num5 * 8389L) >> 23));

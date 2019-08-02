@@ -17,7 +17,6 @@ namespace Utf8Json.Resolvers
 
         AttributeFormatterResolver()
         {
-
         }
 
         public IJsonFormatter<T> GetFormatter<T>()

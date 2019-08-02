@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -98,7 +100,7 @@ namespace Utf8Json.Internal.DoubleConversion
 
             // This method is mainly called for normalizing boundaries. In general
             // boundaries need to be shifted by 10 bits. We thus optimize for this case.
-            const ulong k10MSBits = 0xFFC0000000000000; // UINT64_2PART_C(0xFFC00000, 00000000); 
+            const ulong k10MSBits = 0xFFC0000000000000; // UINT64_2PART_C(0xFFC00000, 00000000);
             while ((significand & k10MSBits) == 0)
             {
                 significand <<= 10;

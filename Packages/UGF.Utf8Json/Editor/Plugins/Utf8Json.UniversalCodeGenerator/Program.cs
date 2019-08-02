@@ -21,7 +21,6 @@ namespace Utf8Json.UniversalCodeGenerator
         public string NamespaceRoot { get; private set; }
         public bool AllowInternal { get; private set; }
 
-
         public bool IsParsed { get; set; }
 
         public CommandlineArguments(string[] args)
@@ -36,7 +35,7 @@ namespace Utf8Json.UniversalCodeGenerator
             var option = new OptionSet()
             {
                 { "i|inputFiles=", "[optional]Input path of cs files(',' separated)", x => { InputFiles.AddRange(x.Split(',')); } },
-                { "d|inputDirs=",  "[optional]Input path of dirs(',' separated)", x =>  { InputDirectories.AddRange(x.Split(',')); } },
+                { "d|inputDirs=", "[optional]Input path of dirs(',' separated)", x => { InputDirectories.AddRange(x.Split(',')); } },
                 { "o|output=", "[required]Output file path", x => { OutputPath = x; } },
                 { "f|allowInternal", "[optional, default=false]Allow generate internal(friend)", x => { AllowInternal = true; } },
                 { "c|conditionalsymbol=", "[optional, default=empty]conditional compiler symbol", x => { ConditionalSymbols.AddRange(x.Split(',')); } },
@@ -82,7 +81,6 @@ namespace Utf8Json.UniversalCodeGenerator
             //var inputDirectories = new[] { @"C:\Users\y.kawai\Documents\Grani\IvoryLfs\Ivory\Ivory.Shared" };
 
             //var c = new TypeCollector(inputFiles, inputDirectories, new string[0], true);
-
 
             var cmdArgs = new CommandlineArguments(args);
             if (!cmdArgs.IsParsed)

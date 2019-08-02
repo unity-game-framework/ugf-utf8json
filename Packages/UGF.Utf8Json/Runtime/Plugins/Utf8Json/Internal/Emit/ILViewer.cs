@@ -26,7 +26,7 @@ namespace Utf8Json.Internal
             foreach (var fi in typeof(OpCodes).GetFields(BindingFlags.Public | BindingFlags.Static))
             {
                 var opCode = (OpCode)fi.GetValue(null);
-                var value =  unchecked((ushort)opCode.Value);
+                var value = unchecked((ushort)opCode.Value);
 
                 if (value < 0x100)
                 {
@@ -66,7 +66,6 @@ namespace Utf8Json.Internal
     }
 
 #if DEBUG && NETSTANDARD
-
     // not yet completed so only for debug.
     public static class ILViewer
     {

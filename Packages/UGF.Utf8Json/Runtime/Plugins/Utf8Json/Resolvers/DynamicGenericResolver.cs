@@ -22,7 +22,6 @@ namespace Utf8Json.Resolvers
 
         DynamicGenericResolver()
         {
-
         }
 
         public IJsonFormatter<T> GetFormatter<T>()
@@ -48,22 +47,22 @@ namespace Utf8Json.Resolvers.Internal
     {
         static readonly Dictionary<Type, Type> formatterMap = new Dictionary<Type, Type>()
         {
-            {typeof(List<>), typeof(ListFormatter<>)},
-            {typeof(LinkedList<>), typeof(LinkedListFormatter<>)},
-            {typeof(Queue<>), typeof(QeueueFormatter<>)},
-            {typeof(Stack<>), typeof(StackFormatter<>)},
-            {typeof(HashSet<>), typeof(HashSetFormatter<>)},
-            {typeof(ReadOnlyCollection<>), typeof(ReadOnlyCollectionFormatter<>)},
-            {typeof(IList<>), typeof(InterfaceListFormatter<>)},
-            {typeof(ICollection<>), typeof(InterfaceCollectionFormatter<>)},
-            {typeof(IEnumerable<>), typeof(InterfaceEnumerableFormatter<>)},
-            {typeof(Dictionary<,>), typeof(DictionaryFormatter<,>)},
-            {typeof(IDictionary<,>), typeof(InterfaceDictionaryFormatter<,>)},
-            {typeof(SortedDictionary<,>), typeof(SortedDictionaryFormatter<,>)},
-            {typeof(SortedList<,>), typeof(SortedListFormatter<,>)},
-            {typeof(ILookup<,>), typeof(InterfaceLookupFormatter<,>)},
-            {typeof(IGrouping<,>), typeof(InterfaceGroupingFormatter<,>)},
-            #if NETSTANDARD
+            { typeof(List<>), typeof(ListFormatter<>) },
+            { typeof(LinkedList<>), typeof(LinkedListFormatter<>) },
+            { typeof(Queue<>), typeof(QeueueFormatter<>) },
+            { typeof(Stack<>), typeof(StackFormatter<>) },
+            { typeof(HashSet<>), typeof(HashSetFormatter<>) },
+            { typeof(ReadOnlyCollection<>), typeof(ReadOnlyCollectionFormatter<>) },
+            { typeof(IList<>), typeof(InterfaceListFormatter<>) },
+            { typeof(ICollection<>), typeof(InterfaceCollectionFormatter<>) },
+            { typeof(IEnumerable<>), typeof(InterfaceEnumerableFormatter<>) },
+            { typeof(Dictionary<,>), typeof(DictionaryFormatter<,>) },
+            { typeof(IDictionary<,>), typeof(InterfaceDictionaryFormatter<,>) },
+            { typeof(SortedDictionary<,>), typeof(SortedDictionaryFormatter<,>) },
+            { typeof(SortedList<,>), typeof(SortedListFormatter<,>) },
+            { typeof(ILookup<,>), typeof(InterfaceLookupFormatter<,>) },
+            { typeof(IGrouping<,>), typeof(InterfaceGroupingFormatter<,>) },
+#if NETSTANDARD
             {typeof(ObservableCollection<>), typeof(ObservableCollectionFormatter<>)},
             {typeof(ReadOnlyObservableCollection<>),(typeof(ReadOnlyObservableCollectionFormatter<>))},
             {typeof(IReadOnlyList<>), typeof(InterfaceReadOnlyListFormatter<>)},
@@ -77,7 +76,7 @@ namespace Utf8Json.Resolvers.Internal
             {typeof(System.Collections.Concurrent.ConcurrentDictionary<,>), typeof(ConcurrentDictionaryFormatter<,>)},
             {typeof(Lazy<>), typeof(LazyFormatter<>)},
             {typeof(Task<>), typeof(TaskValueFormatter<>)},
-            #endif
+#endif
         };
 
         // Reduce IL2CPP code generate size(don't write long code in <T>)
@@ -129,9 +128,7 @@ namespace Utf8Json.Resolvers.Internal
                 {
                     return CreateInstance(typeof(NullableFormatter<>), new[] { nullableElementType });
                 }
-
 #if NETSTANDARD
-
                 // ValueTask
                 else if (genericType == typeof(ValueTask<>))
                 {
@@ -215,7 +212,6 @@ namespace Utf8Json.Resolvers.Internal
 
                     return CreateInstance(tupleFormatterType, ti.GenericTypeArguments);
                 }
-
 #endif
 
                 // ArraySegement
@@ -253,16 +249,16 @@ namespace Utf8Json.Resolvers.Internal
 
                     // generic collection
                     else if (ti.GenericTypeArguments.Length == 1
-                          && ti.ImplementedInterfaces.Any(x => x.GetTypeInfo().IsConstructedGenericType() && x.GetGenericTypeDefinition() == typeof(ICollection<>))
-                          && ti.DeclaredConstructors.Any(x => x.GetParameters().Length == 0))
+                             && ti.ImplementedInterfaces.Any(x => x.GetTypeInfo().IsConstructedGenericType() && x.GetGenericTypeDefinition() == typeof(ICollection<>))
+                             && ti.DeclaredConstructors.Any(x => x.GetParameters().Length == 0))
                     {
                         var elemType = ti.GenericTypeArguments[0];
                         return CreateInstance(typeof(GenericCollectionFormatter<,>), new[] { elemType, t });
                     }
                     // generic dictionary
                     else if (ti.GenericTypeArguments.Length == 2
-                          && ti.ImplementedInterfaces.Any(x => x.GetTypeInfo().IsConstructedGenericType() && x.GetGenericTypeDefinition() == typeof(IDictionary<,>))
-                          && ti.DeclaredConstructors.Any(x => x.GetParameters().Length == 0))
+                             && ti.ImplementedInterfaces.Any(x => x.GetTypeInfo().IsConstructedGenericType() && x.GetGenericTypeDefinition() == typeof(IDictionary<,>))
+                             && ti.DeclaredConstructors.Any(x => x.GetParameters().Length == 0))
                     {
                         var keyType = ti.GenericTypeArguments[0];
                         var valueType = ti.GenericTypeArguments[1];
@@ -308,4 +304,3 @@ namespace Utf8Json.Resolvers.Internal
         }
     }
 }
-

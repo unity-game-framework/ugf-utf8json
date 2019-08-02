@@ -64,7 +64,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, SByte? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteSByte(value.Value);
@@ -194,7 +198,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Int16? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteInt16(value.Value);
@@ -324,7 +332,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Int32? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteInt32(value.Value);
@@ -454,7 +466,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Int64? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteInt64(value.Value);
@@ -584,7 +600,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Byte? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteByte(value.Value);
@@ -600,7 +620,6 @@ namespace Utf8Json.Formatters
             return NumberConverter.ReadByte(key.Array, key.Offset, out _);
         }
     }
-
 
     public sealed class UInt16Formatter : IJsonFormatter<UInt16>, IObjectPropertyNameFormatter<UInt16>
     {
@@ -661,7 +680,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, UInt16? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteUInt16(value.Value);
@@ -791,7 +814,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, UInt32? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteUInt32(value.Value);
@@ -921,7 +948,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, UInt64? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteUInt64(value.Value);
@@ -1051,7 +1082,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Single? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteSingle(value.Value);
@@ -1181,7 +1216,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Double? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteDouble(value.Value);
@@ -1311,7 +1350,11 @@ namespace Utf8Json.Formatters
 
         public void SerializeToPropertyName(ref JsonWriter writer, Boolean? value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteQuotation();
             writer.WriteBoolean(value.Value);
@@ -1381,5 +1424,4 @@ namespace Utf8Json.Formatters
             }
         }
     }
-
 }

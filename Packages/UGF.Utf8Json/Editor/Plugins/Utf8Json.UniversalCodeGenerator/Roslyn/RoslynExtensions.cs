@@ -107,7 +107,8 @@ namespace Utf8Json.UniversalCodeGenerator
                 var data = FindAttributeShortName(property.GetAttributes(), typeName);
                 if (data != null) return data;
                 property = property.OverriddenProperty;
-            } while (property != null);
+            }
+            while (property != null);
 
             return null;
         }

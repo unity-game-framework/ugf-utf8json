@@ -15,6 +15,7 @@ namespace Utf8Json.Resolvers
     {
         /// <summary>Serialize as Name.</summary>
         public static readonly IJsonFormatterResolver Default = EnumDefaultResolver.Instance;
+
         /// <summary>Serialize as Value.</summary>
         public static readonly IJsonFormatterResolver UnderlyingValue = EnumUnderlyingValueResolver.Instance;
     }

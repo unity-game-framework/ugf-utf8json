@@ -1,4 +1,6 @@
-﻿using System;
+﻿// ReSharper disable all
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -19,17 +21,7 @@ namespace Utf8Json.Internal.DoubleConversion
             this._length = length;
         }
 
-        public byte this[int i]
-        {
-            get
-            {
-                return bytes[start + i];
-            }
-            set
-            {
-                bytes[start + i] = value;
-            }
-        }
+        public byte this[int i] { get { return bytes[start + i]; } set { bytes[start + i] = value; } }
 
         public int length()
         {
@@ -59,8 +51,7 @@ namespace Utf8Json.Internal.DoubleConversion
 
     internal static class StringToDouble
     {
-        [ThreadStatic]
-        static byte[] copyBuffer;
+        [ThreadStatic] static byte[] copyBuffer;
 
         static byte[] GetCopyBuffer()
         {
@@ -75,6 +66,7 @@ namespace Utf8Json.Internal.DoubleConversion
         // Any integer with at most 15 decimal digits will hence fit into a double
         // (which has a 53bit significand) without loss of precision.
         const int kMaxExactDoubleIntegerDecimalDigits = 15;
+
         // 2^64 = 18446744073709551616 > 10^19
         const int kMaxUint64DecimalDigits = 19;
 
@@ -90,8 +82,9 @@ namespace Utf8Json.Internal.DoubleConversion
         // 2^64 = 18446744073709551616
         const uint64_t kMaxUint64 = 0xFFFFFFFFFFFFFFFF;
 
-        static readonly double[] exact_powers_of_ten = new double[]{
-            1.0,  // 10^0
+        static readonly double[] exact_powers_of_ten = new double[]
+        {
+            1.0, // 10^0
             10.0,
             100.0,
             1000.0,
@@ -101,7 +94,7 @@ namespace Utf8Json.Internal.DoubleConversion
             10000000.0,
             100000000.0,
             1000000000.0,
-            10000000000.0,  // 10^10
+            10000000000.0, // 10^10
             100000000000.0,
             1000000000000.0,
             10000000000000.0,
@@ -111,11 +104,12 @@ namespace Utf8Json.Internal.DoubleConversion
             100000000000000000.0,
             1000000000000000000.0,
             10000000000000000000.0,
-            100000000000000000000.0,  // 10^20
+            100000000000000000000.0, // 10^20
             1000000000000000000000.0,
             // 10^22 = 0x21e19e0c9bab2400000 = 0x878678326eac9 * 2^22
             10000000000000000000000.0
         };
+
         static readonly int kExactPowersOfTenSize = exact_powers_of_ten.Length;
 
         // Maximum number of significant digits in the decimal representation.
@@ -147,11 +141,10 @@ namespace Utf8Json.Internal.DoubleConversion
             return new Vector(buffer.bytes, buffer.start, 0);
         }
 
-
         static void CutToMaxSignificantDigits(Vector buffer,
-                                       int exponent,
-                                       byte[] significant_buffer,
-                                       out int significant_exponent)
+            int exponent,
+            byte[] significant_buffer,
+            out int significant_exponent)
         {
             for (int i = 0; i < kMaxSignificantDecimalDigits - 1; ++i)
             {
@@ -171,8 +164,8 @@ namespace Utf8Json.Internal.DoubleConversion
         // modified (due to cutting), then the input needs to be copied into the
         // buffer_copy_space.
         static void TrimAndCut(Vector buffer, int exponent,
-                       byte[] buffer_copy_space, int space_size,
-                       out Vector trimmed, out int updated_exponent)
+            byte[] buffer_copy_space, int space_size,
+            out Vector trimmed, out int updated_exponent)
         {
             Vector left_trimmed = TrimLeadingZeros(buffer);
             Vector right_trimmed = TrimTrailingZeros(left_trimmed);
@@ -181,7 +174,7 @@ namespace Utf8Json.Internal.DoubleConversion
             {
                 // (void)space_size;  // Mark variable as used.
                 CutToMaxSignificantDigits(right_trimmed, exponent,
-                                          buffer_copy_space, out updated_exponent);
+                    buffer_copy_space, out updated_exponent);
                 trimmed = new Vector(buffer_copy_space, 0, kMaxSignificantDecimalDigits);
             }
             else
@@ -191,14 +184,13 @@ namespace Utf8Json.Internal.DoubleConversion
             }
         }
 
-
         // Reads digits from the buffer and converts them to a uint64.
         // Reads in as many digits as fit into a uint64.
         // When the string starts with "1844674407370955161" no further digit is read.
         // Since 2^64 = 18446744073709551616 it would still be possible read another
         // digit if it was less or equal than 6, but this would complicate the code.
         static uint64_t ReadUint64(Vector buffer,
-                           out int number_of_read_digits)
+            out int number_of_read_digits)
         {
             uint64_t result = 0;
             int i = 0;
@@ -216,8 +208,8 @@ namespace Utf8Json.Internal.DoubleConversion
         // If remaining_decimals is zero then the returned DiyFp is accurate.
         // Otherwise it has been rounded and has error of at most 1/2 ulp.
         static void ReadDiyFp(Vector buffer,
-                      out DiyFp result,
-                      out int remaining_decimals)
+            out DiyFp result,
+            out int remaining_decimals)
         {
             int read_digits;
             uint64_t significand = ReadUint64(buffer, out read_digits);
@@ -240,10 +232,9 @@ namespace Utf8Json.Internal.DoubleConversion
             }
         }
 
-
         static bool DoubleStrtod(Vector trimmed,
-                         int exponent,
-                         out double result)
+            int exponent,
+            out double result)
         {
             if (trimmed.length() <= kMaxExactDoubleIntegerDecimalDigits)
             {
@@ -286,7 +277,6 @@ namespace Utf8Json.Internal.DoubleConversion
             return false;
         }
 
-
         // Returns 10^exponent as an exact DiyFp.
         // The given exponent must be in the range [1; kDecimalExponentDistance[.
         static DiyFp AdjustmentPowerOfTen(int exponent)
@@ -311,8 +301,8 @@ namespace Utf8Json.Internal.DoubleConversion
         // Otherwise it is either the correct double or the double that is just below
         // the correct double.
         static bool DiyFpStrtod(Vector buffer,
-                        int exponent,
-                        out double result)
+            int exponent,
+            out double result)
         {
             DiyFp input;
             int remaining_decimals;
@@ -340,8 +330,8 @@ namespace Utf8Json.Internal.DoubleConversion
             DiyFp cached_power;
             int cached_decimal_exponent;
             PowersOfTenCache.GetCachedPowerForDecimalExponent(exponent,
-                                                               out cached_power,
-                                                               out cached_decimal_exponent);
+                out cached_power,
+                out cached_decimal_exponent);
 
             if (cached_decimal_exponent != exponent)
             {
@@ -367,7 +357,7 @@ namespace Utf8Json.Internal.DoubleConversion
             //   error_b = 0.5  (all cached powers have an error of less than 0.5 ulp),
             //   error_ab = 0 or 1 / kDenominator > error_a*error_b/ 2^64
             int error_b = kDenominator / 2;
-            int error_ab = (error == 0 ? 0 : 1);  // We round up to 1.
+            int error_ab = (error == 0 ? 0 : 1); // We round up to 1.
             int fixed_error = kDenominator / 2;
             error += (ulong)(error_b + error_ab + fixed_error);
 
@@ -385,7 +375,7 @@ namespace Utf8Json.Internal.DoubleConversion
                 // half-way multiplied by the denominator exceeds the range of an uint64.
                 // Simply shift everything to the right.
                 int shift_amount = (precision_digits_count + kDenominatorLog) -
-                    DiyFp.kSignificandSize + 1;
+                                   DiyFp.kSignificandSize + 1;
                 input.f = (input.f >> shift_amount);
                 input.e = (input.e + shift_amount);
                 // We add 1 for the lost precision of error, and kDenominator for
@@ -426,7 +416,7 @@ namespace Utf8Json.Internal.DoubleConversion
         // Returns true if the guess is the correct double.
         // Returns false, when guess is either correct or the next-lower double.
         static bool ComputeGuess(Vector trimmed, int exponent,
-                                 out double guess)
+            out double guess)
         {
             if (trimmed.length() == 0)
             {
@@ -462,7 +452,7 @@ namespace Utf8Json.Internal.DoubleConversion
             Vector trimmed;
             int updated_exponent;
             TrimAndCut(buffer, exponent, copy_buffer, kMaxSignificantDecimalDigits,
-                       out trimmed, out updated_exponent);
+                out trimmed, out updated_exponent);
             exponent = updated_exponent;
 
             double guess;
@@ -477,7 +467,7 @@ namespace Utf8Json.Internal.DoubleConversion
             Vector trimmed;
             int updated_exponent;
             TrimAndCut(buffer, exponent, copy_buffer, kMaxSignificantDecimalDigits,
-                       out trimmed, out updated_exponent);
+                out trimmed, out updated_exponent);
             exponent = updated_exponent;
 
             double double_guess;

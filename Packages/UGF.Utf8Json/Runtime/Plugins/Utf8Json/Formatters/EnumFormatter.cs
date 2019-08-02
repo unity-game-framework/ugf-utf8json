@@ -151,17 +151,17 @@ namespace Utf8Json.Formatters
                 var value = item.GetValue(null);
                 var name = Enum.GetName(type, value);
                 var dataMember = item.GetCustomAttributes(typeof(DataMemberAttribute), true)
-                  .OfType<DataMemberAttribute>()
-                  .FirstOrDefault();
+                    .OfType<DataMemberAttribute>()
+                    .FirstOrDefault();
                 var enumMember = item.GetCustomAttributes(typeof(EnumMemberAttribute), true)
-                   .OfType<EnumMemberAttribute>()
-                   .FirstOrDefault();
+                    .OfType<EnumMemberAttribute>()
+                    .FirstOrDefault();
 
                 values.Add(value);
                 names.Add(
-                     (enumMember != null && enumMember.Value != null) ? enumMember.Value
-                   : (dataMember != null && dataMember.Name != null) ? dataMember.Name
-                   : name);
+                    (enumMember != null && enumMember.Value != null) ? enumMember.Value
+                    : (dataMember != null && dataMember.Name != null) ? dataMember.Name
+                    : name);
             }
 
             nameValueMapping = new ByteArrayStringHashTable<T>(names.Count);

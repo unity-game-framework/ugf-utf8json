@@ -1,7 +1,6 @@
 ﻿// ReSharper disable all
 
 #if NETSTANDARD
-
 using System;
 
 namespace Utf8Json.Internal

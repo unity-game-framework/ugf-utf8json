@@ -9,9 +9,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Utf8Json.Formatters.Internal;
 using Utf8Json.Internal;
-
 #if NETSTANDARD
 using System.Collections.Concurrent;
+
 #endif
 
 namespace Utf8Json.Formatters
@@ -22,7 +22,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, T[] value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteBeginArray();
             var formatter = formatterResolver.GetFormatterWithVerify<T>();
@@ -78,7 +82,11 @@ namespace Utf8Json.Formatters
 
         public void Serialize(ref JsonWriter writer, ArraySegment<T> value, IJsonFormatterResolver formatterResolver)
         {
-            if (value.Array == null) { writer.WriteNull(); return; }
+            if (value.Array == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             var array = value.Array;
             var offset = value.Offset;
@@ -137,7 +145,11 @@ namespace Utf8Json.Formatters
     {
         public void Serialize(ref JsonWriter writer, List<T> value, IJsonFormatterResolver formatterResolver)
         {
-            if (value == null) { writer.WriteNull(); return; }
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
 
             writer.WriteBeginArray();
             var formatter = formatterResolver.GetFormatterWithVerify<T>();
@@ -263,7 +275,7 @@ namespace Utf8Json.Formatters
     }
 
     public sealed class GenericCollectionFormatter<TElement, TCollection> : CollectionFormatterBase<TElement, TCollection>
-         where TCollection : class, ICollection<TElement>, new()
+        where TCollection : class, ICollection<TElement>, new()
     {
         protected override TCollection Create()
         {
@@ -321,7 +333,6 @@ namespace Utf8Json.Formatters
             return intermediateCollection;
         }
     }
-
 
     // should deserialize reverse order.
     public sealed class StackFormatter<T> : CollectionFormatterBase<T, ArrayBuffer<T>, Stack<T>.Enumerator, Stack<T>>
@@ -429,7 +440,6 @@ namespace Utf8Json.Formatters
             return intermediateCollection;
         }
     }
-
 
     public sealed class InterfaceEnumerableFormatter<T> : CollectionFormatterBase<T, ArrayBuffer<T>, IEnumerable<T>>
     {
@@ -566,13 +576,7 @@ namespace Utf8Json.Formatters
             this.elements = elements;
         }
 
-        public TKey Key
-        {
-            get
-            {
-                return key;
-            }
-        }
+        public TKey Key { get { return key; } }
 
         public IEnumerator<TElement> GetEnumerator()
         {
@@ -594,21 +598,9 @@ namespace Utf8Json.Formatters
             this.groupings = groupings;
         }
 
-        public IEnumerable<TElement> this[TKey key]
-        {
-            get
-            {
-                return groupings[key];
-            }
-        }
+        public IEnumerable<TElement> this[TKey key] { get { return groupings[key]; } }
 
-        public int Count
-        {
-            get
-            {
-                return groupings.Count;
-            }
-        }
+        public int Count { get { return groupings.Count; } }
 
         public bool Contains(TKey key)
         {
@@ -815,7 +807,6 @@ namespace Utf8Json.Formatters
         }
     }
 
-
 #if NETSTANDARD
 
     public sealed class ObservableCollectionFormatter<T> : CollectionFormatterBase<T, ObservableCollection<T>>
@@ -956,7 +947,6 @@ namespace Utf8Json.Formatters
 #endif
 }
 
-
 namespace Utf8Json.Formatters.Internal
 {
     internal static class CollectionFormatterHelper
@@ -973,8 +963,8 @@ namespace Utf8Json.Formatters.Internal
             };
             groupingAutomata = new AutomataDictionary
             {
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Key"), 0 },
-                {JsonWriter.GetEncodedPropertyNameWithoutQuotation("Elements"), 1 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Key"), 0 },
+                { JsonWriter.GetEncodedPropertyNameWithoutQuotation("Elements"), 1 },
             };
         }
     }

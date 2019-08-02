@@ -4,9 +4,9 @@ using System.Reflection;
 using UGF.Assemblies.Runtime;
 using UGF.Types.Runtime;
 using UGF.Utf8Json.Runtime.ExternalType;
-using UGF.Utf8Json.Runtime.Resolvers.Unity;
 using Utf8Json;
 using Utf8Json.Resolvers;
+using Utf8Json.Unity;
 
 namespace UGF.Utf8Json.Runtime
 {

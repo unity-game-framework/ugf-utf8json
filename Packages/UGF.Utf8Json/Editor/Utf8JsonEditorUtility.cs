@@ -14,7 +14,7 @@ using UGF.Utf8Json.Editor.Analysis;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
-using Utf8Json.UniversalCodeGenerator;
+// using Utf8Json.UniversalCodeGenerator;
 using Assembly = UnityEditor.Compilation.Assembly;
 
 namespace UGF.Utf8Json.Editor
@@ -117,34 +117,36 @@ namespace UGF.Utf8Json.Editor
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
-            var arguments = new Utf8JsonGenerateArguments
-            {
-                IgnoreReadOnly = true,
-                IsTypeRequireAttribute = true,
-                TypeRequiredAttributeShortName = "Utf8JsonSerializable"
-            };
+            // var arguments = new Utf8JsonGenerateArguments
+            // {
+            //     IgnoreReadOnly = true,
+            //     IsTypeRequireAttribute = true,
+            //     TypeRequiredAttributeShortName = "Utf8JsonSerializable"
+            // };
+            //
+            // INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
+            // var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
+            //
+            // var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
+            // var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
+            // var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
+            //
+            // for (int i = 0; i < sourcePaths.Count; i++)
+            // {
+            //     walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
+            // }
+            //
+            // string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot, arguments);
+            // CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
+            //
+            // unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
+            // unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
+            // unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
+            // unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
+            //
+            // return unit.ToFullString();
 
-            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
-            var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
-
-            var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
-            var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
-
-            for (int i = 0; i < sourcePaths.Count; i++)
-            {
-                walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
-            }
-
-            string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot, arguments);
-            CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
-
-            unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
-            unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
-            unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
-            unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
-
-            return unit.ToFullString();
+            return null;
         }
 
         /// <summary>

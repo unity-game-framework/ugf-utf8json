@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -12,44 +13,44 @@ namespace UGF.Utf8Json.Editor
     {
         private static readonly HashSet<string> m_assemblies = new HashSet<string>();
 
-        private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
-        {
-            for (int i = 0; i < importedAssets.Length; i++)
-            {
-                HandleImported(m_assemblies, importedAssets[i]);
-            }
-
-            for (int i = 0; i < deletedAssets.Length; i++)
-            {
-                HandleDeleted(m_assemblies, deletedAssets[i]);
-            }
-
-            for (int i = 0; i < movedAssets.Length; i++)
-            {
-                HandleMoved(m_assemblies, movedAssets[i], movedFromAssetPaths[i]);
-            }
-
-            if (m_assemblies.Count > 0)
-            {
-                AssetDatabase.StartAssetEditing();
-
-                try
-                {
-                    foreach (string assembly in m_assemblies)
-                    {
-                        Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Debug.LogException(exception);
-                }
-
-                m_assemblies.Clear();
-
-                AssetDatabase.StopAssetEditing();
-            }
-        }
+        // private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
+        // {
+        //     for (int i = 0; i < importedAssets.Length; i++)
+        //     {
+        //         HandleImported(m_assemblies, importedAssets[i]);
+        //     }
+        //
+        //     for (int i = 0; i < deletedAssets.Length; i++)
+        //     {
+        //         HandleDeleted(m_assemblies, deletedAssets[i]);
+        //     }
+        //
+        //     for (int i = 0; i < movedAssets.Length; i++)
+        //     {
+        //         HandleMoved(m_assemblies, movedAssets[i], movedFromAssetPaths[i]);
+        //     }
+        //
+        //     if (m_assemblies.Count > 0)
+        //     {
+        //         AssetDatabase.StartAssetEditing();
+        //
+        //         try
+        //         {
+        //             foreach (string assembly in m_assemblies)
+        //             {
+        //                 Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
+        //             }
+        //         }
+        //         catch (Exception exception)
+        //         {
+        //             Debug.LogException(exception);
+        //         }
+        //
+        //         m_assemblies.Clear();
+        //
+        //         AssetDatabase.StopAssetEditing();
+        //     }
+        // }
 
         private static void HandleImported(ICollection<string> assemblies, string path)
         {
@@ -117,7 +118,7 @@ namespace UGF.Utf8Json.Editor
         private static bool IsAssemblyHasGeneratedScript(string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
-            string assemblyGeneratedPath = Utf8JsonEditorUtility.GetPathForGeneratedScript(assemblyPath);
+            string assemblyGeneratedPath = CodeGenerateEditorUtility.GetPathForGeneratedScript(assemblyPath, "Utf8Json");
 
             return !string.IsNullOrEmpty(assemblyPath) && File.Exists(assemblyGeneratedPath);
         }

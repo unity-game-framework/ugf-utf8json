@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Utf8Json;
-using Utf8Json.Formatters;
 
 namespace UGF.Utf8Json.Runtime
 {

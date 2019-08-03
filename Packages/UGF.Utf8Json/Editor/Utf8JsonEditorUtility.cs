@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UGF.Code.Generate.Editor.Container.External;
+using UGF.Utf8Json.Editor.Analysis;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
-// using Utf8Json.UniversalCodeGenerator;
+using Utf8Json.UniversalCodeGenerator;
 using Assembly = UnityEditor.Compilation.Assembly;
 
 namespace UGF.Utf8Json.Editor
@@ -35,7 +37,7 @@ namespace UGF.Utf8Json.Editor
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
-            string sourcePath = GetPathForGeneratedScript(path);
+            string sourcePath = CodeGenerateEditorUtility.GetPathForGeneratedScript(path, "Utf8Json");
             string source = GenerateFromAssembly(path, validation, compilation, generator);
 
             File.WriteAllText(sourcePath, source);
@@ -132,62 +134,34 @@ namespace UGF.Utf8Json.Editor
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
-            // var arguments = new Utf8JsonGenerateArguments
-            // {
-            //     IgnoreReadOnly = true,
-            //     IsTypeRequireAttribute = true,
-            //     TypeRequiredAttributeShortName = "Utf8JsonSerializable"
-            // };
-            //
-            // INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
-            // var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
-            //
-            // var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            // var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
-            // var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
-            //
-            // for (int i = 0; i < sourcePaths.Count; i++)
-            // {
-            //     walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
-            // }
-            //
-            // string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot, arguments);
-            // CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
-            //
-            // unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
-            // unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
-            // unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
-            // unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
-            //
-            // return unit.ToFullString();
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets path for generated source from the specified path.
-        /// </summary>
-        /// <param name="path">The path used to generated.</param>
-        public static string GetPathForGeneratedScript(string path)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentNullException(nameof(path));
-
-            var builder = new StringBuilder();
-            string directory = Path.GetDirectoryName(path);
-            string name = Path.GetFileNameWithoutExtension(path);
-
-            if (!string.IsNullOrEmpty(directory))
+            var arguments = new Utf8JsonGenerateArguments
             {
-                directory = directory.Replace("\\", "/");
+                IgnoreReadOnly = true,
+                IsTypeRequireAttribute = true,
+                TypeRequiredAttributeShortName = "Utf8JsonSerializable"
+            };
 
-                builder.Append(directory);
-                builder.Append("/");
+            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
+            var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
+
+            var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
+            var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
+            var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
+
+            for (int i = 0; i < sourcePaths.Count; i++)
+            {
+                walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
             }
 
-            builder.Append(name);
-            builder.Append(".Utf8Json.Generated.cs");
+            string formatters = Utf8JsonUniversalCodeGeneratorUtility.GenerateFormatters(sourcePaths, namespaceRoot, arguments);
+            CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(formatters);
 
-            return builder.ToString();
+            unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
+            unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
+            unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
+            unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
+
+            return unit.ToFullString();
         }
 
         /// <summary>

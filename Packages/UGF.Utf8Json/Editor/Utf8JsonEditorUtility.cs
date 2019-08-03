@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Assemblies.Editor;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
-using UGF.Utf8Json.Editor.Analysis;
+using UGF.Code.Generate.Editor.Container;
+using UGF.Code.Generate.Editor.Container.External;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime;
 using UnityEditor;
@@ -29,16 +28,15 @@ namespace UGF.Utf8Json.Editor
         /// </summary>
         /// <param name="path">The path of the assembly definition file.</param>
         /// <param name="import">The value determines whether to force asset database import.</param>
+        /// <param name="validation">The container type validation used to generate externals.</param>
         /// <param name="compilation">The project compilation used during generation.</param>
         /// <param name="generator">The syntax generator used during generation.</param>
-        public static void GenerateAssetFromAssembly(string path, bool import = true, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
+        public static void GenerateAssetFromAssembly(string path, bool import = true, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
-            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             string sourcePath = GetPathForGeneratedScript(path);
-            string source = GenerateFromAssembly(path, compilation, generator);
+            string source = GenerateFromAssembly(path, validation, compilation, generator);
 
             File.WriteAllText(sourcePath, source);
 
@@ -52,11 +50,13 @@ namespace UGF.Utf8Json.Editor
         /// Generates source of the generated code for assembly from the specified path.
         /// </summary>
         /// <param name="path">The path of the assembly definition file.</param>
+        /// <param name="validation">The container type validation used to generate externals.</param>
         /// <param name="compilation">The project compilation used during generation.</param>
         /// <param name="generator">The syntax generator used during generation.</param>
-        public static string GenerateFromAssembly(string path, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateFromAssembly(string path, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
+            if (validation == null) validation = CodeGenerateContainerExternalEditorUtility.DefaultValidation;
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
@@ -90,7 +90,22 @@ namespace UGF.Utf8Json.Editor
 
                 Directory.CreateDirectory(externalsTempPath);
 
-                Utf8JsonExternalTypeEditorUtility.GenerateExternalContainers(externalsTempPath, externals, sourcePaths, compilation, generator);
+                for (int i = 0; i < externals.Count; i++)
+                {
+                    string externalPath = externals[i];
+
+                    if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out _))
+                    {
+                        SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
+
+                        string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
+                        string source = unit.NormalizeWhitespace().ToFullString();
+
+                        File.WriteAllText(sourcePath, source);
+
+                        sourcePaths.Add(sourcePath);
+                    }
+                }
             }
 
             string formatters = GenerateFormatters(sourcePaths, assembly.name, compilation, generator);
@@ -110,7 +125,7 @@ namespace UGF.Utf8Json.Editor
         /// <param name="namespaceRoot">The namespace root of the generated formatters.</param>
         /// <param name="compilation">The project compilation used during generation.</param>
         /// <param name="generator">The syntax generator used during generation.</param>
-        public static string GenerateFormatters(IReadOnlyList<string> sourcePaths, string namespaceRoot, CSharpCompilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateFormatters(IReadOnlyList<string> sourcePaths, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));

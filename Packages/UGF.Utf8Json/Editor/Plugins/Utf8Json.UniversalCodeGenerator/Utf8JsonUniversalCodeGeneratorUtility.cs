@@ -63,12 +63,12 @@ namespace Utf8Json.UniversalCodeGenerator
             return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot), arguments);
         }
 
-        internal static CommandlineArguments InternalGetArguments(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories = null, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
+        internal static GeneratorArguments InternalGetArguments(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories = null, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json")
         {
             if (inputFiles == null) throw new ArgumentNullException(nameof(inputFiles));
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Resolver name must be specified.", nameof(resolverName));
 
-            return new CommandlineArguments
+            return new GeneratorArguments
             {
                 InputFiles = new List<string>(inputFiles),
                 InputDirectories = inputDirectories != null ? new List<string>(inputDirectories) : new List<string>(),
@@ -79,9 +79,10 @@ namespace Utf8Json.UniversalCodeGenerator
             };
         }
 
-        internal static string InternalGenerate(CommandlineArguments arguments, Utf8JsonGenerateArguments arguments2)
+        internal static string InternalGenerate(GeneratorArguments arguments, Utf8JsonGenerateArguments arguments2)
         {
             var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
+            string namespaceDot = arguments.GetNamespaceDot();
 
             (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo) = collector.Collect();
 
@@ -89,15 +90,15 @@ namespace Utf8Json.UniversalCodeGenerator
                 .GroupBy(x => x.Namespace)
                 .Select(x => new FormatterTemplate
                 {
-                    Namespace = arguments.GetNamespaceDot() + "Formatters" + ((x.Key == null) ? "" : "." + x.Key),
+                    Namespace = $"{namespaceDot}Formatters{((x.Key == null) ? "" : $".{x.Key}")}",
                     objectSerializationInfos = x.ToArray(),
                 })
                 .ToArray();
 
             var resolverTemplate = new ResolverTemplate()
             {
-                Namespace = arguments.GetNamespaceDot() + "Resolvers",
-                FormatterNamespace = arguments.GetNamespaceDot() + "Formatters",
+                Namespace = $"{namespaceDot}Resolvers",
+                FormatterNamespace = $"{namespaceDot}Formatters",
                 ResolverName = arguments.ResolverName,
                 registerInfos = genericInfo.Cast<IResolverRegisterInfo>().Concat(objectInfo).ToArray()
             };
@@ -115,9 +116,10 @@ namespace Utf8Json.UniversalCodeGenerator
             return builder.ToString();
         }
 
-        internal static string InternalGenerateFormatters(CommandlineArguments arguments, Utf8JsonGenerateArguments arguments2)
+        internal static string InternalGenerateFormatters(GeneratorArguments arguments, Utf8JsonGenerateArguments arguments2)
         {
             var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
+            string namespaceDot = arguments.GetNamespaceDot();
 
             (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] _) = collector.Collect();
 
@@ -125,7 +127,7 @@ namespace Utf8Json.UniversalCodeGenerator
                 .GroupBy(x => x.Namespace)
                 .Select(x => new FormatterTemplate
                 {
-                    Namespace = arguments.GetNamespaceDot() + "Formatters" + ((x.Key == null) ? "" : "." + x.Key),
+                    Namespace = $"{namespaceDot}Formatters{((x.Key == null) ? "" : $".{x.Key}")}",
                     objectSerializationInfos = x.ToArray(),
                 })
                 .ToArray();

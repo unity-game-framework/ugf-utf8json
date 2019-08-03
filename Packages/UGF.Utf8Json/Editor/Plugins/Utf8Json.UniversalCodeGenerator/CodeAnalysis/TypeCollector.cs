@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Utf8Json.UniversalCodeGenerator
 {
-    public class ReferenceSymbols
+    internal class ReferenceSymbols
     {
         public readonly INamedTypeSymbol Task;
         public readonly INamedTypeSymbol TaskOfT;
@@ -30,7 +30,7 @@ namespace Utf8Json.UniversalCodeGenerator
         }
     }
 
-    public class TypeCollector
+    internal class TypeCollector
     {
         const string CodegeneratorOnlyPreprocessorSymbol = "INCLUDE_ONLY_CODE_GENERATION";
 
@@ -594,7 +594,7 @@ namespace Utf8Json.UniversalCodeGenerator
         }
     }
 
-    public class CodeGeneratorResolveFailedException : Exception
+    internal class CodeGeneratorResolveFailedException : Exception
     {
         public CodeGeneratorResolveFailedException(string message)
             : base(message)

@@ -24,7 +24,7 @@ namespace Utf8Json.CodeGenerator.Generator
     /// </summary>
 #line 1 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\ResolverTemplate.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public partial class ResolverTemplate : ResolverTemplateBase
+    internal partial class ResolverTemplate : ResolverTemplateBase
     {
 #line hidden
         /// <summary>
@@ -176,7 +176,7 @@ namespace Utf8Json.CodeGenerator.Generator
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "15.0.0.0")]
-    public class ResolverTemplateBase
+    internal class ResolverTemplateBase
     {
         #region Fields
 

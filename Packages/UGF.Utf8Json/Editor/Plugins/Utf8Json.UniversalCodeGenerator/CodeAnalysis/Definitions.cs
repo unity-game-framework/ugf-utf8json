@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Utf8Json.UniversalCodeGenerator
 {
-    public interface IResolverRegisterInfo
+    internal interface IResolverRegisterInfo
     {
         string FullName { get; }
         string FormatterName { get; }
     }
 
-    public class ObjectSerializationInfo : IResolverRegisterInfo
+    internal class ObjectSerializationInfo : IResolverRegisterInfo
     {
         public string Name { get; set; }
         public string FullName { get; set; }
@@ -35,7 +35,7 @@ namespace Utf8Json.UniversalCodeGenerator
         }
     }
 
-    public class MemberSerializationInfo
+    internal class MemberSerializationInfo
     {
         public bool IsProperty { get; set; }
         public bool IsField { get; set; }
@@ -90,7 +90,7 @@ namespace Utf8Json.UniversalCodeGenerator
         }
     }
 
-    public class GenericSerializationInfo : IResolverRegisterInfo, IEquatable<GenericSerializationInfo>
+    internal class GenericSerializationInfo : IResolverRegisterInfo, IEquatable<GenericSerializationInfo>
     {
         public string FullName { get; set; }
 

@@ -18,7 +18,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
-        public static string Generate(IEnumerable<string> inputFiles, string resolverName, string namespaceRoot, Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
+        public static string Generate(IEnumerable<string> inputFiles, string resolverName, string namespaceRoot, Utf8JsonGenerateArguments arguments = default)
         {
             return Generate(inputFiles, null, null, false, resolverName, namespaceRoot, arguments);
         }
@@ -33,7 +33,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="resolverName">The generated resolver name.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
-        public static string Generate(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
+        public static string Generate(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string resolverName = "GeneratedResolver", string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default)
         {
             return InternalGenerate(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, resolverName, namespaceRoot), arguments);
         }
@@ -44,7 +44,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="inputFiles">The collection of input .cs files.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
-        public static string GenerateFormatters(IEnumerable<string> inputFiles, string namespaceRoot, Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, string namespaceRoot, Utf8JsonGenerateArguments arguments = default)
         {
             return GenerateFormatters(inputFiles, null, null, false, namespaceRoot, arguments);
         }
@@ -58,7 +58,7 @@ namespace Utf8Json.UniversalCodeGenerator
         /// <param name="allowInternal">The value that determines whether to allow generate of the internal.</param>
         /// <param name="namespaceRoot">The root namespace for generated resolver and formatters.</param>
         /// <param name="arguments">The generate arguments to control additional generation behaviour.</param>
-        public static string GenerateFormatters(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default(Utf8JsonGenerateArguments))
+        public static string GenerateFormatters(IEnumerable<string> inputFiles, IEnumerable<string> inputDirectories, IEnumerable<string> conditionalSymbols = null, bool allowInternal = false, string namespaceRoot = "Utf8Json", Utf8JsonGenerateArguments arguments = default)
         {
             return InternalGenerateFormatters(InternalGetArguments(inputFiles, inputDirectories, conditionalSymbols, allowInternal, "GeneratedResolver", namespaceRoot), arguments);
         }

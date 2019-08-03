@@ -368,7 +368,7 @@ namespace Utf8Json
             // for JIT Optimization, for-loop i < str.Length
             for (int i = 0; i < value.Length; i++)
             {
-                byte escapeChar = default(byte);
+                byte escapeChar = default;
                 switch (value[i])
                 {
                     case '"':

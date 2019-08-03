@@ -349,7 +349,7 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull())
             {
-                return default(T);
+                return default;
             }
             else
             {

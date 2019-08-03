@@ -752,7 +752,7 @@ namespace Utf8Json
         /// <summary>Get raw string-span(do not unescape)</summary>
         public ArraySegment<byte> ReadStringSegmentRaw()
         {
-            ArraySegment<byte> key = default(ArraySegment<byte>);
+            ArraySegment<byte> key = default;
             if (ReadIsNull())
             {
                 key = nullTokenSegment;

@@ -62,7 +62,7 @@ namespace Utf8Json.Formatters
 
         public ArraySegment<byte> Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
         {
-            if (reader.ReadIsNull()) return default(ArraySegment<byte>);
+            if (reader.ReadIsNull()) return default;
 
             var str = reader.ReadString();
             var bytes = Convert.FromBase64String(str);
@@ -404,8 +404,8 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, KeyValuePair can not be null.");
 
-            TKey resultKey = default(TKey);
-            TValue resultValue = default(TValue);
+            TKey resultKey = default;
+            TValue resultValue = default;
 
             reader.ReadIsBeginObjectWithVerify();
 

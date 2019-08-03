@@ -14,7 +14,7 @@ namespace Utf8Json.Formatters
         public T Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
         {
             reader.ReadNextBlock();
-            return default(T);
+            return default;
         }
     }
 }

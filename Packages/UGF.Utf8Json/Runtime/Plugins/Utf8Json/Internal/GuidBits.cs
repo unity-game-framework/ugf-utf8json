@@ -47,14 +47,14 @@ namespace Utf8Json.Internal
 
         public GuidBits(ref Guid value)
         {
-            this = default(GuidBits);
+            this = default;
             this.Value = value;
         }
 
         // 4-pattern, lower/upper and '-' or no
         public GuidBits(ref ArraySegment<byte> utf8string)
         {
-            this = default(GuidBits);
+            this = default;
 
             var array = utf8string.Array;
             var offset = utf8string.Offset;

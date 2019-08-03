@@ -174,7 +174,7 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
+            T1 item1 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -221,8 +221,8 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
+            T1 item1 = default;
+            T2 item2 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -274,9 +274,9 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -333,10 +333,10 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
-            T4 item4 = default(T4);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
+            T4 item4 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -398,11 +398,11 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
-            T4 item4 = default(T4);
-            T5 item5 = default(T5);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
+            T4 item4 = default;
+            T5 item5 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -469,12 +469,12 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
-            T4 item4 = default(T4);
-            T5 item5 = default(T5);
-            T6 item6 = default(T6);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
+            T4 item4 = default;
+            T5 item5 = default;
+            T6 item6 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -546,13 +546,13 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
-            T4 item4 = default(T4);
-            T5 item5 = default(T5);
-            T6 item6 = default(T6);
-            T7 item7 = default(T7);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
+            T4 item4 = default;
+            T5 item5 = default;
+            T6 item6 = default;
+            T7 item7 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();
@@ -629,14 +629,14 @@ namespace Utf8Json.Formatters
         {
             if (reader.ReadIsNull()) throw new InvalidOperationException("Data is Nil, ValueTuple can not be null.");
 
-            T1 item1 = default(T1);
-            T2 item2 = default(T2);
-            T3 item3 = default(T3);
-            T4 item4 = default(T4);
-            T5 item5 = default(T5);
-            T6 item6 = default(T6);
-            T7 item7 = default(T7);
-            TRest item8 = default(TRest);
+            T1 item1 = default;
+            T2 item2 = default;
+            T3 item3 = default;
+            T4 item4 = default;
+            T5 item5 = default;
+            T6 item6 = default;
+            T7 item7 = default;
+            TRest item8 = default;
 
             var count = 0;
             reader.ReadIsBeginObjectWithVerify();

@@ -109,7 +109,7 @@ namespace Utf8Json.Formatters
 
         public ArraySegment<T> Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
         {
-            if (reader.ReadIsNull()) return default(ArraySegment<T>);
+            if (reader.ReadIsNull()) return default;
 
             var count = 0;
             var formatter = formatterResolver.GetFormatterWithVerify<T>();
@@ -488,8 +488,8 @@ namespace Utf8Json.Formatters
             }
             else
             {
-                TKey resultKey = default(TKey);
-                IEnumerable<TElement> resultValue = default(IEnumerable<TElement>);
+                TKey resultKey = default;
+                IEnumerable<TElement> resultValue = default;
 
                 reader.ReadIsBeginObjectWithVerify();
 

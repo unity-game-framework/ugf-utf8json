@@ -150,7 +150,7 @@ namespace Utf8Json.Internal
             }
 
             NOT_FOUND:
-            value = default(TValue);
+            value = default;
             return false;
         }
 

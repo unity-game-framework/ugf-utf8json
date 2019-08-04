@@ -27,43 +27,26 @@ namespace UGF.Utf8Json.Runtime
         /// </summary>
         public IJsonFormatter<T> GetFormatter<T>()
         {
-            IJsonFormatter<T> formatter = Utf8JsonFormatterCache<T>.Formatter;
+            IJsonFormatter<T> formatter = null;
 
-            if (formatter == null)
+            if (Formatters.TryGetValue(typeof(T), out IJsonFormatter formatterBase) && formatterBase is IJsonFormatter<T> formatterGeneric)
             {
-                if (Formatters.TryGetValue(typeof(T), out IJsonFormatter formatterBase) && formatterBase is IJsonFormatter<T> formatterGeneric)
+                formatter = formatterGeneric;
+            }
+            else
+            {
+                for (int i = 0; i < Resolvers.Count; i++)
                 {
-                    formatter = formatterGeneric;
+                    formatter = Resolvers[i].GetFormatter<T>();
 
-                    Utf8JsonFormatterCache<T>.Formatter = formatter;
-                }
-                else
-                {
-                    for (int i = 0; i < Resolvers.Count; i++)
+                    if (formatter != null)
                     {
-                        formatter = Resolvers[i].GetFormatter<T>();
-
-                        if (formatter != null)
-                        {
-                            Utf8JsonFormatterCache<T>.Formatter = formatter;
-                            break;
-                        }
+                        break;
                     }
                 }
             }
 
             return formatter;
-        }
-
-        /// <summary>
-        /// Forces to cache formatters.
-        /// </summary>
-        public void CacheFormatters()
-        {
-            foreach (KeyValuePair<Type, IJsonFormatter> pair in Formatters)
-            {
-                Utf8JsonUtility.SetFormatterCache(pair.Key, pair.Value);
-            }
         }
     }
 }

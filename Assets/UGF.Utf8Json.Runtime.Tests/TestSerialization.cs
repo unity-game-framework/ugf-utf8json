@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using NUnit.Framework;
+using UGF.Utf8Json.Runtime.Tests.Resolvers;
 using UnityEngine;
 using Utf8Json;
 
@@ -20,7 +20,6 @@ namespace UGF.Utf8Json.Runtime.Tests
             public float FloatValue { get; set; } = 50.5F;
             public int IntValue { get; set; } = 50;
             public HideFlags Flags { get; set; } = HideFlags.DontSave;
-            public List<Target2> ListValue { get; set; }
         }
 
         [Serializable]
@@ -40,6 +39,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
+            m_resolver.Resolvers.Add(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
         [Test]

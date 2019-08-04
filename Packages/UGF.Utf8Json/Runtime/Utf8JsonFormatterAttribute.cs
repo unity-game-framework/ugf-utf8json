@@ -1,6 +1,5 @@
 using System;
 using JetBrains.Annotations;
-using UGF.Assemblies.Runtime;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime
@@ -10,7 +9,7 @@ namespace UGF.Utf8Json.Runtime
     /// </summary>
     [BaseTypeRequired(typeof(IJsonFormatter))]
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class Utf8JsonFormatterAttribute : AssemblyBrowsableTypeAttribute
+    public sealed class Utf8JsonFormatterAttribute : Attribute
     {
         /// <summary>
         /// Gets the type of the formatter target.

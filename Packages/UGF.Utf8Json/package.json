@@ -1,15 +1,15 @@
 {
     "name": "com.ugf.utf8json",
     "displayName": "UGF.Utf8Json",
-    "version": "1.1.0",
-    "unity": "2019.1",
+    "version": "2.0.0-deprecated",
+    "unity": "2019.2",
     "description": "No description.",
     "author": {
         "name": "Unity Game Framework",
         "url": "https://github.com/unity-game-framework"
     },
     "dependencies": {
-        "com.ugf.types": "2.1.1",
-        "com.ugf.code.generate": "1.0.0"
+        "com.ugf.code.generate": "3.0.0",
+        "com.ugf.types": "2.2.0"
     }
 }

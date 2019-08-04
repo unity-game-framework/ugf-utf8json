@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -117,9 +118,15 @@ namespace UGF.Utf8Json.Editor
         private static bool IsAssemblyHasGeneratedScript(string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
-            string assemblyGeneratedPath = Utf8JsonEditorUtility.GetPathForGeneratedScript(assemblyPath);
 
-            return !string.IsNullOrEmpty(assemblyPath) && File.Exists(assemblyGeneratedPath);
+            if (!string.IsNullOrEmpty(assemblyPath))
+            {
+                string assemblyGeneratedPath = CodeGenerateEditorUtility.GetPathForGeneratedScript(assemblyPath, "Utf8Json");
+
+                return File.Exists(assemblyGeneratedPath);
+            }
+
+            return false;
         }
 
         private static bool IsTargetScript(string path)

@@ -1,20 +1,21 @@
 {
     "name": "UGF.Utf8Json.Runtime.Tests",
     "references": [
+        "GUID:005d4ab2cb930e742a4b76b585d2a5c9",
         "GUID:7d88aca9857e23b4e868d9ace8e59be2",
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
-        "GUID:edf8d3a4b39829146b1c805ac920c1c0",
-        "GUID:84396ed649d0e264bafd81e48027919c"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
+        "GUID:edf8d3a4b39829146b1c805ac920c1c0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

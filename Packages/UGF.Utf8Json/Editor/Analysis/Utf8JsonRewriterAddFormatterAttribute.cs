@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Editing;
 
 namespace UGF.Utf8Json.Editor.Analysis
 {
-    internal class Utf8JsonRewriterAddFormatterAttribute : CSharpSyntaxRewriter
+    public class Utf8JsonRewriterAddFormatterAttribute : CSharpSyntaxRewriter
     {
         public SyntaxGenerator Generator { get; }
         public TypeSyntax AttributeType { get; }

@@ -6,6 +6,76 @@ using UnityEngine;
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
+#pragma warning disable 168
+
+namespace TestEditorAssembly.Resolvers
+{
+    using System;
+    using Utf8Json;
+
+    public class TestEditorAssemblyResolver : global::Utf8Json.IJsonFormatterResolver
+    {
+        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new TestEditorAssemblyResolver();
+
+        TestEditorAssemblyResolver()
+        {
+
+        }
+
+        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()
+        {
+            return FormatterCache<T>.formatter;
+        }
+
+        static class FormatterCache<T>
+        {
+            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;
+
+            static FormatterCache()
+            {
+                var f = TestEditorAssemblyResolverGetFormatterHelper.GetFormatter(typeof(T));
+                if (f != null)
+                {
+                    formatter = (global::Utf8Json.IJsonFormatter<T>)f;
+                }
+            }
+        }
+    }
+
+    internal static class TestEditorAssemblyResolverGetFormatterHelper
+    {
+        static readonly global::System.Collections.Generic.Dictionary<Type, int> lookup;
+
+        static TestEditorAssemblyResolverGetFormatterHelper()
+        {
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(1)
+            {
+                {typeof(global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget), 0 },
+            };
+        }
+
+        internal static object GetFormatter(Type t)
+        {
+            int key;
+            if (!lookup.TryGetValue(t, out key)) return null;
+
+            switch (key)
+            {
+                case 0: return new TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTargetFormatter();
+                default: return null;
+            }
+        }
+    }
+}
+
+#pragma warning disable 168
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612
+
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
 #pragma warning disable 219
 #pragma warning disable 168
 

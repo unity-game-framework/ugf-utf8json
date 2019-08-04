@@ -1,25 +1,32 @@
 {
     "name": "UGF.Utf8Json.Editor.Tests",
     "references": [
+        "GUID:005d4ab2cb930e742a4b76b585d2a5c9",
         "GUID:7d88aca9857e23b4e868d9ace8e59be2",
         "GUID:67e52fe5dbb27a8428b65548925ff5aa",
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
-        "GUID:a2e058162106ff34782c6caf7180ef97",
         "GUID:3261026f398ac504fa7bfd69a915d0d0",
         "GUID:3686f1ecbde070e4dbd247e1291c142f",
+        "GUID:a2e058162106ff34782c6caf7180ef97",
         "GUID:edf8d3a4b39829146b1c805ac920c1c0"
-    ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Microsoft.CodeAnalysis.CSharp.dll",
+        "Microsoft.CodeAnalysis.CSharp.Scripting.dll",
+        "Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Microsoft.CodeAnalysis.dll",
+        "Microsoft.CodeAnalysis.Scripting.dll",
+        "Microsoft.CodeAnalysis.Workspaces.dll"
+    ],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": []
 }

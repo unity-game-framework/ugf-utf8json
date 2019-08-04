@@ -1,7 +1,7 @@
 {
     "name": "com.ugf.utf8json",
     "displayName": "UGF.Utf8Json",
-    "version": "2.0.0-preview",
+    "version": "2.0.0-deprecated",
     "unity": "2019.2",
     "description": "No description.",
     "author": {

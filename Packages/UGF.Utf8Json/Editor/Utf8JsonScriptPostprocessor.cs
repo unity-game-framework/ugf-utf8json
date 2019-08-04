@@ -118,9 +118,15 @@ namespace UGF.Utf8Json.Editor
         private static bool IsAssemblyHasGeneratedScript(string path)
         {
             string assemblyPath = CompilationPipeline.GetAssemblyDefinitionFilePathFromScriptPath(path);
-            string assemblyGeneratedPath = CodeGenerateEditorUtility.GetPathForGeneratedScript(assemblyPath, "Utf8Json");
 
-            return !string.IsNullOrEmpty(assemblyPath) && File.Exists(assemblyGeneratedPath);
+            if (!string.IsNullOrEmpty(assemblyPath))
+            {
+                string assemblyGeneratedPath = CodeGenerateEditorUtility.GetPathForGeneratedScript(assemblyPath, "Utf8Json");
+
+                return File.Exists(assemblyGeneratedPath);
+            }
+
+            return false;
         }
 
         private static bool IsTargetScript(string path)

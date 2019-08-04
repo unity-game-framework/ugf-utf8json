@@ -48,7 +48,7 @@ namespace UGF.Utf8Json.Editor
 
                     if (File.Exists(path))
                     {
-                        GenerateAssetFromAssembly(path, import, validation, compilation, generator);
+                        GenerateAssetFromAssembly(assemblyPath, import, validation, compilation, generator);
                     }
                 }
             }

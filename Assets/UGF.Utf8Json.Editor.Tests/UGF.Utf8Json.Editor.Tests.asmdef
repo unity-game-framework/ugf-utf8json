@@ -1,6 +1,7 @@
 {
     "name": "UGF.Utf8Json.Editor.Tests",
     "references": [
+        "GUID:005d4ab2cb930e742a4b76b585d2a5c9",
         "GUID:7d88aca9857e23b4e868d9ace8e59be2",
         "GUID:67e52fe5dbb27a8428b65548925ff5aa",
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
@@ -14,8 +15,15 @@
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Microsoft.CodeAnalysis.CSharp.dll",
+        "Microsoft.CodeAnalysis.CSharp.Scripting.dll",
+        "Microsoft.CodeAnalysis.CSharp.Workspaces.dll",
+        "Microsoft.CodeAnalysis.dll",
+        "Microsoft.CodeAnalysis.Scripting.dll",
+        "Microsoft.CodeAnalysis.Workspaces.dll"
+    ],
     "autoReferenced": true,
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"

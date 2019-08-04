@@ -7,6 +7,78 @@ using Utf8Json;
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
+#pragma warning disable 168
+
+namespace UGF.Utf8Json.Runtime.Tests.Resolvers
+{
+    using System;
+    using Utf8Json;
+
+    public class UGFUtf8JsonRuntimeTestsResolver : global::Utf8Json.IJsonFormatterResolver
+    {
+        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new UGFUtf8JsonRuntimeTestsResolver();
+
+        UGFUtf8JsonRuntimeTestsResolver()
+        {
+
+        }
+
+        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()
+        {
+            return FormatterCache<T>.formatter;
+        }
+
+        static class FormatterCache<T>
+        {
+            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;
+
+            static FormatterCache()
+            {
+                var f = UGFUtf8JsonRuntimeTestsResolverGetFormatterHelper.GetFormatter(typeof(T));
+                if (f != null)
+                {
+                    formatter = (global::Utf8Json.IJsonFormatter<T>)f;
+                }
+            }
+        }
+    }
+
+    internal static class UGFUtf8JsonRuntimeTestsResolverGetFormatterHelper
+    {
+        static readonly global::System.Collections.Generic.Dictionary<Type, int> lookup;
+
+        static UGFUtf8JsonRuntimeTestsResolverGetFormatterHelper()
+        {
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(2)
+            {
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target), 0 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2), 1 },
+            };
+        }
+
+        internal static object GetFormatter(Type t)
+        {
+            int key;
+            if (!lookup.TryGetValue(t, out key)) return null;
+
+            switch (key)
+            {
+                case 0: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_TargetFormatter();
+                case 1: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_Target2Formatter();
+                default: return null;
+            }
+        }
+    }
+}
+
+#pragma warning disable 168
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612
+
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
 #pragma warning disable 219
 #pragma warning disable 168
 

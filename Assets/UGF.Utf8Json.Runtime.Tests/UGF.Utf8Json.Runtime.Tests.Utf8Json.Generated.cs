@@ -1,6 +1,7 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -91,7 +92,6 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UnityEngine
     using System;
     using Utf8Json;
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UnityEngine.HideFlags))]
     public sealed class HideFlagsFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.HideFlags>
     {
         public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UnityEngine.HideFlags value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
@@ -125,7 +125,6 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
     using Utf8Json;
 
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2))]
     public sealed class TestSerialization_Target2Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
@@ -217,7 +216,6 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
     }
 
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target))]
     public sealed class TestSerialization_TargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;

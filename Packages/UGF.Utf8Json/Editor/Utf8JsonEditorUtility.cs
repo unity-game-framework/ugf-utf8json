@@ -11,9 +11,7 @@ using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UGF.Code.Generate.Editor.Container.External;
-using UGF.Utf8Json.Editor.Analysis;
 using UGF.Utf8Json.Editor.ExternalType;
-using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using UnityEditor.Compilation;
 using Utf8Json.UniversalCodeGenerator;
@@ -104,7 +102,7 @@ namespace UGF.Utf8Json.Editor
             {
                 string sourcePath = assembly.sourceFiles[i];
 
-                if (IsSerializableScript(sourcePath))
+                if (CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, sourcePath, typeof(SerializableAttribute)))
                 {
                     sourcePaths.Add(sourcePath);
                 }
@@ -169,14 +167,10 @@ namespace UGF.Utf8Json.Editor
             {
                 IgnoreReadOnly = true,
                 IsTypeRequireAttribute = true,
-                TypeRequiredAttributeShortName = "Utf8JsonSerializable"
+                TypeRequiredAttributeShortName = "Serializable"
             };
 
-            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
-            var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
-
             var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
             var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
 
             for (int i = 0; i < sourcePaths.Count; i++)
@@ -188,24 +182,10 @@ namespace UGF.Utf8Json.Editor
             CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(resolver);
 
             unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
-            unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
             unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
             unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
 
             return unit.ToFullString();
-        }
-
-        /// <summary>
-        /// Determines whether source from the specified path contains any declaration with the <see cref="Utf8JsonSerializableAttribute"/> attribute.
-        /// </summary>
-        /// <param name="path">The path of the source.</param>
-        /// <param name="compilation">The project compilation used during generation.</param>
-        public static bool IsSerializableScript(string path, CSharpCompilation compilation = null)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-
-            return CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, path, typeof(Utf8JsonSerializableAttribute));
         }
     }
 }

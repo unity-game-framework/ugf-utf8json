@@ -21,13 +21,5 @@ namespace UGF.Utf8Json.Editor.Tests
         {
             Assert.Ignore();
         }
-
-        [Test]
-        public void IsSerializableScript()
-        {
-            bool result = Utf8JsonEditorUtility.IsSerializableScript("Assets/UGF.Utf8Json.Runtime.Tests/TestAssembly/TestTarget.cs");
-
-            Assert.True(result);
-        }
     }
 }

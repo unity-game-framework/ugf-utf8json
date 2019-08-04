@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace UGF.Utf8Json.Runtime.Tests.TestAssembly
 {
-    [Utf8JsonSerializable]
+    [Serializable]
     public class TestTarget
     {
         public string Name { get; set; } = "TestTarget";

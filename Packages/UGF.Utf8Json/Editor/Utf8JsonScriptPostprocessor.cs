@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.CodeAnalysis.CSharp;
+using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
@@ -131,7 +133,9 @@ namespace UGF.Utf8Json.Editor
 
         private static bool IsTargetScript(string path)
         {
-            return Utf8JsonEditorUtility.IsSerializableScript(path);
+            CSharpCompilation compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+
+            return CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, path, typeof(SerializableAttribute));
         }
     }
 }

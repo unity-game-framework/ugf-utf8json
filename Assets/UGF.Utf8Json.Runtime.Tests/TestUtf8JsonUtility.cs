@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly;
 using UGF.Utf8Json.Runtime.Tests.TestAssembly;
 using Utf8Json;
@@ -16,16 +14,6 @@ namespace UGF.Utf8Json.Runtime.Tests
 
             Assert.NotNull(resolver);
             Assert.AreEqual(3, resolver.Resolvers.Count);
-        }
-
-        [Test]
-        public void CreateFormatters()
-        {
-            var formatters = new Dictionary<Type, IJsonFormatter>();
-
-            Utf8JsonUtility.GetFormatters(formatters, typeof(TestTarget).Assembly);
-
-            Assert.AreEqual(1, formatters.Count);
         }
 
         [Test, Order(1)]

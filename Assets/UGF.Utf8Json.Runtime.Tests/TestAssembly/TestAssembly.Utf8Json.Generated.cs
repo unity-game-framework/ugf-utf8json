@@ -1,6 +1,7 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
+using System;
 using UnityEngine;
 #pragma warning disable 618
 #pragma warning disable 612
@@ -84,7 +85,6 @@ namespace TestAssembly.Formatters.UnityEngine
     using System;
     using Utf8Json;
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UnityEngine.HideFlags))]
     public sealed class HideFlagsFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.HideFlags>
     {
         public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UnityEngine.HideFlags value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
@@ -118,7 +118,6 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
     using Utf8Json;
 
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget))]
     public sealed class TestTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;

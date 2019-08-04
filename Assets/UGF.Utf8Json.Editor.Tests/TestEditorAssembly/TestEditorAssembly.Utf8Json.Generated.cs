@@ -1,7 +1,7 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
-using UGF.Utf8Json.Runtime;
+using System;
 using UnityEngine;
 #pragma warning disable 618
 #pragma warning disable 612
@@ -86,7 +86,6 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
     using Utf8Json;
 
 
-    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget))]
     public sealed class TestEditorTargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Editor.Tests.TestEditorAssembly.TestEditorTarget>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;

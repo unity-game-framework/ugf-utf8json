@@ -13,10 +13,22 @@ namespace UGF.Utf8Json.Editor
             Utf8JsonEditorUtility.GenerateAssetFromAssembly(importer.assetPath);
         }
 
+        [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate", true, 1000)]
+        private static bool AssemblyGenerateValidate(MenuCommand menuCommand)
+        {
+            return !EditorApplication.isCompiling;
+        }
+
         [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate All", false, 1000)]
         private static void AssemblyGenerateAllMenu(MenuCommand menuCommand)
         {
             Utf8JsonEditorUtility.GenerateAssetFromAssemblyAll();
+        }
+
+        [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate All", true, 1000)]
+        private static bool AssemblyGenerateAllValidate(MenuCommand menuCommand)
+        {
+            return !EditorApplication.isCompiling;
         }
     }
 }

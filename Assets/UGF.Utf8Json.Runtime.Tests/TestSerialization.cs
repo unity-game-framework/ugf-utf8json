@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
         private Utf8JsonFormatterResolver m_resolver;
 
-        [Utf8JsonSerializable]
+        [Serializable]
         public class Target
         {
             public string Name { get; set; } = "Target";
@@ -22,7 +23,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             public List<Target2> ListValue { get; set; }
         }
 
-        [Utf8JsonSerializable]
+        [Serializable]
         public class Target2
         {
             public Vector2 Vector2 { get; set; } = Vector2.one;

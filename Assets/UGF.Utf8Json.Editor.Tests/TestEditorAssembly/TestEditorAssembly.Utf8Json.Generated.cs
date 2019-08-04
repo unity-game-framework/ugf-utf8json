@@ -73,6 +73,7 @@ namespace TestEditorAssembly.Resolvers
 #pragma warning restore 618
 #pragma warning restore 612
 
+
 #pragma warning disable 618
 #pragma warning disable 612
 #pragma warning disable 414
@@ -127,11 +128,11 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             writer.WriteRaw(this.____stringByteKeys[1]);
             writer.WriteString(value.StringValue);
             writer.WriteRaw(this.____stringByteKeys[2]);
-            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[3]);
             writer.WriteSingle(value.FloatValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
-            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
             
             writer.WriteEndObject();
         }
@@ -148,11 +149,11 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             var __BoolValue__b__ = false;
             var __StringValue__ = default(string);
             var __StringValue__b__ = false;
-            var __Vector2__ = default(Vector2);
+            var __Vector2__ = default(global::UnityEngine.Vector2);
             var __Vector2__b__ = false;
             var __FloatValue__ = default(float);
             var __FloatValue__b__ = false;
-            var __Bounds__ = default(Bounds);
+            var __Bounds__ = default(global::UnityEngine.Bounds);
             var __Bounds__b__ = false;
 
             var ____count = 0;
@@ -178,7 +179,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                         __StringValue__b__ = true;
                         break;
                     case 2:
-                        __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Vector2__b__ = true;
                         break;
                     case 3:
@@ -186,7 +187,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                         __FloatValue__b__ = true;
                         break;
                     case 4:
-                        __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Bounds__b__ = true;
                         break;
                     default:

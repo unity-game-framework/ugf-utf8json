@@ -177,6 +177,7 @@ namespace Utf8Json.UniversalCodeGenerator
         HashSet<ITypeSymbol> alreadyCollected;
         List<ObjectSerializationInfo> collectedObjectInfo;
         List<GenericSerializationInfo> collectedGenericInfo;
+        List<EnumSerializationInfo> collectedEnumInfo;
 
         // ---
 
@@ -210,10 +211,11 @@ namespace Utf8Json.UniversalCodeGenerator
             alreadyCollected = new HashSet<ITypeSymbol>();
             collectedObjectInfo = new List<ObjectSerializationInfo>();
             collectedGenericInfo = new List<GenericSerializationInfo>();
+            collectedEnumInfo = new List<EnumSerializationInfo>();
         }
 
         // EntryPoint
-        public (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo) Collect()
+        public (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo, EnumSerializationInfo[] enumInfo) Collect()
         {
             ResetWorkspace();
 
@@ -222,7 +224,7 @@ namespace Utf8Json.UniversalCodeGenerator
                 CollectCore(item);
             }
 
-            return (collectedObjectInfo.ToArray(), collectedGenericInfo.Distinct().ToArray());
+            return (collectedObjectInfo.ToArray(), collectedGenericInfo.Distinct().ToArray(), collectedEnumInfo.ToArray());
         }
 
         // Gate of recursive collect
@@ -236,14 +238,6 @@ namespace Utf8Json.UniversalCodeGenerator
             if (embeddedTypes.Contains(typeSymbol.ToString()))
             {
                 return;
-            }
-
-            if (arguments.IsTypeRequireAttribute)
-            {
-                if (typeSymbol.GetAttributes().FindAttributeShortName(arguments.TypeRequiredAttributeShortName) == null)
-                {
-                    return;
-                }
             }
 
             if (typeSymbol.TypeKind == TypeKind.Array)
@@ -261,6 +255,7 @@ namespace Utf8Json.UniversalCodeGenerator
 
             if (typeSymbol.TypeKind == TypeKind.Enum)
             {
+                CollectEnum(type);
                 return;
             }
 
@@ -275,8 +270,29 @@ namespace Utf8Json.UniversalCodeGenerator
                 return;
             }
 
+            if (arguments.IsTypeRequireAttribute)
+            {
+                if (typeSymbol.GetAttributes().FindAttributeShortName(arguments.TypeRequiredAttributeShortName) == null)
+                {
+                    return;
+                }
+            }
+
             CollectObject(type);
             return;
+        }
+
+        void CollectEnum(INamedTypeSymbol type)
+        {
+            var info = new EnumSerializationInfo
+            {
+                Name = type.Name,
+                Namespace = type.ContainingNamespace.IsGlobalNamespace ? null : type.ContainingNamespace.ToDisplayString(),
+                FullName = type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat),
+                UnderlyingType = type.EnumUnderlyingType.ToDisplayString(binaryWriteFormat)
+            };
+
+            collectedEnumInfo.Add(info);
         }
 
         void CollectArray(IArrayTypeSymbol array)

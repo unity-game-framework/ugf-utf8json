@@ -47,9 +47,10 @@ namespace TestAssembly.Resolvers
 
         static TestAssemblyResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(1)
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(2)
             {
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget), 0 },
+                {typeof(global::UnityEngine.HideFlags), 0 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget), 1 },
             };
         }
 
@@ -60,7 +61,8 @@ namespace TestAssembly.Resolvers
 
             switch (key)
             {
-                case 0: return new TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTargetFormatter();
+                case 0: return new TestAssembly.Formatters.UnityEngine.HideFlagsFormatter();
+                case 1: return new TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTargetFormatter();
                 default: return null;
             }
         }
@@ -68,6 +70,38 @@ namespace TestAssembly.Resolvers
 }
 
 #pragma warning disable 168
+#pragma warning restore 414
+#pragma warning restore 618
+#pragma warning restore 612
+
+#pragma warning disable 618
+#pragma warning disable 612
+#pragma warning disable 414
+#pragma warning disable 168
+
+namespace TestAssembly.Formatters.UnityEngine
+{
+    using System;
+    using Utf8Json;
+
+    [global::UGF.Utf8Json.Runtime.Utf8JsonFormatterAttribute(typeof(global::UnityEngine.HideFlags))]
+    public sealed class HideFlagsFormatter : global::Utf8Json.IJsonFormatter<global::UnityEngine.HideFlags>
+    {
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UnityEngine.HideFlags value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            writer.WriteInt32((Int32)value);
+        }
+        
+        public global::UnityEngine.HideFlags Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            return (global::UnityEngine.HideFlags)reader.ReadInt32();
+        }
+    }
+
+
+}
+
+#pragma warning restore 168
 #pragma warning restore 414
 #pragma warning restore 618
 #pragma warning restore 612
@@ -134,11 +168,11 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             writer.WriteRaw(this.____stringByteKeys[3]);
             writer.WriteInt32(value.IntValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
-            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[5]);
-            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[6]);
-            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
             
             writer.WriteEndObject();
         }
@@ -159,11 +193,11 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             var __FloatValue__b__ = false;
             var __IntValue__ = default(int);
             var __IntValue__b__ = false;
-            var __Vector2__ = default(Vector2);
+            var __Vector2__ = default(global::UnityEngine.Vector2);
             var __Vector2__b__ = false;
-            var __Bounds__ = default(Bounds);
+            var __Bounds__ = default(global::UnityEngine.Bounds);
             var __Bounds__b__ = false;
-            var __Flags__ = default(HideFlags);
+            var __Flags__ = default(global::UnityEngine.HideFlags);
             var __Flags__b__ = false;
 
             var ____count = 0;
@@ -197,15 +231,15 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                         __IntValue__b__ = true;
                         break;
                     case 4:
-                        __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Vector2__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector2>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Vector2__b__ = true;
                         break;
                     case 5:
-                        __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Bounds__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Bounds__b__ = true;
                         break;
                     case 6:
-                        __Flags__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<HideFlags>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Flags__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.HideFlags>(formatterResolver).Deserialize(ref reader, formatterResolver);
                         __Flags__b__ = true;
                         break;
                     default:

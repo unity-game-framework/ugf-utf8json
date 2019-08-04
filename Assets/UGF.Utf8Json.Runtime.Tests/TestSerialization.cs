@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using Utf8Json;
@@ -18,6 +19,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             public float FloatValue { get; set; } = 50.5F;
             public int IntValue { get; set; } = 50;
             public HideFlags Flags { get; set; } = HideFlags.DontSave;
+            public List<Target2> ListValue { get; set; }
         }
 
         [Utf8JsonSerializable]

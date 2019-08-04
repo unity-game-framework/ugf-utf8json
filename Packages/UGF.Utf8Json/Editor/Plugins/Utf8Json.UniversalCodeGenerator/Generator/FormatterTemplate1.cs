@@ -281,7 +281,7 @@ namespace Utf8Json.CodeGenerator.Generator
                     this.Write("\r\n            var ____count = 0;\r\n            reader.ReadIsBeginObjectWithVerify();\r\n" +
                                "            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))\r\n            {\r\n" +
                                "                var stringKey = reader.ReadPropertyNameSegmentRaw();\r\n                int key;\r\n" +
-                               "                if (!____keyMapping.TryGetValueSafe(stringKey, out key))\r\n                {\r\n" +
+                               "                if (!____keyMapping.TryGetValue(stringKey, out key))\r\n                {\r\n" +
                                "                    reader.ReadNextBlock();\r\n                    goto NEXT_LOOP;\r\n                }\r\n\r\n" +
                                "                switch (key)\r\n                {\r\n");
 

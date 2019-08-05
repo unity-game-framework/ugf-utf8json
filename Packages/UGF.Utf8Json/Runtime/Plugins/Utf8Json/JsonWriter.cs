@@ -35,6 +35,15 @@ namespace Utf8Json
             this.offset += offset;
         }
 
+        public static byte[] GetEncodedValue(string value)
+        {
+            var writer = new JsonWriter();
+
+            writer.WriteString(value);
+
+            return writer.ToUtf8ByteArray();
+        }
+
         public static byte[] GetEncodedPropertyName(string propertyName)
         {
             var writer = new JsonWriter();

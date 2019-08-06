@@ -1,13 +1,6 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
-using System;
-using UnityEngine;
-#pragma warning disable 618
-#pragma warning disable 612
-#pragma warning disable 414
-#pragma warning disable 168
-
 namespace TestAssembly.Resolvers
 {
     using System;
@@ -205,7 +198,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             {
                 var stringKey = reader.ReadPropertyNameSegmentRaw();
                 int key;
-                if (!____keyMapping.TryGetValueSafe(stringKey, out key))
+                if (!____keyMapping.TryGetValue(stringKey, out key))
                 {
                     reader.ReadNextBlock();
                     goto NEXT_LOOP;

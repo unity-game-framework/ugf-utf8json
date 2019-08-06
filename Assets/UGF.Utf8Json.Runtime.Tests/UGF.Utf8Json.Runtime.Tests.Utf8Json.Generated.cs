@@ -1,16 +1,6 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
-using System;
-using NUnit.Framework;
-using UGF.Utf8Json.Runtime.Tests.Resolvers;
-using UnityEngine;
-using Utf8Json;
-#pragma warning disable 618
-#pragma warning disable 612
-#pragma warning disable 414
-#pragma warning disable 168
-
 namespace UGF.Utf8Json.Runtime.Tests.Resolvers
 {
     using System;
@@ -100,7 +90,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UnityEngine
         {
             writer.WriteInt32((Int32)value);
         }
-
+        
         public global::UnityEngine.HideFlags Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             return (global::UnityEngine.HideFlags)reader.ReadInt32();
@@ -142,7 +132,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             this.____stringByteKeys = new byte[][]
             {
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
-
+                
             };
         }
 
@@ -153,11 +143,11 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 writer.WriteNull();
                 return;
             }
-
+            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteBoolean(value.BoolValue);
-
+            
             writer.WriteEndObject();
         }
 
@@ -167,7 +157,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             {
                 return null;
             }
-
+            
 
             var __BoolValue__ = default(bool);
             var __BoolValue__b__ = false;
@@ -222,7 +212,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             this.____stringByteKeys = new byte[][]
             {
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("IntValue"),
-
+                
             };
         }
 
@@ -233,11 +223,11 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 writer.WriteNull();
                 return;
             }
-
+            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteInt32(value.IntValue);
-
+            
             writer.WriteEndObject();
         }
 
@@ -247,7 +237,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             {
                 return null;
             }
-
+            
 
             var __IntValue__ = default(int);
             var __IntValue__b__ = false;
@@ -328,7 +318,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("IntValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Flags"),
-
+                
             };
         }
 
@@ -339,7 +329,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                 writer.WriteNull();
                 return;
             }
-
+            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteString(value.Name);
@@ -351,7 +341,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             writer.WriteInt32(value.IntValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
-
+            
             writer.WriteEndObject();
         }
 
@@ -361,7 +351,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             {
                 return null;
             }
-
+            
 
             var __Name__ = default(string);
             var __Name__b__ = false;
@@ -446,7 +436,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             {
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("Vector2"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"),
-
+                
             };
         }
 
@@ -457,13 +447,13 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
                 writer.WriteNull();
                 return;
             }
-
+            
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Vector2>(formatterResolver).Serialize(ref writer, value.Vector2, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[1]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
-
+            
             writer.WriteEndObject();
         }
 
@@ -473,7 +463,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests
             {
                 return null;
             }
-
+            
 
             var __Vector2__ = default(global::UnityEngine.Vector2);
             var __Vector2__b__ = false;

@@ -138,7 +138,7 @@ namespace UGF.Utf8Json.Editor
             }
 
             string resolverName = $"{assembly.name.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
-            string resolver = GenerateResolver(sourcePaths, resolverName, assembly.name, compilation, generator);
+            string resolver = GenerateResolver(sourcePaths, resolverName, assembly.name);
 
             if (!string.IsNullOrEmpty(externalsTempPath))
             {
@@ -154,14 +154,10 @@ namespace UGF.Utf8Json.Editor
         /// <param name="sourcePaths">The collection of the source paths.</param>
         /// <param name="resolverName">The name of the generated resolver.</param>
         /// <param name="namespaceRoot">The namespace root of the generated formatters.</param>
-        /// <param name="compilation">The project compilation used during generation.</param>
-        /// <param name="generator">The syntax generator used during generation.</param>
-        public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
-            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             var arguments = new Utf8JsonGenerateArguments
             {
@@ -170,23 +166,9 @@ namespace UGF.Utf8Json.Editor
                 TypeRequiredAttributeShortName = "Serializable"
             };
 
-            var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
-
-            for (int i = 0; i < sourcePaths.Count; i++)
-            {
-                string sourcePath = sourcePaths[i];
-                string source = File.ReadAllText(sourcePath);
-                SyntaxTree sourceTree = SyntaxFactory.ParseSyntaxTree(source);
-
-                walkerCollectUsings.Visit(sourceTree.GetRoot());
-            }
-
             string resolver = Utf8JsonUniversalCodeGeneratorUtility.Generate(sourcePaths, resolverName, namespaceRoot, arguments);
             CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(resolver);
 
-            unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
-            unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
             unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
 
             return unit.ToFullString();

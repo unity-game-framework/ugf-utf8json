@@ -175,7 +175,11 @@ namespace UGF.Utf8Json.Editor
 
             for (int i = 0; i < sourcePaths.Count; i++)
             {
-                walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
+                string sourcePath = sourcePaths[i];
+                string source = File.ReadAllText(sourcePath);
+                SyntaxTree sourceTree = SyntaxFactory.ParseSyntaxTree(source);
+
+                walkerCollectUsings.Visit(sourceTree.GetRoot());
             }
 
             string resolver = Utf8JsonUniversalCodeGeneratorUtility.Generate(sourcePaths, resolverName, namespaceRoot, arguments);

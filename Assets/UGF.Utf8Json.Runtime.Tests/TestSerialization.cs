@@ -35,6 +35,11 @@ namespace UGF.Utf8Json.Runtime.Tests
             public bool BoolValue { get; set; } = true;
         }
 
+        [Serializable]
+        public class Target4
+        {
+        }
+
         [SetUp]
         public void Setup()
         {

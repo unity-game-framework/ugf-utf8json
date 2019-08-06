@@ -23,6 +23,15 @@ namespace UGF.Utf8Json.Runtime
         IReadOnlyList<IJsonFormatterResolver> IUtf8JsonFormatterResolver.Resolvers { get { return Resolvers; } }
 
         /// <summary>
+        /// Adds specified formatter by the specified type.
+        /// </summary>
+        /// <param name="formatter">The formatter to add.</param>
+        public void AddFormatter<T>(IJsonFormatter<T> formatter)
+        {
+            Formatters.Add(typeof(T), formatter);
+        }
+
+        /// <summary>
         /// Gets formatter for the specified type.
         /// </summary>
         public IJsonFormatter<T> GetFormatter<T>()

@@ -35,15 +35,6 @@ namespace Utf8Json
             this.offset += offset;
         }
 
-        public static byte[] GetEncodedValue(string value)
-        {
-            var writer = new JsonWriter();
-
-            writer.WriteString(value);
-
-            return writer.ToUtf8ByteArray();
-        }
-
         public static byte[] GetEncodedPropertyName(string propertyName)
         {
             var writer = new JsonWriter();
@@ -123,13 +114,13 @@ namespace Utf8Json
 #endif
         public void WriteRaw(byte[] rawValue)
         {
-            // #if NETSTANDARD
-            // UnsafeMemory.WriteRaw(ref this, rawValue);
-            // #else
+#if NETSTANDARD
+            UnsafeMemory.WriteRaw(ref this, rawValue);
+#else
             BinaryUtil.EnsureCapacity(ref buffer, offset, rawValue.Length);
             Buffer.BlockCopy(rawValue, 0, buffer, offset, rawValue.Length);
             offset += rawValue.Length;
-            // #endif
+#endif
         }
 
 #if NETSTANDARD

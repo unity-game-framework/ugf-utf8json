@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using UGF.Utf8Json.Runtime.Formatters;
 using UGF.Utf8Json.Runtime.Tests.Resolvers;
+using Unity.Profiling;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Tests.Formatters
@@ -13,6 +14,8 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         private readonly string m_target2Data = "{\"type\":\"two\",\"IntValue\":10}";
         private readonly string m_target2Data2 = "{\"type\":\"two\",\"IntValue\":100}";
         private Utf8JsonFormatterResolver m_resolver;
+        private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("Test.Serialize");
+        private ProfilerMarker m_serializeMethodStringMarker = new ProfilerMarker("Test.Serialize.String");
 
         private class Formatter : UnionFormatter<ITarget>
         {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -111,10 +110,19 @@ namespace UGF.Utf8Json.Editor
             var externals = new List<string>();
             string externalsTempPath = string.Empty;
 
-            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtension);
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName);
 
             if (externals.Count > 0)
             {
+                INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(SerializableAttribute).FullName);
+                SyntaxNode attribute = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
+                var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, declaration =>
+                {
+                    SyntaxKind kind = declaration.Kind();
+
+                    return kind == SyntaxKind.ClassDeclaration || kind == SyntaxKind.StructDeclaration;
+                });
+
                 externalsTempPath = FileUtil.GetUniqueTempPathInProject();
 
                 Directory.CreateDirectory(externalsTempPath);
@@ -126,6 +134,8 @@ namespace UGF.Utf8Json.Editor
                     if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out _))
                     {
                         SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
+
+                        unit = rewriterAddAttribute.Visit(unit);
 
                         string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
                         string source = unit.NormalizeWhitespace().ToFullString();

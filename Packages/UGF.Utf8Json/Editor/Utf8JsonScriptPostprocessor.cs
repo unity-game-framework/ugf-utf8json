@@ -112,7 +112,7 @@ namespace UGF.Utf8Json.Editor
         private static bool IsExternalFile(string path)
         {
             string extension = Path.GetExtension(path);
-            string extensionTarget = Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtension;
+            string extensionTarget = $".{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}";
 
             return !string.IsNullOrEmpty(extension) && extension.Equals(extensionTarget, StringComparison.InvariantCultureIgnoreCase);
         }

@@ -81,9 +81,8 @@ namespace UGF.Utf8Json.Runtime.Formatters
 
         private JsonWriter WriteTypeIdentifierSpace(ref JsonWriter writer, int identifier)
         {
-            byte[] propertyName = m_typePropertyName;
             byte[] typeName = m_typeNames[identifier];
-            int length = propertyName.Length + typeName.Length + 3;
+            int length = m_typePropertyName.Length + typeName.Length + 3;
 
             writer.EnsureCapacity(length + 1);
 

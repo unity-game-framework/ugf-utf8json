@@ -7,6 +7,9 @@ using Utf8Json.Internal;
 
 namespace UGF.Utf8Json.Runtime.Formatters
 {
+    /// <summary>
+    /// Represents union formatter.
+    /// </summary>
     public class UnionFormatter<TTarget> : IJsonFormatter<TTarget>
     {
         private readonly AutomataDictionary m_typeNameToId = new AutomataDictionary();
@@ -16,17 +19,30 @@ namespace UGF.Utf8Json.Runtime.Formatters
         private readonly byte[] m_typePropertyName;
         private readonly ArraySegment<byte> m_typePropertyNameValue;
 
+        /// <summary>
+        /// Creates union formatter with specified name of the type property.
+        /// </summary>
+        /// <param name="typePropertyName">The name of the type property.</param>
         public UnionFormatter(string typePropertyName = "type")
         {
             m_typePropertyName = JsonWriter.GetEncodedPropertyName(typePropertyName);
             m_typePropertyNameValue = new ArraySegment<byte>(m_typePropertyName, 1, m_typePropertyName.Length - 3);
         }
 
+        /// <summary>
+        /// Adds typed formatter by the specified type identifier.
+        /// </summary>
+        /// <param name="typeIdentifier">The identifier of the type.</param>
         public void AddFormatter<T>(string typeIdentifier) where T : TTarget
         {
             AddFormatter<T>(typeIdentifier, new UnionFormatterTyped<T, TTarget>());
         }
 
+        /// <summary>
+        /// Adds formatter by the specified type identifier.
+        /// </summary>
+        /// <param name="typeIdentifier">The identifier of the type.</param>
+        /// <param name="formatter">The formatter to add.</param>
         public void AddFormatter<T>(string typeIdentifier, IJsonFormatter<TTarget> formatter) where T : TTarget
         {
             int identifier = m_formatters.Count;

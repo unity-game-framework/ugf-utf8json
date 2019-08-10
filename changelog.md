@@ -26,6 +26,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 2.0.0-preview - 2019-08-10
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/1.1.0...2.0.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/3?closed=1)
+
+### Added
+- Package short description.
+- `UnionFormatter` to support polymorphism.
+- Assembly definition importer menu to enable/disable and generate scripts for one or all assemblies.
+
+### Changed
+- Update to Unity 2019.2.
+- Package dependencies:
+    - `com.ugf.code.generate`: from `1.0.0` to `3.0.1`.
+    - `com.ugf.types`: from `2.1.1` to `2.2.0`.
+- Moved `Utf8Json` runtime and editor plugins from external dlls to package as source files.
+
+### Removed
+- Runtime formatters caching.
+- Runtime external type defines and runtime type collecting.
+- Runtime attributes to mark objects as target to generate formatter, use `SerializableAttribute` instead.
+
 ## 1.1.0 - 2019-04-30
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/1.0.0...1.1.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/2?closed=1)

@@ -84,7 +84,7 @@ namespace Utf8Json.UniversalCodeGenerator
             var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
             string namespaceDot = arguments.GetNamespaceDot();
 
-            (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo) = collector.Collect();
+            (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] genericInfo, EnumSerializationInfo[] enumInfo) = collector.Collect();
 
             FormatterTemplate[] objectFormatterTemplates = objectInfo
                 .GroupBy(x => x.Namespace)
@@ -95,17 +95,35 @@ namespace Utf8Json.UniversalCodeGenerator
                 })
                 .ToArray();
 
+            EnumTemplate[] enumFormatterTemplates = enumInfo
+                .GroupBy(x => x.Namespace)
+                .Select(x => new EnumTemplate
+                {
+                    Namespace = $"{arguments.GetNamespaceDot()}Formatters{((x.Key == null) ? "" : $".{x.Key}")}",
+                    enumSerializationInfos = x.ToArray()
+                })
+                .ToArray();
+
             var resolverTemplate = new ResolverTemplate()
             {
                 Namespace = $"{namespaceDot}Resolvers",
                 FormatterNamespace = $"{namespaceDot}Formatters",
                 ResolverName = arguments.ResolverName,
-                registerInfos = genericInfo.Cast<IResolverRegisterInfo>().Concat(objectInfo).ToArray()
+                registerInfos = genericInfo.Cast<IResolverRegisterInfo>().Concat(enumInfo).Concat(objectInfo).ToArray()
             };
 
             var builder = new StringBuilder();
 
             builder.AppendLine(resolverTemplate.TransformText());
+            builder.AppendLine();
+
+            foreach (EnumTemplate item in enumFormatterTemplates)
+            {
+                string text = item.TransformText();
+
+                builder.AppendLine(text);
+            }
+
             builder.AppendLine();
 
             foreach (FormatterTemplate item in objectFormatterTemplates)
@@ -121,7 +139,7 @@ namespace Utf8Json.UniversalCodeGenerator
             var collector = new TypeCollector(arguments.InputFiles, arguments.InputDirectories, arguments.ConditionalSymbols, !arguments.AllowInternal, arguments2);
             string namespaceDot = arguments.GetNamespaceDot();
 
-            (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] _) = collector.Collect();
+            (ObjectSerializationInfo[] objectInfo, GenericSerializationInfo[] _, EnumSerializationInfo[] enumInfo) = collector.Collect();
 
             FormatterTemplate[] objectFormatterTemplates = objectInfo
                 .GroupBy(x => x.Namespace)
@@ -132,7 +150,25 @@ namespace Utf8Json.UniversalCodeGenerator
                 })
                 .ToArray();
 
+            EnumTemplate[] enumFormatterTemplates = enumInfo
+                .GroupBy(x => x.Namespace)
+                .Select(x => new EnumTemplate
+                {
+                    Namespace = $"{arguments.GetNamespaceDot()}Formatters{((x.Key == null) ? "" : $".{x.Key}")}",
+                    enumSerializationInfos = x.ToArray()
+                })
+                .ToArray();
+
             var builder = new StringBuilder();
+
+            foreach (EnumTemplate item in enumFormatterTemplates)
+            {
+                string text = item.TransformText();
+
+                builder.AppendLine(text);
+            }
+
+            builder.AppendLine();
 
             foreach (FormatterTemplate item in objectFormatterTemplates)
             {

@@ -1,10 +1,10 @@
-﻿using UGF.Utf8Json.Runtime;
+﻿using System;
 
 namespace UGF.Utf8Json.Editor.Tests.TestEditorAssembly
 {
     using UnityEngine;
 
-    [Utf8JsonSerializable]
+    [Serializable]
     public class TestEditorTarget
     {
         public bool BoolValue { get; set; } = true;

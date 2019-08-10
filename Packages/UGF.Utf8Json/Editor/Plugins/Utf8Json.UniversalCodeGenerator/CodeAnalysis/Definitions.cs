@@ -90,6 +90,16 @@ namespace Utf8Json.UniversalCodeGenerator
         }
     }
 
+    internal class EnumSerializationInfo : IResolverRegisterInfo
+    {
+        public string Namespace { get; set; }
+        public string Name { get; set; }
+        public string FullName { get; set; }
+        public string UnderlyingType { get; set; }
+
+        public string FormatterName => (Namespace == null ? Name : Namespace + "." + Name) + "Formatter";
+    }
+
     internal class GenericSerializationInfo : IResolverRegisterInfo, IEquatable<GenericSerializationInfo>
     {
         public string FullName { get; set; }

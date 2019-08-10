@@ -1,5 +1,7 @@
 ﻿// ReSharper disable all
 
+#define NETSTANDARD
+
 using System.Reflection;
 using System.Collections;
 using System.Linq;
@@ -9,9 +11,9 @@ using Utf8Json.Formatters;
 using System.Collections.Generic;
 using Utf8Json.Resolvers.Internal;
 using System.Collections.ObjectModel;
-
 #if NETSTANDARD
 using System.Threading.Tasks;
+
 #endif
 
 namespace Utf8Json.Resolvers
@@ -63,19 +65,19 @@ namespace Utf8Json.Resolvers.Internal
             { typeof(ILookup<,>), typeof(InterfaceLookupFormatter<,>) },
             { typeof(IGrouping<,>), typeof(InterfaceGroupingFormatter<,>) },
 #if NETSTANDARD
-            {typeof(ObservableCollection<>), typeof(ObservableCollectionFormatter<>)},
-            {typeof(ReadOnlyObservableCollection<>),(typeof(ReadOnlyObservableCollectionFormatter<>))},
-            {typeof(IReadOnlyList<>), typeof(InterfaceReadOnlyListFormatter<>)},
-            {typeof(IReadOnlyCollection<>), typeof(InterfaceReadOnlyCollectionFormatter<>)},
-            {typeof(ISet<>), typeof(InterfaceSetFormatter<>)},
-            {typeof(System.Collections.Concurrent.ConcurrentBag<>), typeof(ConcurrentBagFormatter<>)},
-            {typeof(System.Collections.Concurrent.ConcurrentQueue<>), typeof(ConcurrentQueueFormatter<>)},
-            {typeof(System.Collections.Concurrent.ConcurrentStack<>), typeof(ConcurrentStackFormatter<>)},
-            {typeof(ReadOnlyDictionary<,>), typeof(ReadOnlyDictionaryFormatter<,>)},
-            {typeof(IReadOnlyDictionary<,>), typeof(InterfaceReadOnlyDictionaryFormatter<,>)},
-            {typeof(System.Collections.Concurrent.ConcurrentDictionary<,>), typeof(ConcurrentDictionaryFormatter<,>)},
-            {typeof(Lazy<>), typeof(LazyFormatter<>)},
-            {typeof(Task<>), typeof(TaskValueFormatter<>)},
+            { typeof(ObservableCollection<>), typeof(ObservableCollectionFormatter<>) },
+            { typeof(ReadOnlyObservableCollection<>), (typeof(ReadOnlyObservableCollectionFormatter<>)) },
+            { typeof(IReadOnlyList<>), typeof(InterfaceReadOnlyListFormatter<>) },
+            { typeof(IReadOnlyCollection<>), typeof(InterfaceReadOnlyCollectionFormatter<>) },
+            { typeof(ISet<>), typeof(InterfaceSetFormatter<>) },
+            { typeof(System.Collections.Concurrent.ConcurrentBag<>), typeof(ConcurrentBagFormatter<>) },
+            { typeof(System.Collections.Concurrent.ConcurrentQueue<>), typeof(ConcurrentQueueFormatter<>) },
+            { typeof(System.Collections.Concurrent.ConcurrentStack<>), typeof(ConcurrentStackFormatter<>) },
+            { typeof(ReadOnlyDictionary<,>), typeof(ReadOnlyDictionaryFormatter<,>) },
+            { typeof(IReadOnlyDictionary<,>), typeof(InterfaceReadOnlyDictionaryFormatter<,>) },
+            { typeof(System.Collections.Concurrent.ConcurrentDictionary<,>), typeof(ConcurrentDictionaryFormatter<,>) },
+            { typeof(Lazy<>), typeof(LazyFormatter<>) },
+            { typeof(Task<>), typeof(TaskValueFormatter<>) },
 #endif
         };
 
@@ -129,6 +131,7 @@ namespace Utf8Json.Resolvers.Internal
                     return CreateInstance(typeof(NullableFormatter<>), new[] { nullableElementType });
                 }
 #if NETSTANDARD
+#if UTF8JSON_TASKS
                 // ValueTask
                 else if (genericType == typeof(ValueTask<>))
                 {
@@ -138,6 +141,7 @@ namespace Utf8Json.Resolvers.Internal
                 {
                     return CreateInstance(typeof(NullableFormatter<>), new[] { nullableElementType });
                 }
+#endif
 
                 // Tuple
                 else if (ti.FullName.StartsWith("System.Tuple"))

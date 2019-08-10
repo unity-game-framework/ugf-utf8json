@@ -10,6 +10,21 @@ namespace UGF.Utf8Json.Editor
         [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate Enabled", false, 1000)]
         private static void AssemblyEnableGenerateMenu(MenuCommand menuCommand)
         {
+            var importer = (AssemblyDefinitionImporter)menuCommand.context;
+            string path = CodeGenerateEditorUtility.GetPathForGeneratedScript(importer.assetPath, "Utf8Json");
+            bool isActive = File.Exists(path);
+
+            if (isActive)
+            {
+                if (EditorUtility.DisplayDialog("Delete Utf8Json Generated Script?", $"{path}\nYou cannot undo this action.", "Delete", "Cancel"))
+                {
+                    AssetDatabase.MoveAssetToTrash(path);
+                }
+            }
+            else
+            {
+                Utf8JsonEditorUtility.GenerateAssetFromAssembly(importer.assetPath);
+            }
         }
 
         [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate Enabled", true, 1000)]
@@ -21,7 +36,7 @@ namespace UGF.Utf8Json.Editor
 
             Menu.SetChecked("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate Enabled", isActive);
 
-            return true;
+            return !EditorApplication.isCompiling;
         }
 
         [MenuItem("CONTEXT/AssemblyDefinitionImporter/Utf8Json Generate", false, 1000)]

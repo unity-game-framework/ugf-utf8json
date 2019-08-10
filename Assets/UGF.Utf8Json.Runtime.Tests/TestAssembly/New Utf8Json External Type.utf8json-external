@@ -1,0 +1,49 @@
+{
+    "m_typeName": "UnityEngine.AI.NavMeshBuildSettings, UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "m_members": [
+        {
+            "m_name": "agentTypeID",
+            "m_active": true
+        },
+        {
+            "m_name": "agentRadius",
+            "m_active": true
+        },
+        {
+            "m_name": "agentHeight",
+            "m_active": true
+        },
+        {
+            "m_name": "agentSlope",
+            "m_active": true
+        },
+        {
+            "m_name": "agentClimb",
+            "m_active": true
+        },
+        {
+            "m_name": "minRegionArea",
+            "m_active": true
+        },
+        {
+            "m_name": "overrideVoxelSize",
+            "m_active": true
+        },
+        {
+            "m_name": "voxelSize",
+            "m_active": true
+        },
+        {
+            "m_name": "overrideTileSize",
+            "m_active": true
+        },
+        {
+            "m_name": "tileSize",
+            "m_active": true
+        },
+        {
+            "m_name": "debug",
+            "m_active": false
+        }
+    ]
+}

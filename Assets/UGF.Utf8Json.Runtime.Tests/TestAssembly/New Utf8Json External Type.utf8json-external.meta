@@ -1,0 +1,36 @@
+fileFormatVersion: 2
+guid: f6223d94883113c47bc001ad2ae65ec0
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 8e70e03d822ac994ba422b38bbca3a27, type: 3}
+  info:
+    typeName: UnityEngine.AI.NavMeshBuildSettings, UnityEngine.AIModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    members:
+    - name: agentTypeID
+      active: 1
+    - name: agentRadius
+      active: 1
+    - name: agentHeight
+      active: 1
+    - name: agentSlope
+      active: 1
+    - name: agentClimb
+      active: 1
+    - name: minRegionArea
+      active: 1
+    - name: overrideVoxelSize
+      active: 1
+    - name: voxelSize
+      active: 1
+    - name: overrideTileSize
+      active: 1
+    - name: tileSize
+      active: 1
+    - name: debug
+      active: 0

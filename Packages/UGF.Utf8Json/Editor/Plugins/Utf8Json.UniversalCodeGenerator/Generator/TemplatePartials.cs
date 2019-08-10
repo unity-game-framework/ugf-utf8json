@@ -17,6 +17,12 @@ namespace Utf8Json.CodeGenerator.Generator
         public ObjectSerializationInfo[] objectSerializationInfos;
     }
 
+    internal partial class EnumTemplate
+    {
+        public string Namespace;
+        public EnumSerializationInfo[] enumSerializationInfos;
+    }
+
     internal partial class ResolverTemplate
     {
         public string Namespace;

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Utf8Json.UniversalCodeGenerator
@@ -18,12 +19,20 @@ namespace Utf8Json.UniversalCodeGenerator
         {
             var parseOptions = new CSharpParseOptions(LanguageVersion.Default, DocumentationMode.Parse, SourceCodeKind.Regular, preprocessorSymbols ?? new string[0]);
             var syntaxTrees = new List<SyntaxTree>();
-            var references = new List<MetadataReference>
+            var references = new List<MetadataReference>();
+            // {
+            //     MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+            //     MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
+            //     MetadataReference.CreateFromFile(typeof(System.Runtime.Serialization.DataMemberAttribute).Assembly.Location),
+            // };
+
+            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location),
-                MetadataReference.CreateFromFile(typeof(System.Runtime.Serialization.DataMemberAttribute).Assembly.Location),
-            };
+                if (!assembly.IsDynamic && !string.IsNullOrEmpty(assembly.Location))
+                {
+                    references.Add(MetadataReference.CreateFromFile(assembly.Location));
+                }
+            }
 
             foreach (var dir in inputDirectories ?? new string[0])
             {

@@ -34,6 +34,14 @@ namespace Utf8Json.Internal
 #if NETSTANDARD
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
 #endif
+        public static unsafe bool Equals(ArraySegment<byte> x, ArraySegment<byte> y)
+        {
+            return Equals(x.Array, x.Offset, x.Count, y.Array, y.Offset, y.Count);
+        }
+
+#if NETSTANDARD
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+#endif
         public static unsafe bool Equals(byte[] xs, int xsOffset, int xsCount, byte[] ys)
         {
             return Equals(xs, xsOffset, xsCount, ys, 0, ys.Length);

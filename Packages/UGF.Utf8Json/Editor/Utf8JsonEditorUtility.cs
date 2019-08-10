@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,9 +10,7 @@ using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UGF.Code.Generate.Editor.Container.External;
-using UGF.Utf8Json.Editor.Analysis;
 using UGF.Utf8Json.Editor.ExternalType;
-using UGF.Utf8Json.Runtime;
 using UnityEditor;
 using UnityEditor.Compilation;
 using Utf8Json.UniversalCodeGenerator;
@@ -104,7 +101,7 @@ namespace UGF.Utf8Json.Editor
             {
                 string sourcePath = assembly.sourceFiles[i];
 
-                if (IsSerializableScript(sourcePath))
+                if (CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, sourcePath, typeof(SerializableAttribute)))
                 {
                     sourcePaths.Add(sourcePath);
                 }
@@ -113,10 +110,19 @@ namespace UGF.Utf8Json.Editor
             var externals = new List<string>();
             string externalsTempPath = string.Empty;
 
-            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtension);
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName);
 
             if (externals.Count > 0)
             {
+                INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(SerializableAttribute).FullName);
+                SyntaxNode attribute = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
+                var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, declaration =>
+                {
+                    SyntaxKind kind = declaration.Kind();
+
+                    return kind == SyntaxKind.ClassDeclaration || kind == SyntaxKind.StructDeclaration;
+                });
+
                 externalsTempPath = FileUtil.GetUniqueTempPathInProject();
 
                 Directory.CreateDirectory(externalsTempPath);
@@ -129,6 +135,8 @@ namespace UGF.Utf8Json.Editor
                     {
                         SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
 
+                        unit = rewriterAddAttribute.Visit(unit);
+
                         string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
                         string source = unit.NormalizeWhitespace().ToFullString();
 
@@ -140,7 +148,7 @@ namespace UGF.Utf8Json.Editor
             }
 
             string resolverName = $"{assembly.name.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
-            string resolver = GenerateResolver(sourcePaths, resolverName, assembly.name, compilation, generator);
+            string resolver = GenerateResolver(sourcePaths, resolverName, assembly.name);
 
             if (!string.IsNullOrEmpty(externalsTempPath))
             {
@@ -156,56 +164,24 @@ namespace UGF.Utf8Json.Editor
         /// <param name="sourcePaths">The collection of the source paths.</param>
         /// <param name="resolverName">The name of the generated resolver.</param>
         /// <param name="namespaceRoot">The namespace root of the generated formatters.</param>
-        /// <param name="compilation">The project compilation used during generation.</param>
-        /// <param name="generator">The syntax generator used during generation.</param>
-        public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
-            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             var arguments = new Utf8JsonGenerateArguments
             {
                 IgnoreReadOnly = true,
                 IsTypeRequireAttribute = true,
-                TypeRequiredAttributeShortName = "Utf8JsonSerializable"
+                TypeRequiredAttributeShortName = "Serializable"
             };
-
-            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(Utf8JsonFormatterAttribute).FullName);
-            var attributeType = (TypeSyntax)generator.TypeExpression(attributeTypeSymbol);
-
-            var walkerCollectUsings = new CodeGenerateWalkerCollectUsingDirectives();
-            var rewriterAddAttribute = new Utf8JsonRewriterAddFormatterAttribute(generator, attributeType);
-            var rewriterFormatAttribute = new CodeGenerateRewriterFormatAttributeList();
-
-            for (int i = 0; i < sourcePaths.Count; i++)
-            {
-                walkerCollectUsings.Visit(SyntaxFactory.ParseSyntaxTree(File.ReadAllText(sourcePaths[i])).GetRoot());
-            }
 
             string resolver = Utf8JsonUniversalCodeGeneratorUtility.Generate(sourcePaths, resolverName, namespaceRoot, arguments);
             CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(resolver);
 
-            unit = unit.AddUsings(walkerCollectUsings.UsingDirectives.Select(x => x.WithoutLeadingTrivia()).ToArray());
-            unit = (CompilationUnitSyntax)rewriterAddAttribute.Visit(unit);
-            unit = (CompilationUnitSyntax)rewriterFormatAttribute.Visit(unit);
             unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
 
             return unit.ToFullString();
-        }
-
-        /// <summary>
-        /// Determines whether source from the specified path contains any declaration with the <see cref="Utf8JsonSerializableAttribute"/> attribute.
-        /// </summary>
-        /// <param name="path">The path of the source.</param>
-        /// <param name="compilation">The project compilation used during generation.</param>
-        public static bool IsSerializableScript(string path, CSharpCompilation compilation = null)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
-
-            return CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, path, typeof(Utf8JsonSerializableAttribute));
         }
     }
 }

@@ -6,8 +6,8 @@ namespace UGF.Utf8Json.Editor.ExternalType
     public static class Utf8JsonExternalTypeEditorUtility
     {
         /// <summary>
-        /// Gets the extension of the external type info file. (".utf8json-external")
+        /// Gets the extension name of the external type info file. ("utf8json-external")
         /// </summary>
-        public static string ExternalTypeAssetExtension { get; } = ".utf8json-external";
+        public static string ExternalTypeAssetExtensionName { get; } = "utf8json-external";
     }
 }

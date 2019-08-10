@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NUnit.Framework;
-using TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly;
-using UGF.Utf8Json.Runtime.Tests.TestAssembly;
-using Utf8Json;
+﻿using NUnit.Framework;
 
 namespace UGF.Utf8Json.Runtime.Tests
 {
@@ -15,46 +10,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             Utf8JsonFormatterResolver resolver = Utf8JsonUtility.CreateDefaultResolver();
 
             Assert.NotNull(resolver);
-            Assert.AreEqual(3, resolver.Resolvers.Count);
-        }
-
-        [Test]
-        public void CreateFormatters()
-        {
-            var formatters = new Dictionary<Type, IJsonFormatter>();
-
-            Utf8JsonUtility.GetFormatters(formatters, typeof(TestTarget).Assembly);
-
-            Assert.AreEqual(1, formatters.Count);
-        }
-
-        [Test, Order(1)]
-        public void SetFormatterCache()
-        {
-            var testTargetFormatter = new TestTargetFormatter();
-
-            Utf8JsonUtility.SetFormatterCache(typeof(TestTarget), null);
-
-            bool result0 = Utf8JsonUtility.TryGetFormatterCache(typeof(TestTarget), out IJsonFormatter formatter);
-
-            Assert.False(result0);
-            Assert.Null(formatter);
-
-            Utf8JsonUtility.SetFormatterCache(typeof(TestTarget), testTargetFormatter);
-
-            bool result1 = Utf8JsonUtility.TryGetFormatterCache(typeof(TestTarget), out formatter);
-
-            Assert.True(result1);
-            Assert.NotNull(formatter);
-        }
-
-        [Test, Order(2)]
-        public void TryGetFormatterCache()
-        {
-            bool result0 = Utf8JsonUtility.TryGetFormatterCache(typeof(TestTarget), out IJsonFormatter formatter);
-
-            Assert.True(result0);
-            Assert.NotNull(formatter);
+            Assert.AreEqual(2, resolver.Resolvers.Count);
         }
     }
 }

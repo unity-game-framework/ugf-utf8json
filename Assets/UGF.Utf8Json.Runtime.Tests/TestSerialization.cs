@@ -1,4 +1,6 @@
+using System;
 using NUnit.Framework;
+using UGF.Utf8Json.Runtime.Tests.Resolvers;
 using UnityEngine;
 using Utf8Json;
 
@@ -10,7 +12,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
         private Utf8JsonFormatterResolver m_resolver;
 
-        [Utf8JsonSerializable]
+        [Serializable]
         public class Target
         {
             public string Name { get; set; } = "Target";
@@ -20,7 +22,7 @@ namespace UGF.Utf8Json.Runtime.Tests
             public HideFlags Flags { get; set; } = HideFlags.DontSave;
         }
 
-        [Utf8JsonSerializable]
+        [Serializable]
         public class Target2
         {
             public Vector2 Vector2 { get; set; } = Vector2.one;
@@ -33,11 +35,16 @@ namespace UGF.Utf8Json.Runtime.Tests
             public bool BoolValue { get; set; } = true;
         }
 
+        [Serializable]
+        public class Target4
+        {
+        }
+
         [SetUp]
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.CacheFormatters();
+            m_resolver.Resolvers.Add(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
         [Test]

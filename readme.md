@@ -19,7 +19,7 @@ UGF.Utf8Json
 
 ### Registries
 
-- [Stable][2]
+- [Stable][2] (`deprecated`)
 - [Develop][3]
 
 ## Description

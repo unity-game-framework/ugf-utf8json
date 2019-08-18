@@ -4,14 +4,14 @@ UGF.Utf8Json
 
 ## Info
 
-- **Version**: `2.0.0-preview`
+- **Version**: `2.0.0-preview.1`
 - **Unity Version**: `2019.2.0`
 - **Api Compatibility Level**: `.NET Standard 2.0`
 
 ### Dependencies
 
-- [UGF.Code.Generate](https://github.com/unity-game-framework/ugf-code-generate): `3.0.1`
-- [UGF.Types](https://github.com/unity-game-framework/ugf-types): `2.2.0`
+- [UGF.Assemblies](https://github.com/unity-game-framework/ugf-assemblies): `1.5.2`
+- [UGF.Code.Generate](https://github.com/unity-game-framework/ugf-code-generate): `3.0.2`
 
 ### Changelog
 

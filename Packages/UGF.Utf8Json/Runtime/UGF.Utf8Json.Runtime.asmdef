@@ -1,9 +1,7 @@
 {
     "name": "UGF.Utf8Json.Runtime",
     "references": [
-        "GUID:005d4ab2cb930e742a4b76b585d2a5c9",
-        "GUID:47c3349eaf0910446a6e557ee1a6748f",
-        "GUID:743b637636640324ab90d9cd72077f47"
+        "GUID:005d4ab2cb930e742a4b76b585d2a5c9"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

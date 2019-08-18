@@ -81,7 +81,7 @@ namespace Utf8Json.CodeGenerator.Generator
                     this.Write("                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation(\"");
 
 #line 29 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
-                    this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
+                    this.Write(this.ToStringHelper.ToStringWithCulture(GeneratorUtility.ToCamelCase(x.Name)));
 
 #line default
 #line hidden
@@ -117,7 +117,7 @@ namespace Utf8Json.CodeGenerator.Generator
                         this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject(\"");
 
 #line 37 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
-                        this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
+                        this.Write(this.ToStringHelper.ToStringWithCulture(GeneratorUtility.ToCamelCase(x.Name)));
 
 #line default
 #line hidden
@@ -132,7 +132,7 @@ namespace Utf8Json.CodeGenerator.Generator
                         this.Write("                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator(\"");
 
 #line 39 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\FormatterTemplate.tt"
-                        this.Write(this.ToStringHelper.ToStringWithCulture(x.Name));
+                        this.Write(this.ToStringHelper.ToStringWithCulture(GeneratorUtility.ToCamelCase(x.Name)));
 
 #line default
 #line hidden

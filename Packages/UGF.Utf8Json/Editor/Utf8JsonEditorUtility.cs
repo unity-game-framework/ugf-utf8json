@@ -89,66 +89,25 @@ namespace UGF.Utf8Json.Editor
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             string assemblyName = Path.GetFileNameWithoutExtension(path);
-
-            if (!AssemblyEditorUtility.TryFindCompilationAssemblyByName(assemblyName, out Assembly assembly))
-            {
-                throw new ArgumentException($"Assembly not found from the specified path: '{path}'.");
-            }
-
             var sourcePaths = new List<string>();
 
-            for (int i = 0; i < assembly.sourceFiles.Length; i++)
+            if (AssemblyEditorUtility.TryFindCompilationAssemblyByName(assemblyName, out Assembly assembly))
             {
-                string sourcePath = assembly.sourceFiles[i];
-
-                if (CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, sourcePath, typeof(SerializableAttribute)))
+                for (int i = 0; i < assembly.sourceFiles.Length; i++)
                 {
-                    sourcePaths.Add(sourcePath);
-                }
-            }
+                    string sourcePath = assembly.sourceFiles[i];
 
-            var externals = new List<string>();
-            string externalsTempPath = string.Empty;
-
-            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName);
-
-            if (externals.Count > 0)
-            {
-                INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(SerializableAttribute).FullName);
-                SyntaxNode attribute = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
-                var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, declaration =>
-                {
-                    SyntaxKind kind = declaration.Kind();
-
-                    return kind == SyntaxKind.ClassDeclaration || kind == SyntaxKind.StructDeclaration;
-                });
-
-                externalsTempPath = FileUtil.GetUniqueTempPathInProject();
-
-                Directory.CreateDirectory(externalsTempPath);
-
-                for (int i = 0; i < externals.Count; i++)
-                {
-                    string externalPath = externals[i];
-
-                    if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out _))
+                    if (CodeGenerateEditorUtility.CheckAttributeFromScript(compilation, sourcePath, typeof(SerializableAttribute)))
                     {
-                        SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
-
-                        unit = rewriterAddAttribute.Visit(unit);
-
-                        string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
-                        string source = unit.NormalizeWhitespace().ToFullString();
-
-                        File.WriteAllText(sourcePath, source);
-
                         sourcePaths.Add(sourcePath);
                     }
                 }
             }
 
-            string resolverName = $"{assembly.name.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
-            string resolver = GenerateResolver(sourcePaths, resolverName, assembly.name);
+            string externalsTempPath = InternalGenerateExternals(sourcePaths, path, validation, compilation, generator);
+
+            string resolverName = GetResolverNameFromAssemblyName(assemblyName);
+            string resolver = GenerateResolver(sourcePaths, resolverName, assemblyName);
 
             if (!string.IsNullOrEmpty(externalsTempPath))
             {
@@ -182,6 +141,57 @@ namespace UGF.Utf8Json.Editor
             unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
 
             return unit.ToFullString();
+        }
+
+        public static string GetResolverNameFromAssemblyName(string assemblyName)
+        {
+            return $"{assemblyName.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
+        }
+
+        private static string InternalGenerateExternals(List<string> sourcePaths, string path, ICodeGenerateContainerValidation validation, Compilation compilation, SyntaxGenerator generator)
+        {
+            var externals = new List<string>();
+            string externalsTempPath = string.Empty;
+
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName);
+
+            if (externals.Count > 0)
+            {
+                INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(typeof(SerializableAttribute).FullName);
+                SyntaxNode attribute = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
+
+                var rewriterAddAttribute = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, declaration =>
+                {
+                    SyntaxKind kind = declaration.Kind();
+
+                    return kind == SyntaxKind.ClassDeclaration || kind == SyntaxKind.StructDeclaration;
+                });
+
+                externalsTempPath = FileUtil.GetUniqueTempPathInProject();
+
+                Directory.CreateDirectory(externalsTempPath);
+
+                for (int i = 0; i < externals.Count; i++)
+                {
+                    string externalPath = externals[i];
+
+                    if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out _))
+                    {
+                        SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
+
+                        unit = rewriterAddAttribute.Visit(unit);
+
+                        string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
+                        string source = unit.NormalizeWhitespace().ToFullString();
+
+                        File.WriteAllText(sourcePath, source);
+
+                        sourcePaths.Add(sourcePath);
+                    }
+                }
+            }
+
+            return externalsTempPath;
         }
     }
 }

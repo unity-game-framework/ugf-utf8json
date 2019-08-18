@@ -88,20 +88,20 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
         {
             this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
             {
-                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("BoolValue"), 0},
-                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("StringValue"), 1},
-                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Vector2"), 2},
-                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("FloatValue"), 3},
-                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("Bounds"), 4},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("boolValue"), 0},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("stringValue"), 1},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("vector2"), 2},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("floatValue"), 3},
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("bounds"), 4},
             };
 
             this.____stringByteKeys = new byte[][]
             {
-                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("BoolValue"),
-                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("StringValue"),
-                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Vector2"),
-                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("FloatValue"),
-                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("Bounds"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("boolValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("stringValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("vector2"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("floatValue"),
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("bounds"),
                 
             };
         }

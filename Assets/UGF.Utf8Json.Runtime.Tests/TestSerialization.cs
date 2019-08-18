@@ -8,8 +8,8 @@ namespace UGF.Utf8Json.Runtime.Tests
 {
     public class TestSerialization
     {
-        private readonly string m_targetSerialized = "{\"Name\":\"Target\",\"BoolValue\":true,\"FloatValue\":50.5,\"IntValue\":50,\"Flags\":52}";
-        private readonly string m_target2Serialized = "{\"Vector2\":{\"x\":1,\"y\":1},\"Bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
+        private readonly string m_targetSerialized = "{\"name\":\"Target\",\"boolValue\":true,\"floatValue\":50.5,\"intValue\":50,\"flags\":52}";
+        private readonly string m_target2Serialized = "{\"vector2\":{\"x\":1,\"y\":1},\"bounds\":{\"center\":{\"x\":1,\"y\":1,\"z\":1},\"size\":{\"x\":1,\"y\":1,\"z\":1}}}";
         private Utf8JsonFormatterResolver m_resolver;
 
         [Serializable]

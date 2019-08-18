@@ -9,13 +9,12 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
 {
     public class TestUnionFormatter
     {
-        private readonly string m_target1Data = "{\"type\":\"one\",\"BoolValue\":true}";
-        private readonly string m_target1Data2 = "{\"type\":\"one\",\"BoolValue\":false}";
-        private readonly string m_target2Data = "{\"type\":\"two\",\"IntValue\":10}";
-        private readonly string m_target2Data2 = "{\"type\":\"two\",\"IntValue\":100}";
+        private readonly string m_target1Data = "{\"type\":\"one\",\"boolValue\":true}";
+        private readonly string m_target1Data2 = "{\"type\":\"one\",\"boolValue\":false}";
+        private readonly string m_target2Data = "{\"type\":\"two\",\"intValue\":10}";
+        private readonly string m_target2Data2 = "{\"type\":\"two\",\"intValue\":100}";
         private Utf8JsonFormatterResolver m_resolver;
-        private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("Test.Serialize");
-        private ProfilerMarker m_serializeMethodStringMarker = new ProfilerMarker("Test.Serialize.String");
+        private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("TestUnionFormatter.SerializeProfiler()");
 
         private class Formatter : UnionFormatter<ITarget>
         {
@@ -63,6 +62,23 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
             Assert.AreEqual(m_target1Data, data1);
             Assert.AreEqual(m_target2Data, data2);
             Assert.Pass($"{data1}\n{data2}");
+        }
+
+        [Test]
+        public void SerializeProfiler()
+        {
+            var target = new Target1();
+            var writer = new JsonWriter(new byte[100]);
+
+            m_resolver.GetFormatter<ITarget>().Serialize(ref writer, target, m_resolver);
+
+            m_serializeMethodMarker.Begin();
+
+            m_resolver.GetFormatter<ITarget>().Serialize(ref writer, target, m_resolver);
+
+            m_serializeMethodMarker.End();
+
+            Assert.Pass();
         }
 
         [Test]

@@ -1,0 +1,40 @@
+fileFormatVersion: 2
+guid: 6553189464184f2438f89d968b222144
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 8e70e03d822ac994ba422b38bbca3a27, type: 3}
+  info:
+    typeName: UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget3, TestAssembly, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    members:
+    - name: Name
+      active: 1
+    - name: BoolValue
+      active: 1
+    - name: FloatValue
+      active: 1
+    - name: IntValue
+      active: 1
+    - name: Vector2
+      active: 1
+    - name: Bounds
+      active: 1
+    - name: Flags
+      active: 1
+    - name: ArrayInt
+      active: 1
+    - name: ListInt
+      active: 1
+    - name: ArrayTarget
+      active: 1
+    - name: ListTarget
+      active: 1
+    - name: ArrayFrames
+      active: 1
+    - name: ArrayInt2
+      active: 1

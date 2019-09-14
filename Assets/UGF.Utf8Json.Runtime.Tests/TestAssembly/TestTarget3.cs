@@ -1,13 +1,11 @@
-﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace UGF.Utf8Json.Runtime.Tests.TestAssembly
 {
-    [Serializable]
-    public class TestTarget
+    public class TestTarget3
     {
-        public string Name { get; set; } = "TestTarget";
+        public string Name { get; set; } = "TestTarget3";
         public bool BoolValue { get; set; } = true;
         public float FloatValue { get; set; } = 50.5F;
         public int IntValue { get; set; } = 50;
@@ -20,17 +18,6 @@ namespace UGF.Utf8Json.Runtime.Tests.TestAssembly
         public TestTarget2[] ArrayTarget { get; set; }
         public List<TestTarget2> ListTarget { get; set; }
         public Keyframe[] ArrayFrames { get; set; }
-    }
-
-    [Serializable]
-    public class TestTarget2
-    {
-        public string Name { get; set; } = "TestTarget2";
-        public bool BoolValue { get; set; } = true;
-        public float FloatValue { get; set; } = 50.5F;
-        public int IntValue { get; set; } = 50;
-        public Vector2 Vector2 { get; set; } = Vector2.one;
-        public Bounds Bounds { get; set; } = new Bounds(Vector3.one, Vector3.one);
-        public HideFlags Flags { get; set; } = HideFlags.DontSave;
+        public int[,] ArrayInt2 { get; set; }
     }
 }

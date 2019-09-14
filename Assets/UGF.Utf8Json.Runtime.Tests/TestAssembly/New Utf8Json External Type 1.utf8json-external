@@ -1,0 +1,57 @@
+{
+    "m_typeName": "UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget3, TestAssembly, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "m_members": [
+        {
+            "m_name": "Name",
+            "m_active": true
+        },
+        {
+            "m_name": "BoolValue",
+            "m_active": true
+        },
+        {
+            "m_name": "FloatValue",
+            "m_active": true
+        },
+        {
+            "m_name": "IntValue",
+            "m_active": true
+        },
+        {
+            "m_name": "Vector2",
+            "m_active": true
+        },
+        {
+            "m_name": "Bounds",
+            "m_active": true
+        },
+        {
+            "m_name": "Flags",
+            "m_active": true
+        },
+        {
+            "m_name": "ArrayInt",
+            "m_active": true
+        },
+        {
+            "m_name": "ListInt",
+            "m_active": true
+        },
+        {
+            "m_name": "ArrayTarget",
+            "m_active": true
+        },
+        {
+            "m_name": "ListTarget",
+            "m_active": true
+        },
+        {
+            "m_name": "ArrayFrames",
+            "m_active": true
+        },
+        {
+            "m_name": "ArrayInt2",
+            "m_active": true
+        }
+    ]
+}

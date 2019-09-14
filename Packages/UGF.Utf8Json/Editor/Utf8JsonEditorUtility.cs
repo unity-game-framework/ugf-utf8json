@@ -13,6 +13,7 @@ using UGF.Code.Generate.Editor.Container.External;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
+using UnityEngine;
 using Utf8Json.UniversalCodeGenerator;
 using Assembly = UnityEditor.Compilation.Assembly;
 
@@ -148,9 +149,10 @@ namespace UGF.Utf8Json.Editor
             return $"{assemblyName.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
         }
 
-        private static string InternalGenerateExternals(List<string> sourcePaths, string path, ICodeGenerateContainerValidation validation, Compilation compilation, SyntaxGenerator generator)
+        private static string InternalGenerateExternals(ICollection<string> sourcePaths, string path, ICodeGenerateContainerValidation validation, Compilation compilation, SyntaxGenerator generator)
         {
             var externals = new List<string>();
+            var types = new HashSet<Type>();
             string externalsTempPath = string.Empty;
 
             AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(externals, path, Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName);
@@ -175,18 +177,25 @@ namespace UGF.Utf8Json.Editor
                 {
                     string externalPath = externals[i];
 
-                    if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out _))
+                    if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out Type type))
                     {
-                        SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
+                        if (types.Add(type))
+                        {
+                            SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
 
-                        unit = rewriterAddAttribute.Visit(unit);
+                            unit = rewriterAddAttribute.Visit(unit);
 
-                        string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
-                        string source = unit.NormalizeWhitespace().ToFullString();
+                            string sourcePath = $"{externalsTempPath}/{Guid.NewGuid():N}.cs";
+                            string source = unit.NormalizeWhitespace().ToFullString();
 
-                        File.WriteAllText(sourcePath, source);
+                            File.WriteAllText(sourcePath, source);
 
-                        sourcePaths.Add(sourcePath);
+                            sourcePaths.Add(sourcePath);
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"The specified type already included for assembly: '{type}', assembly:'{path}'.");
+                        }
                     }
                 }
             }

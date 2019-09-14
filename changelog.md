@@ -26,6 +26,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 2.0.0-preview.2 - 2019-09-14
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.0.0-preview.1...2.0.0-preview.2)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/5?closed=1)
+
+### Changed
+- Package dependencies:
+    - `com.ugf.code.generate`: from `3.0.2` to `3.1.0`.
+
+### Fixed
+- `External Type Asset`: fixed error when generate resolver for assembly which contains infos with repeating target types.
+- `External Type Generate`: fixed generate serialization for field with array return type.
+
 ## 2.0.0-preview.1 - 2019-08-18
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.0.0-preview...2.0.0-preview.1)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/4?closed=1)

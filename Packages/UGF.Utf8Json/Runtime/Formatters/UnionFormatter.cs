@@ -10,7 +10,7 @@ namespace UGF.Utf8Json.Runtime.Formatters
     /// <summary>
     /// Represents union formatter.
     /// </summary>
-    public class UnionFormatter<TTarget> : IJsonFormatter<TTarget>
+    public class UnionFormatter<TTarget> : FormatterBase, IJsonFormatter<TTarget>
     {
         private readonly AutomataDictionary m_typeNameToId = new AutomataDictionary();
         private readonly Dictionary<Type, int> m_typeToId = new Dictionary<Type, int>();
@@ -143,6 +143,16 @@ namespace UGF.Utf8Json.Runtime.Formatters
             }
 
             return default;
+        }
+
+        protected override void OnSerializeTypeless(ref JsonWriter writer, object value, IJsonFormatterResolver formatterResolver)
+        {
+            Serialize(ref writer, (TTarget)value, formatterResolver);
+        }
+
+        protected override object OnDeserializeTypeless(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
+        {
+            return Deserialize(ref reader, formatterResolver);
         }
 
         private JsonWriter WriteTypeIdentifierSpace(ref JsonWriter writer, int identifier)

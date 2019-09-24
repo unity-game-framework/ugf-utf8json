@@ -46,7 +46,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddFormatter(new Formatter());
+            m_resolver.AddFormatter<ITarget>(new Formatter());
             m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 

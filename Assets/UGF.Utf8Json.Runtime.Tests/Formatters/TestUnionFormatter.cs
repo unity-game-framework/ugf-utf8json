@@ -42,12 +42,12 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
             public int IntValue { get; set; } = 10;
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
             m_resolver.AddFormatter(new Formatter());
-            m_resolver.Resolvers.Add(UGFUtf8JsonRuntimeTestsResolver.Instance);
+            m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
         [Test]

@@ -35,6 +35,8 @@ namespace UGF.Utf8Json.Runtime.Formatters
         /// <param name="typeIdentifier">The identifier of the type.</param>
         public void AddFormatter<T>(string typeIdentifier) where T : TTarget
         {
+            if (typeIdentifier == null) throw new ArgumentNullException(nameof(typeIdentifier));
+
             AddFormatter<T>(typeIdentifier, new UnionFormatterTyped<T, TTarget>());
         }
 
@@ -45,6 +47,8 @@ namespace UGF.Utf8Json.Runtime.Formatters
         /// <param name="formatter">The formatter to add.</param>
         public void AddFormatter<T>(string typeIdentifier, IJsonFormatter<TTarget> formatter) where T : TTarget
         {
+            if (typeIdentifier == null) throw new ArgumentNullException(nameof(typeIdentifier));
+
             int identifier = m_formatters.Count;
             byte[] typeName = JsonWriter.GetEncodedPropertyNameWithoutQuotation(typeIdentifier);
 
@@ -54,12 +58,68 @@ namespace UGF.Utf8Json.Runtime.Formatters
             m_typeNames.Add(typeName);
         }
 
+        public bool TryGetFormatter<T>(out IJsonFormatter<T> formatter)
+        {
+            if (TryGetFormatter(typeof(T), out IJsonFormatter value) && value is IJsonFormatter<T> cast)
+            {
+                formatter = cast;
+                return true;
+            }
+
+            formatter = null;
+            return false;
+        }
+
+        public bool TryGetFormatter(Type type, out IJsonFormatter formatter)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            if (m_typeToId.TryGetValue(type, out int identifier))
+            {
+                formatter = m_formatters[identifier];
+                return true;
+            }
+
+            formatter = null;
+            return false;
+        }
+
+        public IJsonFormatter<T> GetFormatter<T>()
+        {
+            return (IJsonFormatter<T>)GetFormatter(typeof(T));
+        }
+
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return m_formatters[m_typeToId[type]];
+        }
+
+        public bool TryGetTypeIdentifier(Type type, out int identifier)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return m_typeToId.TryGetValue(type, out identifier);
+        }
+
+        public int GetTypeIdentifier(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return m_typeToId[type];
+        }
+
         public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
         {
             if (!EqualityComparer<TTarget>.Default.Equals(value, default))
             {
-                Type targetType = value.GetType();
-                int identifier = GetTypeIdentifier(targetType);
+                Type type = value.GetType();
+
+                if (!m_typeToId.TryGetValue(type, out int identifier))
+                {
+                    throw new ArgumentException($"The identifier for specified type not found: '{type}'.", nameof(type));
+                }
 
                 JsonWriter typeWriter = WriteTypeIdentifierSpace(ref writer, identifier);
 
@@ -83,16 +143,6 @@ namespace UGF.Utf8Json.Runtime.Formatters
             }
 
             return default;
-        }
-
-        private int GetTypeIdentifier(Type type)
-        {
-            if (m_typeToId.TryGetValue(type, out int identifier))
-            {
-                return identifier;
-            }
-
-            throw new ArgumentException($"The identifier for specified type not found: '{type}'.", nameof(type));
         }
 
         private JsonWriter WriteTypeIdentifierSpace(ref JsonWriter writer, int identifier)

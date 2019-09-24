@@ -40,11 +40,11 @@ namespace UGF.Utf8Json.Runtime.Tests
         {
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.Resolvers.Add(UGFUtf8JsonRuntimeTestsResolver.Instance);
+            m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
         [Test]

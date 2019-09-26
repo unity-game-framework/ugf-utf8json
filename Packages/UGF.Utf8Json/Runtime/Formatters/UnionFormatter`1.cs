@@ -7,29 +7,19 @@ namespace UGF.Utf8Json.Runtime.Formatters
     /// <summary>
     /// Represents union formatter.
     /// </summary>
-    public class UnionFormatter<TTarget> : UnionFormatter, IJsonFormatter<TTarget>
+    public class UnionFormatter<TTarget> : UnionFormatter, IUnionFormatter<TTarget>, IJsonFormatter<TTarget>
     {
-        public UnionFormatter(string typePropertyName = "type") : base(typePropertyName)
+        public UnionFormatter(IUnionSerializer unionSerializer = null) : base(unionSerializer)
         {
         }
 
         public void AddFormatter<T>(string typeIdentifier) where T : TTarget
         {
+            if (typeIdentifier == null) throw new ArgumentNullException(nameof(typeIdentifier));
+
             var formatter = new UnionFormatterWrapper<T, TTarget>();
 
-            base.AddFormatter(typeIdentifier, typeof(T), formatter);
-        }
-
-        public override void AddFormatter(string typeIdentifier, Type targetType, IJsonFormatter formatter)
-        {
-            if (formatter == null) throw new ArgumentNullException(nameof(formatter));
-
-            if (!(formatter is IJsonFormatter<TTarget>))
-            {
-                throw new ArgumentException($"The type of the formatter target is invalid: '{formatter}'.", nameof(formatter));
-            }
-
-            base.AddFormatter(typeIdentifier, targetType, formatter);
+            AddFormatter(typeof(T), typeIdentifier, formatter);
         }
 
         public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
@@ -45,12 +35,7 @@ namespace UGF.Utf8Json.Runtime.Formatters
                     throw new ArgumentException($"The formatter for the specified type not found: '{targetType}'.", nameof(targetType));
                 }
 
-                int identifier = GetFormatterIdentifier(targetType);
-                JsonWriter typeWriter = WriteTypeIdentifierSpace(ref writer, identifier);
-
-                formatter.Serialize(ref writer, value, formatterResolver);
-
-                WriteTypeIdentifier(typeWriter, identifier);
+                UnionSerializer.Serialize(ref writer, value, formatter, formatterResolver);
             }
             else
             {
@@ -64,14 +49,14 @@ namespace UGF.Utf8Json.Runtime.Formatters
 
             if (!reader.ReadIsNull())
             {
-                int identifier = ReadTypeIdentifier(reader);
+                int identifier = UnionSerializer.ReadTypeIdentifier(reader);
 
                 if (!TryGetFormatter(identifier, out IJsonFormatter<TTarget> formatter))
                 {
                     throw new ArgumentException($"The formatter for the specified identifier not found: '{identifier}'.", nameof(identifier));
                 }
 
-                return formatter.Deserialize(ref reader, formatterResolver);
+                return UnionSerializer.Deserialize(ref reader, formatter, formatterResolver);
             }
 
             return default;

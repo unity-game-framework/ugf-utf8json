@@ -1,8 +1,8 @@
 using System;
-using System.Runtime.Serialization;
 using NUnit.Framework;
 using UGF.Utf8Json.Runtime.Formatters;
 using UGF.Utf8Json.Runtime.Tests.Resolvers;
+using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Tests.Formatters
 {
@@ -14,12 +14,32 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         private readonly string m_target2Data2 = "{\"type\":\"two\",\"intValue\":100}";
         private Utf8JsonFormatterResolver m_resolver;
 
-        private class Formatter : UnionFormatter<ITarget>
+        private class Formatter : UnionFormatter
         {
             public Formatter()
             {
-                AddFormatter<Target1>("one");
-                AddFormatter<Target2>("two");
+                AddFormatter(typeof(Target1), "one", new UnionFormatterWrapper<Target1, ITarget>());
+                AddFormatter(typeof(Target2), "two", new UnionFormatterWrapper<Target2, ITarget>());
+            }
+        }
+
+        private class FormatterContainer<TTarget> : IJsonFormatter<TTarget>
+        {
+            public UnionFormatter UnionFormatter { get; }
+
+            public FormatterContainer(UnionFormatter unionFormatter)
+            {
+                UnionFormatter = unionFormatter;
+            }
+
+            public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
+            {
+                UnionFormatter.Serialize(ref writer, value, formatterResolver);
+            }
+
+            public TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
+            {
+                return (TTarget)UnionFormatter.Deserialize(ref reader, formatterResolver);
             }
         }
 
@@ -43,7 +63,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddFormatter<ITarget>(new Formatter());
+            m_resolver.AddFormatter(new FormatterContainer<ITarget>(new Formatter()));
             m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
@@ -59,14 +79,6 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         {
         }
 
-        public void GetFormatterIdentifier()
-        {
-        }
-
-        public void TryGetFormatterIdentifier()
-        {
-        }
-
         public void GetFormatter()
         {
         }
@@ -79,24 +91,34 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         {
         }
 
+        [Test]
         public void Serialize()
         {
+            var target1 = new Target1();
+            var target2 = new Target2();
+
+            string data1 = JsonSerializer.ToJsonString<ITarget>(target1, m_resolver);
+            string data2 = JsonSerializer.ToJsonString<ITarget>(target2, m_resolver);
+
+            Assert.AreEqual(m_target1Data, data1);
+            Assert.AreEqual(m_target2Data, data2);
+            Assert.Pass($"{data1}\n{data2}");
         }
 
+        [Test]
         public void Deserialize()
         {
-        }
+            var target1 = JsonSerializer.Deserialize<ITarget>(m_target1Data2, m_resolver);
+            var target2 = JsonSerializer.Deserialize<ITarget>(m_target2Data2, m_resolver);
 
-        public void WriteTypeIdentifierSpace()
-        {
-        }
+            Assert.AreEqual(typeof(Target1), target1.GetType());
+            Assert.AreEqual(typeof(Target2), target2.GetType());
 
-        public void WriteTypeIdentifier()
-        {
-        }
+            var target12 = (Target1)target1;
+            var target22 = (Target2)target2;
 
-        public void ReadTypeIdentifier()
-        {
+            Assert.AreEqual(false, target12.BoolValue);
+            Assert.AreEqual(100, target22.IntValue);
         }
     }
 }

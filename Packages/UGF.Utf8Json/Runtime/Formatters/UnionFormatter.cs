@@ -1,18 +1,22 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Formatters
 {
-    public class UnionFormatter : IUnionFormatter, IJsonFormatter<object>
+    public class UnionFormatter : IUnionFormatter, IJsonFormatter<object>, IEnumerable<KeyValuePair<int, IJsonFormatter>>
     {
         public IUnionSerializer UnionSerializer { get; }
+        public IReadOnlyDictionary<int, IJsonFormatter> Formatters { get; }
 
         private readonly Dictionary<int, IJsonFormatter> m_formatters = new Dictionary<int, IJsonFormatter>();
 
         public UnionFormatter(IUnionSerializer unionSerializer = null)
         {
             UnionSerializer = unionSerializer ?? new UnionSerializer();
+            Formatters = new ReadOnlyDictionary<int, IJsonFormatter>(m_formatters);
         }
 
         public void Serialize(ref JsonWriter writer, object value, IJsonFormatterResolver formatterResolver)
@@ -117,6 +121,21 @@ namespace UGF.Utf8Json.Runtime.Formatters
 
             formatter = null;
             return false;
+        }
+
+        public Dictionary<int, IJsonFormatter>.Enumerator GetEnumerator()
+        {
+            return m_formatters.GetEnumerator();
+        }
+
+        IEnumerator<KeyValuePair<int, IJsonFormatter>> IEnumerable<KeyValuePair<int, IJsonFormatter>>.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<int, IJsonFormatter>>)m_formatters).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)m_formatters).GetEnumerator();
         }
     }
 }

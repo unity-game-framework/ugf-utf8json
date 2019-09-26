@@ -28,7 +28,7 @@ namespace Utf8Json
 #endif
             int offset;
 
-        public int CurrentOffset { get { return offset; } }
+        public int CurrentOffset { get { return offset; } set { offset = value; } }
 
         public void AdvanceOffset(int offset)
         {

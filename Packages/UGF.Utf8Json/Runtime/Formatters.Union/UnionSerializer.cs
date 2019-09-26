@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using UnityEngine;
 using Utf8Json;
@@ -7,20 +9,22 @@ using Utf8Json.Internal;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
-    public class UnionSerializer : IUnionSerializer
+    public class UnionSerializer : IUnionSerializer, IEnumerable<KeyValuePair<Type, int>>
     {
         public string TypePropertyName { get; }
+        public IReadOnlyDictionary<Type, int> Types { get; }
 
         private readonly byte[] m_typePropertyNameBytes;
         private readonly ArraySegment<byte> m_typePropertyNameValue;
         private readonly Dictionary<Type, int> m_typeToId = new Dictionary<Type, int>();
-        private readonly Dictionary<int, byte[]> m_typeNames = new Dictionary<int, byte[]>();
+        private readonly Dictionary<int, byte[]> m_typeNameBytes = new Dictionary<int, byte[]>();
         private AutomataDictionary m_typeNameToId = new AutomataDictionary();
         private int m_identifierCounter = int.MinValue + 1;
 
         public UnionSerializer(string typePropertyName = "type")
         {
             TypePropertyName = typePropertyName ?? throw new ArgumentNullException(nameof(typePropertyName));
+            Types = new ReadOnlyDictionary<Type, int>(m_typeToId);
 
             m_typePropertyNameBytes = JsonWriter.GetEncodedPropertyName(typePropertyName);
             m_typePropertyNameValue = new ArraySegment<byte>(m_typePropertyNameBytes, 1, m_typePropertyNameBytes.Length - 3);
@@ -37,7 +41,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
             byte[] typeName = JsonWriter.GetEncodedPropertyNameWithoutQuotation(typeIdentifier);
 
             m_typeToId.Add(targetType, identifier);
-            m_typeNames.Add(identifier, typeName);
+            m_typeNameBytes.Add(identifier, typeName);
             m_typeNameToId.Add(typeName, identifier);
 
             return identifier;
@@ -49,9 +53,9 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
 
             if (m_typeToId.TryGetValue(targetType, out int identifier))
             {
-                m_typeNameToId.Add(m_typeNames[identifier], int.MinValue);
+                m_typeNameToId.Add(m_typeNameBytes[identifier], int.MinValue);
                 m_typeToId.Remove(targetType);
-                m_typeNames.Remove(identifier);
+                m_typeNameBytes.Remove(identifier);
 
                 return true;
             }
@@ -62,7 +66,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
         public void Clear()
         {
             m_typeToId.Clear();
-            m_typeNames.Clear();
+            m_typeNameBytes.Clear();
             m_typeNameToId = new AutomataDictionary();
         }
 
@@ -87,11 +91,11 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
 
             Type targetType = value.GetType();
             int identifier = m_typeToId[targetType];
-            JsonWriter typeWriter = WriteTypeIdentifierSpace(ref writer, identifier);
+            int position = WriteTypeIdentifierSpace(ref writer, identifier);
 
             formatter.Serialize(ref writer, value, formatterResolver);
 
-            WriteTypeIdentifier(typeWriter, identifier);
+            WriteTypeIdentifier(ref writer, identifier, position);
         }
 
         public T Deserialize<T>(ref JsonReader reader, IJsonFormatter<T> formatter, IJsonFormatterResolver formatterResolver)
@@ -134,28 +138,45 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
             throw new ArgumentException($"The type property not found at: '{value}'.", nameof(reader));
         }
 
-        private JsonWriter WriteTypeIdentifierSpace(ref JsonWriter writer, int identifier)
+        public Dictionary<Type, int>.Enumerator GetEnumerator()
         {
-            byte[] typeName = m_typeNames[identifier];
-            int length = m_typePropertyNameBytes.Length + typeName.Length + 3;
-
-            writer.EnsureCapacity(length + 1);
-
-            JsonWriter typeWriter = writer;
-
-            writer.AdvanceOffset(length);
-
-            return typeWriter;
+            return m_typeToId.GetEnumerator();
         }
 
-        private void WriteTypeIdentifier(JsonWriter writer, int identifier)
+        private int WriteTypeIdentifierSpace(ref JsonWriter writer, int identifier)
         {
+            byte[] typeName = m_typeNameBytes[identifier];
+            int length = m_typePropertyNameBytes.Length + typeName.Length + 3;
+            int position = writer.CurrentOffset;
+
+            writer.EnsureCapacity(length + 1);
+            writer.AdvanceOffset(length);
+
+            return position;
+        }
+
+        private void WriteTypeIdentifier(ref JsonWriter writer, int identifier, int position)
+        {
+            int current = writer.CurrentOffset;
+
+            writer.CurrentOffset = position;
             writer.WriteBeginObject();
             writer.WriteRaw(m_typePropertyNameBytes);
             writer.WriteQuotation();
-            writer.WriteRaw(m_typeNames[identifier]);
+            writer.WriteRaw(m_typeNameBytes[identifier]);
             writer.WriteQuotation();
             writer.WriteValueSeparator();
+            writer.CurrentOffset = current;
+        }
+
+        IEnumerator<KeyValuePair<Type, int>> IEnumerable<KeyValuePair<Type, int>>.GetEnumerator()
+        {
+            return ((IEnumerable<KeyValuePair<Type, int>>)m_typeToId).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)m_typeToId).GetEnumerator();
         }
     }
 }

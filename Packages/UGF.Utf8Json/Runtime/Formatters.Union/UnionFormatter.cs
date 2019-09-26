@@ -13,9 +13,9 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
 
         private readonly Dictionary<int, IJsonFormatter> m_formatters = new Dictionary<int, IJsonFormatter>();
 
-        public UnionFormatter(IUnionSerializer unionSerializer = null)
+        public UnionFormatter(IUnionSerializer unionSerializer)
         {
-            UnionSerializer = unionSerializer ?? new UnionSerializer();
+            UnionSerializer = unionSerializer ?? throw new ArgumentNullException(nameof(unionSerializer));
             Formatters = new ReadOnlyDictionary<int, IJsonFormatter>(m_formatters);
         }
 

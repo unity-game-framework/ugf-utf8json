@@ -9,7 +9,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
     /// </summary>
     public class UnionFormatter<TTarget> : UnionFormatter, IUnionFormatter<TTarget>, IJsonFormatter<TTarget>
     {
-        public UnionFormatter(IUnionSerializer unionSerializer = null) : base(unionSerializer)
+        public UnionFormatter(IUnionSerializer unionSerializer) : base(unionSerializer)
         {
         }
 

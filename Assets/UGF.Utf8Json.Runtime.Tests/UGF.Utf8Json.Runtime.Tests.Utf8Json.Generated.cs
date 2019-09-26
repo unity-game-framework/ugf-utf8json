@@ -41,15 +41,16 @@ namespace UGF.Utf8Json.Runtime.Tests.Resolvers
 
         static UGFUtf8JsonRuntimeTestsResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(7)
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(8)
             {
                 {typeof(global::UnityEngine.HideFlags), 0 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1), 1 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2), 2 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1), 3 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2), 4 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target), 5 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2), 6 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer.Target), 5 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target), 6 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2), 7 },
             };
         }
 
@@ -65,8 +66,9 @@ namespace UGF.Utf8Json.Runtime.Tests.Resolvers
                 case 2: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter_Target2Formatter();
                 case 3: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric_Target1Formatter();
                 case 4: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric_Target2Formatter();
-                case 5: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_TargetFormatter();
-                case 6: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_Target2Formatter();
+                case 5: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer_TargetFormatter();
+                case 6: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_TargetFormatter();
+                case 7: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_Target2Formatter();
                 default: return null;
             }
         }
@@ -435,6 +437,86 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
 
             var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2();
             if(__IntValue__b__) ____result.IntValue = __IntValue__;
+
+            return ____result;
+        }
+    }
+
+
+    public sealed class TestUnionSerializer_TargetFormatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer.Target>
+    {
+        readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
+        readonly byte[][] ____stringByteKeys;
+
+        public TestUnionSerializer_TargetFormatter()
+        {
+            this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
+            {
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("value"), 0},
+            };
+
+            this.____stringByteKeys = new byte[][]
+            {
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("value"),
+                
+            };
+        }
+
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer.Target value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+            
+
+            writer.WriteRaw(this.____stringByteKeys[0]);
+            writer.WriteInt32(value.Value);
+            
+            writer.WriteEndObject();
+        }
+
+        public global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer.Target Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            if (reader.ReadIsNull())
+            {
+                return null;
+            }
+            
+
+            var __Value__ = default(int);
+            var __Value__b__ = false;
+
+            var ____count = 0;
+            reader.ReadIsBeginObjectWithVerify();
+            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
+            {
+                var stringKey = reader.ReadPropertyNameSegmentRaw();
+                int key;
+                if (!____keyMapping.TryGetValue(stringKey, out key))
+                {
+                    reader.ReadNextBlock();
+                    goto NEXT_LOOP;
+                }
+
+                switch (key)
+                {
+                    case 0:
+                        __Value__ = reader.ReadInt32();
+                        __Value__b__ = true;
+                        break;
+                    default:
+                        reader.ReadNextBlock();
+                        break;
+                }
+
+                NEXT_LOOP:
+                continue;
+            }
+
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionSerializer.Target();
+            if(__Value__b__) ____result.Value = __Value__;
 
             return ____result;
         }

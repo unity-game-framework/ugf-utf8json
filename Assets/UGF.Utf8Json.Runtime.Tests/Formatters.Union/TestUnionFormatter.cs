@@ -16,7 +16,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
 
         private class Formatter : UnionFormatter
         {
-            public Formatter()
+            public Formatter() : base(new UnionSerializer())
             {
                 AddFormatter(typeof(Target1), "one", new UnionFormatterWrapper<Target1, ITarget>());
                 AddFormatter(typeof(Target2), "two", new UnionFormatterWrapper<Target2, ITarget>());

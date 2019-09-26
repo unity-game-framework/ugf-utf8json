@@ -18,7 +18,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
 
         private class Formatter : UnionFormatter<ITarget>
         {
-            public Formatter()
+            public Formatter() : base(new UnionSerializer())
             {
                 AddFormatter<Target1>("one");
                 AddFormatter<Target2>("two");

@@ -87,39 +87,39 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
             m_formatters.Clear();
         }
 
-        public IJsonFormatter<T> GetFormatter<T>(Type targetType)
+        public T GetFormatter<T>(Type targetType) where T : IJsonFormatter
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
 
-            return (IJsonFormatter<T>)m_formatters[UnionSerializer.GetIdentifier(targetType)];
+            return (T)m_formatters[UnionSerializer.GetIdentifier(targetType)];
         }
 
-        public bool TryGetFormatter<T>(Type targetType, out IJsonFormatter<T> formatter)
+        public bool TryGetFormatter<T>(Type targetType, out T formatter) where T : IJsonFormatter
         {
             if (targetType == null) throw new ArgumentNullException(nameof(targetType));
 
             if (UnionSerializer.TryGetIdentifier(targetType, out int identifier))
             {
-                if (m_formatters.TryGetValue(identifier, out IJsonFormatter value) && value is IJsonFormatter<T> cast)
+                if (m_formatters.TryGetValue(identifier, out IJsonFormatter value) && value is T cast)
                 {
                     formatter = cast;
                     return true;
                 }
             }
 
-            formatter = null;
+            formatter = default;
             return false;
         }
 
-        public bool TryGetFormatter<T>(int identifier, out IJsonFormatter<T> formatter)
+        public bool TryGetFormatter<T>(int identifier, out T formatter) where T : IJsonFormatter
         {
-            if (m_formatters.TryGetValue(identifier, out IJsonFormatter value) && value is IJsonFormatter<T> cast)
+            if (m_formatters.TryGetValue(identifier, out IJsonFormatter value) && value is T cast)
             {
                 formatter = cast;
                 return true;
             }
 
-            formatter = null;
+            formatter = default;
             return false;
         }
 

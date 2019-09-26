@@ -3,6 +3,7 @@ using NUnit.Framework;
 using UGF.Utf8Json.Runtime.Formatters.Union;
 using UGF.Utf8Json.Runtime.Tests.Resolvers;
 using Utf8Json;
+using Utf8Json.Formatters;
 
 namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
 {
@@ -67,28 +68,121 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
             m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
+        [Test]
         public void AddFormatter()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+
+            Assert.AreEqual(0, serializer.Types.Count);
+            Assert.AreEqual(0, formatter.Formatters.Count);
+
+            formatter.AddFormatter(typeof(int), "int", new Int32Formatter());
+
+            Assert.AreEqual(1, serializer.Types.Count);
+            Assert.AreEqual(1, formatter.Formatters.Count);
         }
 
+        [Test]
         public void RemoveFormatter()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+
+            formatter.AddFormatter(typeof(int), "int", new Int32Formatter());
+
+            Assert.AreEqual(1, serializer.Types.Count);
+            Assert.AreEqual(1, formatter.Formatters.Count);
+
+            formatter.RemoveFormatter(typeof(int));
+
+            Assert.AreEqual(0, serializer.Types.Count);
+            Assert.AreEqual(0, formatter.Formatters.Count);
         }
 
+        [Test]
         public void Clear()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+
+            formatter.AddFormatter(typeof(int), "int", new Int32Formatter());
+
+            Assert.AreEqual(1, serializer.Types.Count);
+            Assert.AreEqual(1, formatter.Formatters.Count);
+
+            formatter.Clear();
+
+            Assert.AreEqual(0, serializer.Types.Count);
+            Assert.AreEqual(0, formatter.Formatters.Count);
         }
 
+        [Test]
         public void GetFormatter()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+            var formatter0 = new Int32Formatter();
+
+            formatter.AddFormatter(typeof(int), "int", formatter0);
+
+            var result = formatter.GetFormatter<IJsonFormatter<int>>(typeof(int));
+
+            Assert.NotNull(result);
+            Assert.AreEqual(formatter0, result);
         }
 
+        [Test]
         public void TryGetFormatterByTargetType()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+            var formatter0 = new Int32Formatter();
+            var formatter1 = new SingleFormatter();
+
+            formatter.AddFormatter(typeof(int), "int", formatter0);
+            formatter.AddFormatter(typeof(float), "float", formatter1);
+
+            bool result0 = formatter.TryGetFormatter(typeof(int), out IJsonFormatter<int> formatter01);
+            bool result1 = formatter.TryGetFormatter(typeof(float), out IJsonFormatter<float> formatter11);
+            bool result2 = formatter.TryGetFormatter(typeof(bool), out IJsonFormatter<bool> formatter21);
+
+            Assert.True(result0);
+            Assert.True(result1);
+            Assert.False(result2);
+            Assert.NotNull(formatter01);
+            Assert.NotNull(formatter11);
+            Assert.Null(formatter21);
+            Assert.AreEqual(formatter0, formatter01);
+            Assert.AreEqual(formatter1, formatter11);
         }
 
+        [Test]
         public void TryGetFormatterByIdentifier()
         {
+            var serializer = new UnionSerializer();
+            var formatter = new UnionFormatter(serializer);
+            var formatter0 = new Int32Formatter();
+            var formatter1 = new SingleFormatter();
+
+            formatter.AddFormatter(typeof(int), "int", formatter0);
+            formatter.AddFormatter(typeof(float), "float", formatter1);
+
+            int id0 = serializer.GetIdentifier(typeof(int));
+            int id1 = serializer.GetIdentifier(typeof(float));
+
+            bool result0 = formatter.TryGetFormatter(id0, out IJsonFormatter<int> formatter01);
+            bool result1 = formatter.TryGetFormatter(id1, out IJsonFormatter<float> formatter11);
+            bool result2 = formatter.TryGetFormatter(2, out IJsonFormatter<bool> formatter21);
+
+            Assert.True(result0);
+            Assert.True(result1);
+            Assert.False(result2);
+            Assert.NotNull(formatter01);
+            Assert.NotNull(formatter11);
+            Assert.Null(formatter21);
+            Assert.AreEqual(formatter0, formatter01);
+            Assert.AreEqual(formatter1, formatter11);
         }
 
         [Test]

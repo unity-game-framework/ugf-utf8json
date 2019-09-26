@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Utf8Json;
 
-namespace UGF.Utf8Json.Runtime.Formatters
+namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
     /// <summary>
     /// Represents union formatter.

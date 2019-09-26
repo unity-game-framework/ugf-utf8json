@@ -1,6 +1,6 @@
 using Utf8Json;
 
-namespace UGF.Utf8Json.Runtime.Formatters
+namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
     public abstract class UnionFormatterWrapperBase : IJsonFormatter<object>
     {

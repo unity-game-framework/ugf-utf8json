@@ -44,10 +44,10 @@ namespace UGF.Utf8Json.Runtime.Tests.Resolvers
             lookup = new global::System.Collections.Generic.Dictionary<Type, int>(7)
             {
                 {typeof(global::UnityEngine.HideFlags), 0 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target1), 1 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target2), 2 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target1), 3 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target2), 4 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1), 1 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2), 2 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1), 3 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2), 4 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target), 5 },
                 {typeof(global::UGF.Utf8Json.Runtime.Tests.TestSerialization.Target2), 6 },
             };
@@ -61,10 +61,10 @@ namespace UGF.Utf8Json.Runtime.Tests.Resolvers
             switch (key)
             {
                 case 0: return new UGF.Utf8Json.Runtime.Tests.Formatters.UnityEngine.HideFlagsFormatter();
-                case 1: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter_Target1Formatter();
-                case 2: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter_Target2Formatter();
-                case 3: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric_Target1Formatter();
-                case 4: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric_Target2Formatter();
+                case 1: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter_Target1Formatter();
+                case 2: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter_Target2Formatter();
+                case 3: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric_Target1Formatter();
+                case 4: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric_Target2Formatter();
                 case 5: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_TargetFormatter();
                 case 6: return new UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.TestSerialization_Target2Formatter();
                 default: return null;
@@ -115,13 +115,13 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UnityEngine
 #pragma warning disable 219
 #pragma warning disable 168
 
-namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters
+namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Union
 {
     using System;
     using Utf8Json;
 
 
-    public sealed class TestUnionFormatter_Target1Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target1>
+    public sealed class TestUnionFormatter_Target1Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
@@ -140,7 +140,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             };
         }
 
-        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target1 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
@@ -155,7 +155,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target1 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
@@ -193,7 +193,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 continue;
             }
 
-            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target1();
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target1();
             if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
 
             return ____result;
@@ -201,7 +201,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
     }
 
 
-    public sealed class TestUnionFormatter_Target2Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target2>
+    public sealed class TestUnionFormatter_Target2Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
@@ -220,7 +220,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             };
         }
 
-        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
@@ -235,7 +235,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target2 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
@@ -273,7 +273,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 continue;
             }
 
-            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatter.Target2();
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatter.Target2();
             if(__IntValue__b__) ____result.IntValue = __IntValue__;
 
             return ____result;
@@ -281,7 +281,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
     }
 
 
-    public sealed class TestUnionFormatterGeneric_Target1Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target1>
+    public sealed class TestUnionFormatterGeneric_Target1Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
@@ -300,7 +300,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             };
         }
 
-        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target1 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
@@ -315,7 +315,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target1 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
@@ -353,7 +353,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 continue;
             }
 
-            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target1();
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target1();
             if(__BoolValue__b__) ____result.BoolValue = __BoolValue__;
 
             return ____result;
@@ -361,7 +361,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
     }
 
 
-    public sealed class TestUnionFormatterGeneric_Target2Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target2>
+    public sealed class TestUnionFormatterGeneric_Target2Formatter : global::Utf8Json.IJsonFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2>
     {
         readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
         readonly byte[][] ____stringByteKeys;
@@ -380,7 +380,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             };
         }
 
-        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2 value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (value == null)
             {
@@ -395,7 +395,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
             writer.WriteEndObject();
         }
 
-        public global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target2 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        public global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2 Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             if (reader.ReadIsNull())
             {
@@ -433,7 +433,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.UGF.Utf8Json.Runtime.Tests.Forma
                 continue;
             }
 
-            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.TestUnionFormatterGeneric.Target2();
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Union.TestUnionFormatterGeneric.Target2();
             if(__IntValue__b__) ____result.IntValue = __IntValue__;
 
             return ____result;

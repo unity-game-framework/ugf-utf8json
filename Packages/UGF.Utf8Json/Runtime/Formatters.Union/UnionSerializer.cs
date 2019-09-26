@@ -5,7 +5,7 @@ using UnityEngine;
 using Utf8Json;
 using Utf8Json.Internal;
 
-namespace UGF.Utf8Json.Runtime.Formatters
+namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
     public class UnionSerializer : IUnionSerializer
     {

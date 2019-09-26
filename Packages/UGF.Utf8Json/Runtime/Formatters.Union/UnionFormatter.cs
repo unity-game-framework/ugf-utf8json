@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Utf8Json;
 
-namespace UGF.Utf8Json.Runtime.Formatters
+namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
     public class UnionFormatter : IUnionFormatter, IJsonFormatter<object>, IEnumerable<KeyValuePair<int, IJsonFormatter>>
     {

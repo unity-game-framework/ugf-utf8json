@@ -1,34 +1,51 @@
 using System;
 using NUnit.Framework;
-using UGF.Utf8Json.Runtime.Formatters;
+using UGF.Utf8Json.Runtime.Formatters.Union;
 using UGF.Utf8Json.Runtime.Tests.Resolvers;
-using Unity.Profiling;
 using Utf8Json;
 
-namespace UGF.Utf8Json.Runtime.Tests.Formatters
+namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
 {
-    public class TestUnionFormatterGeneric
+    public class TestUnionFormatter
     {
         private readonly string m_target1Data = "{\"type\":\"one\",\"boolValue\":true}";
         private readonly string m_target1Data2 = "{\"type\":\"one\",\"boolValue\":false}";
         private readonly string m_target2Data = "{\"type\":\"two\",\"intValue\":10}";
         private readonly string m_target2Data2 = "{\"type\":\"two\",\"intValue\":100}";
         private Utf8JsonFormatterResolver m_resolver;
-        private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("TestUnionFormatter.SerializeProfiler()");
 
-        private class Formatter : UnionFormatter<ITarget>
+        private class Formatter : UnionFormatter
         {
             public Formatter()
             {
-                AddFormatter<Target1>("one");
-                AddFormatter<Target2>("two");
+                AddFormatter(typeof(Target1), "one", new UnionFormatterWrapper<Target1, ITarget>());
+                AddFormatter(typeof(Target2), "two", new UnionFormatterWrapper<Target2, ITarget>());
+            }
+        }
+
+        private class FormatterContainer<TTarget> : IJsonFormatter<TTarget>
+        {
+            public UnionFormatter UnionFormatter { get; }
+
+            public FormatterContainer(UnionFormatter unionFormatter)
+            {
+                UnionFormatter = unionFormatter;
+            }
+
+            public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
+            {
+                UnionFormatter.Serialize(ref writer, value, formatterResolver);
+            }
+
+            public TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
+            {
+                return (TTarget)UnionFormatter.Deserialize(ref reader, formatterResolver);
             }
         }
 
         public interface ITarget
         {
         }
-
 
         [Serializable]
         public class Target1 : ITarget
@@ -46,8 +63,32 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddFormatter<ITarget>(new Formatter());
+            m_resolver.AddFormatter(new FormatterContainer<ITarget>(new Formatter()));
             m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
+        }
+
+        public void AddFormatter()
+        {
+        }
+
+        public void RemoveFormatter()
+        {
+        }
+
+        public void Clear()
+        {
+        }
+
+        public void GetFormatter()
+        {
+        }
+
+        public void TryGetFormatterByTargetType()
+        {
+        }
+
+        public void TryGetFormatterByIdentifier()
+        {
         }
 
         [Test]
@@ -62,23 +103,6 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
             Assert.AreEqual(m_target1Data, data1);
             Assert.AreEqual(m_target2Data, data2);
             Assert.Pass($"{data1}\n{data2}");
-        }
-
-        [Test]
-        public void SerializeProfiler()
-        {
-            var target = new Target1();
-            var writer = new JsonWriter(new byte[100]);
-
-            m_resolver.GetFormatter<ITarget>().Serialize(ref writer, target, m_resolver);
-
-            m_serializeMethodMarker.Begin();
-
-            m_resolver.GetFormatter<ITarget>().Serialize(ref writer, target, m_resolver);
-
-            m_serializeMethodMarker.End();
-
-            Assert.Pass();
         }
 
         [Test]

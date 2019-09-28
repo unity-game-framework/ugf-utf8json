@@ -12,23 +12,80 @@ namespace UGF.Utf8Json.Runtime
         /// <summary>
         /// Gets collection of the formatters stored by the target type.
         /// </summary>
-        public Dictionary<Type, IJsonFormatter> Formatters { get; } = new Dictionary<Type, IJsonFormatter>();
+        public IReadOnlyDictionary<Type, IJsonFormatter> Formatters { get { return m_formatters; } }
 
         /// <summary>
         /// Gets collection of the nested resolvers.
         /// </summary>
-        public List<IJsonFormatterResolver> Resolvers { get; } = new List<IJsonFormatterResolver>();
+        public IReadOnlyList<IJsonFormatterResolver> Resolvers { get { return m_resolvers; } }
 
-        IReadOnlyDictionary<Type, IJsonFormatter> IUtf8JsonFormatterResolver.Formatters { get { return Formatters; } }
-        IReadOnlyList<IJsonFormatterResolver> IUtf8JsonFormatterResolver.Resolvers { get { return Resolvers; } }
+        private readonly Dictionary<Type, IJsonFormatter> m_formatters = new Dictionary<Type, IJsonFormatter>();
+        private readonly List<IJsonFormatterResolver> m_resolvers = new List<IJsonFormatterResolver>();
 
-        /// <summary>
-        /// Adds specified formatter by the specified type.
-        /// </summary>
-        /// <param name="formatter">The formatter to add.</param>
         public void AddFormatter<T>(IJsonFormatter<T> formatter)
         {
-            Formatters.Add(typeof(T), formatter);
+            AddFormatter(typeof(T), formatter);
+        }
+
+        public void AddFormatter(Type type, IJsonFormatter formatter)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (formatter == null) throw new ArgumentNullException(nameof(formatter));
+            if (m_formatters.ContainsKey(type)) throw new ArgumentException($"The formatter by the specified type already has been added: '{type}', '{formatter}'.", nameof(type));
+
+            m_formatters.Add(type, formatter);
+        }
+
+        public void RemoveFormatter(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            m_formatters.Remove(type);
+        }
+
+        public void AddResolver(IJsonFormatterResolver resolver)
+        {
+            if (resolver == null) throw new ArgumentNullException(nameof(resolver));
+
+            m_resolvers.Add(resolver);
+        }
+
+        public void RemoveResolver(IJsonFormatterResolver resolver)
+        {
+            if (resolver == null) throw new ArgumentNullException(nameof(resolver));
+
+            m_resolvers.Remove(resolver);
+        }
+
+        public bool TryGetFormatter<T>(out IJsonFormatter<T> formatter)
+        {
+            if (m_formatters.TryGetValue(typeof(T), out IJsonFormatter value) && value is IJsonFormatter<T> cast)
+            {
+                formatter = cast;
+                return true;
+            }
+
+            for (int i = 0; i < m_resolvers.Count; i++)
+            {
+                IJsonFormatterResolver resolver = m_resolvers[i];
+
+                formatter = resolver.GetFormatter<T>();
+
+                if (formatter != null)
+                {
+                    return true;
+                }
+            }
+
+            formatter = null;
+            return false;
+        }
+
+        public bool TryGetFormatter(Type type, out IJsonFormatter formatter)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            return m_formatters.TryGetValue(type, out formatter);
         }
 
         /// <summary>
@@ -38,15 +95,15 @@ namespace UGF.Utf8Json.Runtime
         {
             IJsonFormatter<T> formatter = null;
 
-            if (Formatters.TryGetValue(typeof(T), out IJsonFormatter formatterBase) && formatterBase is IJsonFormatter<T> formatterGeneric)
+            if (m_formatters.TryGetValue(typeof(T), out IJsonFormatter value) && value is IJsonFormatter<T> cast)
             {
-                formatter = formatterGeneric;
+                formatter = cast;
             }
             else
             {
-                for (int i = 0; i < Resolvers.Count; i++)
+                for (int i = 0; i < m_resolvers.Count; i++)
                 {
-                    formatter = Resolvers[i].GetFormatter<T>();
+                    formatter = m_resolvers[i].GetFormatter<T>();
 
                     if (formatter != null)
                     {

@@ -127,6 +127,7 @@ namespace UGF.Utf8Json.Editor
         public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot)
         {
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
+            if (resolverName == null) throw new ArgumentNullException(nameof(resolverName));
             if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
 
             var arguments = new Utf8JsonGenerateArguments
@@ -146,6 +147,8 @@ namespace UGF.Utf8Json.Editor
 
         public static string GetResolverNameFromAssemblyName(string assemblyName)
         {
+            if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
+
             return $"{assemblyName.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
         }
 

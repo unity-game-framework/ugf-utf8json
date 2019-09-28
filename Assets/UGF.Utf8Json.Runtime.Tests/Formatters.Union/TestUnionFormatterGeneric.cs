@@ -1,13 +1,13 @@
 using System;
 using NUnit.Framework;
-using UGF.Utf8Json.Runtime.Formatters;
+using UGF.Utf8Json.Runtime.Formatters.Union;
 using UGF.Utf8Json.Runtime.Tests.Resolvers;
 using Unity.Profiling;
 using Utf8Json;
 
-namespace UGF.Utf8Json.Runtime.Tests.Formatters
+namespace UGF.Utf8Json.Runtime.Tests.Formatters.Union
 {
-    public class TestUnionFormatter
+    public class TestUnionFormatterGeneric
     {
         private readonly string m_target1Data = "{\"type\":\"one\",\"boolValue\":true}";
         private readonly string m_target1Data2 = "{\"type\":\"one\",\"boolValue\":false}";
@@ -18,7 +18,7 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
 
         private class Formatter : UnionFormatter<ITarget>
         {
-            public Formatter()
+            public Formatter() : base(new UnionSerializer())
             {
                 AddFormatter<Target1>("one");
                 AddFormatter<Target2>("two");
@@ -42,12 +42,12 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters
             public int IntValue { get; set; } = 10;
         }
 
-        [SetUp]
+        [OneTimeSetUp]
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddFormatter(new Formatter());
-            m_resolver.Resolvers.Add(UGFUtf8JsonRuntimeTestsResolver.Instance);
+            m_resolver.AddFormatter<ITarget>(new Formatter());
+            m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
         }
 
         [Test]

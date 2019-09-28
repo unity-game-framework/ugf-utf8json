@@ -2,6 +2,9 @@ using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
+    /// <summary>
+    /// Represents a base formatter wrapper.
+    /// </summary>
     public abstract class UnionFormatterWrapperBase : IJsonFormatter<object>
     {
         public void Serialize(ref JsonWriter writer, object value, IJsonFormatterResolver formatterResolver)

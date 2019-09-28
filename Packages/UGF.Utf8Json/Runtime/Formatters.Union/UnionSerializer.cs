@@ -9,9 +9,16 @@ using Utf8Json.Internal;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
+    /// <summary>
+    /// Represents default implementation of the union serializer.
+    /// </summary>
     public class UnionSerializer : IUnionSerializer, IEnumerable<KeyValuePair<Type, int>>
     {
         public string TypePropertyName { get; }
+
+        /// <summary>
+        /// Gets the collection of the type identifiers.
+        /// </summary>
         public IReadOnlyDictionary<Type, int> Types { get; }
 
         private readonly byte[] m_typePropertyNameBytes;
@@ -21,6 +28,10 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
         private AutomataDictionary m_typeNameToId = new AutomataDictionary();
         private int m_identifierCounter = int.MinValue + 1;
 
+        /// <summary>
+        /// Creates union serializer with the specified type property name. (Default "type")
+        /// </summary>
+        /// <param name="typePropertyName">The name of the property to store type information.</param>
         public UnionSerializer(string typePropertyName = "type")
         {
             TypePropertyName = typePropertyName ?? throw new ArgumentNullException(nameof(typePropertyName));

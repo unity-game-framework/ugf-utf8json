@@ -5,14 +5,22 @@ using Utf8Json;
 namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
     /// <summary>
-    /// Represents union formatter.
+    /// Represents union formatter implementation with the specified target type.
     /// </summary>
     public class UnionFormatter<TTarget> : UnionFormatter, IUnionFormatter<TTarget>, IJsonFormatter<TTarget>
     {
+        /// <summary>
+        /// Creates union formatter with the specified serializer.
+        /// </summary>
+        /// <param name="unionSerializer">The union serializer.</param>
         public UnionFormatter(IUnionSerializer unionSerializer) : base(unionSerializer)
         {
         }
 
+        /// <summary>
+        /// Adds automatically created formatter wrapper for the specified target type.
+        /// </summary>
+        /// <param name="typeIdentifier">The identifier of the type.</param>
         public void AddFormatter<T>(string typeIdentifier) where T : TTarget
         {
             if (typeIdentifier == null) throw new ArgumentNullException(nameof(typeIdentifier));

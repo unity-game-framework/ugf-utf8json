@@ -6,13 +6,27 @@ using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Union
 {
+    /// <summary>
+    /// Represents union formatter implementation using UnionSerializer.
+    /// </summary>
     public class UnionFormatter : IUnionFormatter, IJsonFormatter<object>, IEnumerable<KeyValuePair<int, IJsonFormatter>>
     {
+        /// <summary>
+        /// Gets the union serializer.
+        /// </summary>
         public IUnionSerializer UnionSerializer { get; }
+
+        /// <summary>
+        /// Gets the collection of the formatters.
+        /// </summary>
         public IReadOnlyDictionary<int, IJsonFormatter> Formatters { get; }
 
         private readonly Dictionary<int, IJsonFormatter> m_formatters = new Dictionary<int, IJsonFormatter>();
 
+        /// <summary>
+        /// Creates union formatter with the specified serializer.
+        /// </summary>
+        /// <param name="unionSerializer">The union serializer.</param>
         public UnionFormatter(IUnionSerializer unionSerializer)
         {
             UnionSerializer = unionSerializer ?? throw new ArgumentNullException(nameof(unionSerializer));
@@ -111,6 +125,11 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
             return false;
         }
 
+        /// <summary>
+        /// Tries to get formatter by the specified formatter identifier.
+        /// </summary>
+        /// <param name="identifier">The identifier of the formatter.</param>
+        /// <param name="formatter">The found formatter.</param>
         public bool TryGetFormatter<T>(int identifier, out T formatter) where T : IJsonFormatter
         {
             if (m_formatters.TryGetValue(identifier, out IJsonFormatter value) && value is T cast)

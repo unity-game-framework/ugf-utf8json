@@ -15,8 +15,8 @@ namespace UGF.Utf8Json.Runtime
         {
             var resolver = new Utf8JsonFormatterResolver();
 
-            resolver.Resolvers.Add(UnityResolver.Instance);
-            resolver.Resolvers.Add(BuiltinResolver.Instance);
+            resolver.AddResolver(UnityResolver.Instance);
+            resolver.AddResolver(BuiltinResolver.Instance);
 
             return resolver;
         }

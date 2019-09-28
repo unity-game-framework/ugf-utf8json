@@ -26,6 +26,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 2.1.0-preview - 2019-09-28
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.0.0-preview.2...2.1.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/6?closed=1)
+
+### Added
+- `UnionSerializer`: to implement custom serialization with type information.
+- `UnionFormatter`: support for typeless serialization.
+
+### Changed
+- Completely rework `UnionFormatter`.
+
 ## 2.0.0-preview.2 - 2019-09-14
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.0.0-preview.1...2.0.0-preview.2)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/5?closed=1)

@@ -4,7 +4,7 @@ UGF.Utf8Json
 
 ## Info
 
-- **Version**: `2.0.0-preview.2`
+- **Version**: `2.1.0-preview`
 - **Unity Version**: `2019.2.0`
 - **Api Compatibility Level**: `.NET Standard 2.0`
 
@@ -19,7 +19,7 @@ UGF.Utf8Json
 
 ### Registries
 
-- [Stable][2] (`deprecated`)
+- [Stable][2] (`1.1.0 - Legacy`)
 - [Develop][3]
 
 ## Description

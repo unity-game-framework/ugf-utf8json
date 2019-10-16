@@ -11,6 +11,8 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
     /// </summary>
     public class UnionFormatter : IUnionFormatter, IJsonFormatter<object>, IEnumerable<KeyValuePair<int, IJsonFormatter>>
     {
+        public int FormattersCount { get { return m_formatters.Count; } }
+
         /// <summary>
         /// Gets the union serializer.
         /// </summary>

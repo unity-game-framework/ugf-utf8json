@@ -13,6 +13,11 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
     public interface IUnionFormatter
     {
         /// <summary>
+        /// Gets the count of the formatters.
+        /// </summary>
+        int FormattersCount { get; }
+
+        /// <summary>
         /// Adds formatter by the specified target type and with specified type identifier.
         /// </summary>
         /// <remarks>

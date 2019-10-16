@@ -1,8 +1,8 @@
 {
     "name": "com.ugf.utf8json",
     "displayName": "UGF.Utf8Json",
-    "version": "2.1.0-preview",
-    "unity": "2019.2",
+    "version": "2.2.0-preview",
+    "unity": "2019.3",
     "description": "Runtime and Editor integration of the Utf8Json (1.3.7) with AOT support only.",
     "author": {
         "name": "Unity Game Framework",

@@ -50,13 +50,18 @@ namespace UGF.Utf8Json.Editor.Resolver
             string resolverName = Utf8JsonEditorUtility.FormatResolverName(data.Name);
             string namespaceRoot = data.NamespaceRoot;
             string externalsTemp = string.Empty;
+            Type attributeType = null;
 
             var generateArguments = new Utf8JsonGenerateArguments
             {
                 IgnoreReadOnly = data.IgnoreReadOnly,
-                IsTypeRequireAttribute = data.AttributeRequired,
-                TypeRequiredAttributeShortName = data.AttributeShortName
+                IsTypeRequireAttribute = data.AttributeRequired
             };
+
+            if (data.AttributeRequired && data.TryGetAttributeType(out attributeType))
+            {
+                generateArguments.TypeRequiredAttributeShortName = attributeType.Name;
+            }
 
             if (data.Sources.Count > 0)
             {
@@ -84,7 +89,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             if (data.Externals.Count > 0)
             {
                 var externals = new List<string>();
-                string attributeTypeName = null;
 
                 for (int i = 0; i < data.Externals.Count; i++)
                 {
@@ -95,7 +99,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     {
                         if (AssetDatabase.IsValidFolder(path))
                         {
-                            string[] files = Directory.GetFiles(path, $"*.{ResolverAssetExtensionName}");
+                            string[] files = Directory.GetFiles(path, $"*.{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}");
 
                             externals.AddRange(files);
                         }
@@ -106,12 +110,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     }
                 }
 
-                if (data.AttributeRequired)
-                {
-                    attributeTypeName = data.AttributeShortName;
-                }
-
-                externalsTemp = Utf8JsonExternalTypeEditorUtility.GenerateExternalSources(externals, sourcePaths, attributeTypeName, validation, compilation, generator);
+                externalsTemp = Utf8JsonExternalTypeEditorUtility.GenerateExternalSources(externals, sourcePaths, attributeType, validation, compilation, generator);
             }
 
             string source = Utf8JsonEditorUtility.GenerateResolver(sourcePaths, resolverName, namespaceRoot, generateArguments);

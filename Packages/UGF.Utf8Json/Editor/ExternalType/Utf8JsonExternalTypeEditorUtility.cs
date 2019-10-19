@@ -23,7 +23,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
         /// </summary>
         public static string ExternalTypeAssetExtensionName { get; } = "utf8json-external";
 
-        public static string GenerateExternalSources(IReadOnlyList<string> externalPaths, ICollection<string> sourcePaths, string attributeTypeName = null, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateExternalSources(IReadOnlyList<string> externalPaths, ICollection<string> sourcePaths, Type attributeType = null, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (externalPaths == null) throw new ArgumentNullException(nameof(externalPaths));
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
@@ -35,7 +35,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
             var types = new HashSet<Type>();
             CSharpSyntaxRewriter rewriterAddAttribute = null;
 
-            if (!string.IsNullOrEmpty(attributeTypeName) && compilation.TryGetAnyTypeByMetadataName(attributeTypeName, out INamedTypeSymbol typeSymbol))
+            if (attributeType != null && compilation.TryConstructTypeSymbol(attributeType, out ITypeSymbol typeSymbol))
             {
                 rewriterAddAttribute = GetAttributeRewriter(compilation, generator, typeSymbol);
             }
@@ -74,7 +74,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return externalsTempPath;
         }
 
-        private static CSharpSyntaxRewriter GetAttributeRewriter(Compilation compilation, SyntaxGenerator generator, INamedTypeSymbol attributeTypeSymbol)
+        private static CSharpSyntaxRewriter GetAttributeRewriter(Compilation compilation, SyntaxGenerator generator, ITypeSymbol attributeTypeSymbol)
         {
             if (compilation == null) throw new ArgumentNullException(nameof(compilation));
             if (generator == null) throw new ArgumentNullException(nameof(generator));

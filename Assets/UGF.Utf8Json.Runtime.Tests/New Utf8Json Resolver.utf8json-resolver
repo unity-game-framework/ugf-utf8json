@@ -5,7 +5,7 @@
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
     "m_attributeRequired": true,
-    "m_attributeShortName": "Serializable",
+    "m_attributeTypeName": "System.SerializableAttribute, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
     "m_sources": [
         "f7d65c484f7c4372b75ee0c66c4c53fc"
     ],

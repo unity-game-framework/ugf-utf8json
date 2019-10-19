@@ -7,7 +7,6 @@ using UGF.Code.Generate.Editor;
 using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEditor.Compilation;
-using UnityEngine;
 
 namespace UGF.Utf8Json.Editor
 {
@@ -30,27 +29,6 @@ namespace UGF.Utf8Json.Editor
             for (int i = 0; i < movedAssets.Length; i++)
             {
                 HandleMoved(m_assemblies, movedAssets[i], movedFromAssetPaths[i]);
-            }
-
-            if (m_assemblies.Count > 0)
-            {
-                AssetDatabase.StartAssetEditing();
-
-                try
-                {
-                    foreach (string assembly in m_assemblies)
-                    {
-                        Utf8JsonEditorUtility.GenerateAssetFromAssembly(assembly);
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Debug.LogException(exception);
-                }
-
-                m_assemblies.Clear();
-
-                AssetDatabase.StopAssetEditing();
             }
         }
 

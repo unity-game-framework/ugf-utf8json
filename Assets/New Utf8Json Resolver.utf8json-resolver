@@ -1,0 +1,14 @@
+{
+    "m_staticCaching": true,
+    "m_resolverAsset": true,
+    "m_ignoreReadOnly": true,
+    "m_attributeRequired": true,
+    "m_attributeShortName": "Serializable",
+    "m_sources": [
+        "45a4a666940a9c94a981782228aca2a3",
+        "dc39f490ecba6d24fa5830e7950c0dd0"
+    ],
+    "m_externals": [
+        "f760d69afaed2264cb50232511de91d1"
+    ]
+}

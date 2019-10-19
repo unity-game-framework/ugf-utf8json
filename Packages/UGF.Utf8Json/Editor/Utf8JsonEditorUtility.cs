@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -118,18 +119,8 @@ namespace UGF.Utf8Json.Editor
             return resolver;
         }
 
-        /// <summary>
-        /// Generates source of the resolver from the specified path of the sources.
-        /// </summary>
-        /// <param name="sourcePaths">The collection of the source paths.</param>
-        /// <param name="resolverName">The name of the generated resolver.</param>
-        /// <param name="namespaceRoot">The namespace root of the generated formatters.</param>
         public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot)
         {
-            if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
-            if (resolverName == null) throw new ArgumentNullException(nameof(resolverName));
-            if (namespaceRoot == null) throw new ArgumentNullException(nameof(namespaceRoot));
-
             var arguments = new Utf8JsonGenerateArguments
             {
                 IgnoreReadOnly = true,
@@ -137,7 +128,16 @@ namespace UGF.Utf8Json.Editor
                 TypeRequiredAttributeShortName = "Serializable"
             };
 
-            string resolver = Utf8JsonUniversalCodeGeneratorUtility.Generate(sourcePaths, resolverName, namespaceRoot, arguments);
+            return GenerateResolver(sourcePaths, resolverName, namespaceRoot, arguments);
+        }
+
+        public static string GenerateResolver(IReadOnlyList<string> sourcePaths, string resolverName, string namespaceRoot, Utf8JsonGenerateArguments generateArguments)
+        {
+            if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
+            if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
+            if (string.IsNullOrEmpty(namespaceRoot)) throw new ArgumentException("Value cannot be null or empty.", nameof(namespaceRoot));
+
+            string resolver = Utf8JsonUniversalCodeGeneratorUtility.Generate(sourcePaths, resolverName, namespaceRoot, generateArguments);
             CompilationUnitSyntax unit = SyntaxFactory.ParseCompilationUnit(resolver);
 
             unit = CodeGenerateEditorUtility.AddGeneratedCodeLeadingTrivia(unit);
@@ -150,6 +150,25 @@ namespace UGF.Utf8Json.Editor
             if (assemblyName == null) throw new ArgumentNullException(nameof(assemblyName));
 
             return $"{assemblyName.Replace(" ", string.Empty).Replace(".", string.Empty)}Resolver";
+        }
+
+        public static string FormatResolverName(string resolverName)
+        {
+            if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
+
+            var builder = new StringBuilder();
+
+            for (int i = 0; i < resolverName.Length; i++)
+            {
+                char ch = resolverName[i];
+
+                if (char.IsLetter(ch))
+                {
+                    builder.Append(ch);
+                }
+            }
+
+            return builder.ToString();
         }
 
         private static string InternalGenerateExternals(ICollection<string> sourcePaths, string path, ICodeGenerateContainerValidation validation, Compilation compilation, SyntaxGenerator generator)

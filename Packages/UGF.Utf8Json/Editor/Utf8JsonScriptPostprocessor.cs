@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace UGF.Utf8Json.Editor
 {
-    internal sealed class Utf8JsonScriptPostprocessor : AssetPostprocessor
+    internal class Utf8JsonScriptPostprocessor : AssetPostprocessor
     {
         private static readonly HashSet<string> m_assemblies = new HashSet<string>();
 

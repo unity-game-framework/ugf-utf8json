@@ -35,9 +35,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
             var types = new HashSet<Type>();
             CSharpSyntaxRewriter rewriterAddAttribute = null;
 
-            if (!string.IsNullOrEmpty(attributeTypeName))
+            if (!string.IsNullOrEmpty(attributeTypeName) && compilation.TryGetAnyTypeByMetadataName(attributeTypeName, out INamedTypeSymbol typeSymbol))
             {
-                rewriterAddAttribute = GetAttributeRewriter(compilation, generator, attributeTypeName);
+                rewriterAddAttribute = GetAttributeRewriter(compilation, generator, typeSymbol);
             }
 
             Directory.CreateDirectory(externalsTempPath);
@@ -74,9 +74,12 @@ namespace UGF.Utf8Json.Editor.ExternalType
             return externalsTempPath;
         }
 
-        private static CSharpSyntaxRewriter GetAttributeRewriter(Compilation compilation, SyntaxGenerator generator, string attributeTypeName)
+        private static CSharpSyntaxRewriter GetAttributeRewriter(Compilation compilation, SyntaxGenerator generator, INamedTypeSymbol attributeTypeSymbol)
         {
-            INamedTypeSymbol attributeTypeSymbol = compilation.GetTypeByMetadataName(attributeTypeName);
+            if (compilation == null) throw new ArgumentNullException(nameof(compilation));
+            if (generator == null) throw new ArgumentNullException(nameof(generator));
+            if (attributeTypeSymbol == null) throw new ArgumentNullException(nameof(attributeTypeSymbol));
+
             SyntaxNode attribute = generator.Attribute(generator.TypeExpression(attributeTypeSymbol));
 
             return new CodeGenerateRewriterAddAttributeToNode(generator, attribute, declaration =>

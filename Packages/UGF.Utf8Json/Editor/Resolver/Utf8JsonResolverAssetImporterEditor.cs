@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UGF.Code.Generate.Editor;
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEditorInternal;
@@ -15,6 +16,8 @@ namespace UGF.Utf8Json.Editor.Resolver
         protected override Type extraDataType { get; } = typeof(Utf8JsonResolverAssetData);
 
         private SerializedProperty m_propertyScript;
+        private SerializedProperty m_propertyName;
+        private SerializedProperty m_propertyNamespaceRoot;
         private SerializedProperty m_propertyStaticCaching;
         private SerializedProperty m_propertyResolverAsset;
         private SerializedProperty m_propertyIgnoreReadOnly;
@@ -28,6 +31,8 @@ namespace UGF.Utf8Json.Editor.Resolver
             base.OnEnable();
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
+            m_propertyName = extraDataSerializedObject.FindProperty("m_name");
+            m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_namespaceRoot");
             m_propertyStaticCaching = extraDataSerializedObject.FindProperty("m_staticCaching");
             m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_resolverAsset");
             m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_ignoreReadOnly");
@@ -50,37 +55,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_externals.drawElementCallback = (rect, index, active, focused) => DrawElement(m_externals, rect, index, typeof(Object));
         }
 
-        protected override void InitializeExtraDataInstance(Object extraData, int targetIndex)
-        {
-            var importer = (Utf8JsonResolverAssetImporter)targets[targetIndex];
-            var textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(importer.assetPath);
-
-            if (textAsset != null)
-            {
-                JsonUtility.FromJsonOverwrite(textAsset.text, extraData);
-            }
-        }
-
-        protected override void Apply()
-        {
-            base.Apply();
-
-            if (assetTarget != null)
-            {
-                for (int i = 0; i < extraDataTargets.Length; i++)
-                {
-                    Object data = extraDataTargets[i];
-                    var importer = (Utf8JsonResolverAssetImporter)targets[i];
-
-                    string source = JsonUtility.ToJson(data, true);
-                    string path = importer.assetPath;
-
-                    File.WriteAllText(path, source);
-                    AssetDatabase.ImportAsset(path);
-                }
-            }
-        }
-
         public override void OnInspectorGUI()
         {
             serializedObject.UpdateIfRequiredOrScript();
@@ -93,6 +67,8 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(m_propertyName);
+            EditorGUILayout.PropertyField(m_propertyNamespaceRoot);
             EditorGUILayout.PropertyField(m_propertyStaticCaching);
             EditorGUILayout.PropertyField(m_propertyResolverAsset);
 
@@ -122,10 +98,50 @@ namespace UGF.Utf8Json.Editor.Resolver
             ApplyRevertGUI();
         }
 
+        protected override void InitializeExtraDataInstance(Object extraData, int targetIndex)
+        {
+            var importer = (Utf8JsonResolverAssetImporter)targets[targetIndex];
+            var textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(importer.assetPath);
+
+            if (textAsset != null)
+            {
+                JsonUtility.FromJsonOverwrite(textAsset.text, extraData);
+            }
+        }
+
+        protected override void Apply()
+        {
+            base.Apply();
+
+            var data = (Utf8JsonResolverAssetData)extraDataTargets[0];
+            var importer = (Utf8JsonResolverAssetImporter)targets[0];
+
+            Utf8JsonResolverAssetEditorUtility.SaveResolverData(importer.assetPath, data);
+        }
+
         protected override bool OnApplyRevertGUI()
         {
+            var importer = (Utf8JsonResolverAssetImporter)targets[0];
+            string path = CodeGenerateEditorUtility.GetPathForGeneratedScript(importer.assetPath, "Utf8Json");
+
+            if (GUILayout.Button("Generate All"))
+            {
+            }
+
             if (GUILayout.Button("Generate"))
             {
+                Utf8JsonResolverAssetEditorUtility.GenerateResolver(importer.assetPath);
+            }
+
+            using (new EditorGUI.DisabledScope(!File.Exists(path)))
+            {
+                if (GUILayout.Button("Clear"))
+                {
+                    if (EditorUtility.DisplayDialog("Delete Utf8Json Generated Script?", $"{path}\nYou cannot undo this action.", "Delete", "Cancel"))
+                    {
+                        AssetDatabase.MoveAssetToTrash(path);
+                    }
+                }
             }
 
             return base.OnApplyRevertGUI();

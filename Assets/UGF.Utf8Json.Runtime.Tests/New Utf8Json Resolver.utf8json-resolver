@@ -1,14 +1,15 @@
 {
+    "m_name": "Resolver",
+    "m_namespaceRoot": "Generated",
     "m_staticCaching": true,
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
     "m_attributeRequired": true,
     "m_attributeShortName": "Serializable",
     "m_sources": [
-        "45a4a666940a9c94a981782228aca2a3",
-        "dc39f490ecba6d24fa5830e7950c0dd0"
+        "f7d65c484f7c4372b75ee0c66c4c53fc"
     ],
     "m_externals": [
-        "f760d69afaed2264cb50232511de91d1"
+        "0fd8a7ea51cc3044e8cb555a0809fcd4"
     ]
 }

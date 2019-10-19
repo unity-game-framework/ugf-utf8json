@@ -4,6 +4,7 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Code.Analysis.Editor;
+using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UGF.Code.Generate.Editor.Container.External;
 using UGF.Utf8Json.Editor.ExternalType;
@@ -17,17 +18,37 @@ namespace UGF.Utf8Json.Editor.Resolver
     {
         public static string ResolverAssetExtensionName { get; } = "utf8json-resolver";
 
+        public static void GenerateResolver(string assetPath, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
+        {
+            if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
+            if (!File.Exists(assetPath)) throw new ArgumentException("The file at specified asset path does not exists.", nameof(assetPath));
+
+            string extension = Path.GetExtension(assetPath);
+            string extensionTarget = $".{ResolverAssetExtensionName}";
+
+            if (string.IsNullOrEmpty(extension) || !extension.Equals(extensionTarget, StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException($"The specified asset path contains invalid extension: '{assetPath}'.", nameof(assetPath));
+            }
+
+            Utf8JsonResolverAssetData data = LoadResolverData(assetPath);
+            string source = GenerateResolver(data, validation, compilation, generator);
+            string path = CodeGenerateEditorUtility.GetPathForGeneratedScript(assetPath, "Utf8Json");
+
+            File.WriteAllText(path, source);
+            AssetDatabase.ImportAsset(path);
+        }
+
         public static string GenerateResolver(Utf8JsonResolverAssetData data, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (data == null) throw new ArgumentNullException(nameof(data));
-            if (string.IsNullOrEmpty(data.name)) throw new ArgumentException("Value cannot be null or empty.", nameof(data.name));
             if (validation == null) validation = CodeGenerateContainerExternalEditorUtility.DefaultValidation;
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             var sourcePaths = new List<string>();
-            string resolverName = Utf8JsonEditorUtility.FormatResolverName(data.name);
-            string namespaceRoot = resolverName;
+            string resolverName = Utf8JsonEditorUtility.FormatResolverName(data.Name);
+            string namespaceRoot = data.NamespaceRoot;
             string externalsTemp = string.Empty;
 
             var generateArguments = new Utf8JsonGenerateArguments

@@ -27,7 +27,6 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyAttributeRequired;
         private SerializedProperty m_propertyAttributeTypeName;
         private ReorderableList m_sources;
-        private ReorderableList m_externals;
         private TypesDropdown m_dropdown;
 
         public override void OnEnable()
@@ -47,17 +46,11 @@ namespace UGF.Utf8Json.Editor.Resolver
             float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
 
             SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_sources");
-            SerializedProperty propertyExternals = extraDataSerializedObject.FindProperty("m_externals");
 
             m_sources = new ReorderableList(serializedObject, propertySources);
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
             m_sources.elementHeight = height;
             m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(Object));
-
-            m_externals = new ReorderableList(serializedObject, propertyExternals);
-            m_externals.headerHeight = EditorGUIUtility.standardVerticalSpacing;
-            m_externals.elementHeight = height;
-            m_externals.drawElementCallback = (rect, index, active, focused) => DrawElement(m_externals, rect, index, typeof(Object));
         }
 
         public override void OnInspectorGUI()
@@ -93,11 +86,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             EditorGUILayout.LabelField("Sources", EditorStyles.boldLabel);
 
             m_sources.DoLayoutList();
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Externals", EditorStyles.boldLabel);
-
-            m_externals.DoLayoutList();
 
             serializedObject.ApplyModifiedProperties();
             extraDataSerializedObject.ApplyModifiedProperties();

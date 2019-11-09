@@ -65,6 +65,8 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             if (data.Sources.Count > 0)
             {
+                var externals = new List<string>();
+
                 for (int i = 0; i < data.Sources.Count; i++)
                 {
                     string guid = data.Sources[i];
@@ -72,45 +74,21 @@ namespace UGF.Utf8Json.Editor.Resolver
 
                     if (!string.IsNullOrEmpty(path))
                     {
-                        if (AssetDatabase.IsValidFolder(path))
-                        {
-                            string[] files = Directory.GetFiles(path, "*.cs");
-
-                            sourcePaths.AddRange(files);
-                        }
-                        else
+                        if (path.EndsWith(".cs", StringComparison.InvariantCultureIgnoreCase))
                         {
                             sourcePaths.Add(path);
                         }
-                    }
-                }
-            }
-
-            if (data.Externals.Count > 0)
-            {
-                var externals = new List<string>();
-
-                for (int i = 0; i < data.Externals.Count; i++)
-                {
-                    string guid = data.Externals[i];
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
-
-                    if (!string.IsNullOrEmpty(path))
-                    {
-                        if (AssetDatabase.IsValidFolder(path))
-                        {
-                            string[] files = Directory.GetFiles(path, $"*.{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}");
-
-                            externals.AddRange(files);
-                        }
-                        else
+                        else if (path.EndsWith($"*.{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}", StringComparison.InvariantCultureIgnoreCase))
                         {
                             externals.Add(path);
                         }
                     }
                 }
 
-                externalsTemp = Utf8JsonExternalTypeEditorUtility.GenerateExternalSources(externals, sourcePaths, attributeType, validation, compilation, generator);
+                if (externals.Count > 0)
+                {
+                    externalsTemp = Utf8JsonExternalTypeEditorUtility.GenerateExternalSources(externals, sourcePaths, attributeType, validation, compilation, generator);
+                }
             }
 
             string source = Utf8JsonEditorUtility.GenerateResolver(sourcePaths, resolverName, namespaceRoot, generateArguments);
@@ -130,7 +108,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             string source = File.ReadAllText(assetPath);
             var data = ScriptableObject.CreateInstance<Utf8JsonResolverAssetData>();
 
-            JsonUtility.FromJsonOverwrite(source, data);
+            EditorJsonUtility.FromJsonOverwrite(source, data);
 
             return data;
         }
@@ -140,7 +118,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
             if (data == null) throw new ArgumentNullException(nameof(data));
 
-            string source = JsonUtility.ToJson(data, true);
+            string source = EditorJsonUtility.ToJson(data, true);
 
             File.WriteAllText(assetPath, source);
 

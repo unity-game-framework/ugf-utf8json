@@ -25,6 +25,8 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyIgnoreReadOnly;
         private SerializedProperty m_propertyAttributeRequired;
         private SerializedProperty m_propertyAttributeTypeName;
+        private SerializedProperty m_propertyGenerateSource;
+        private SerializedProperty m_propertySource;
         private ReorderableList m_sources;
         private TypesDropdownDrawer m_dropdown;
 
@@ -41,6 +43,8 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_ignoreReadOnly");
             m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_attributeRequired");
             m_propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_attributeTypeName");
+            m_propertyGenerateSource = extraDataSerializedObject.FindProperty("m_generateSource");
+            m_propertySource = extraDataSerializedObject.FindProperty("m_source");
 
             float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
 
@@ -49,7 +53,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_sources = new ReorderableList(serializedObject, propertySources);
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
             m_sources.elementHeight = height;
-            m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(Object));
+            m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(TextAsset));
 
             m_dropdown = new TypesDropdownDrawer(m_propertyAttributeTypeName, () => TypeCache.GetTypesDerivedFrom<Attribute>());
             m_dropdown.Selected += OnDropdownTypeSelected;
@@ -95,6 +99,15 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Source", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(m_propertyGenerateSource);
+
+            using (new EditorGUI.DisabledScope(m_propertyGenerateSource.boolValue))
+            {
+                DrawObjectField(m_propertySource, new GUIContent(m_propertySource.displayName), typeof(TextAsset));
+            }
+
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Sources", EditorStyles.boldLabel);
 
             m_sources.DoLayoutList();
@@ -129,12 +142,15 @@ namespace UGF.Utf8Json.Editor.Resolver
         protected override bool OnApplyRevertGUI()
         {
             var importer = (Utf8JsonResolverAssetImporter)targets[0];
-            string path = CodeGenerateEditorUtility.GetPathForGeneratedScript(importer.assetPath, "Utf8Json");
+            string path = m_propertyGenerateSource.boolValue || string.IsNullOrEmpty(m_propertySource.stringValue)
+                ? CodeGenerateEditorUtility.GetPathForGeneratedScript(importer.assetPath, "Utf8Json")
+                : AssetDatabase.GUIDToAssetPath(m_propertySource.stringValue);
 
             using (new EditorGUI.DisabledScope(HasModified()))
             {
                 if (GUILayout.Button("Generate All"))
                 {
+                    Utf8JsonResolverAssetEditorUtility.GenerateResolverAll();
                 }
 
                 if (GUILayout.Button("Generate"))
@@ -148,7 +164,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     {
                         if (EditorUtility.DisplayDialog("Delete Utf8Json Generated Script?", $"{path}\nYou cannot undo this action.", "Delete", "Cancel"))
                         {
-                            AssetDatabase.MoveAssetToTrash(path);
+                            Utf8JsonResolverAssetEditorUtility.ClearResolver(importer.assetPath);
                         }
                     }
                 }
@@ -166,15 +182,27 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(index);
 
-            string guid = propertyElement.stringValue;
+            DrawObjectField(rect, propertyElement, GUIContent.none, objectType);
+        }
+
+        private static void DrawObjectField(SerializedProperty serializedProperty, GUIContent content, Type objectType)
+        {
+            Rect rect = EditorGUILayout.GetControlRect(content != GUIContent.none);
+
+            DrawObjectField(rect, serializedProperty, content, objectType);
+        }
+
+        private static void DrawObjectField(Rect rect, SerializedProperty serializedProperty, GUIContent content, Type objectType)
+        {
+            string guid = serializedProperty.stringValue;
             string path = AssetDatabase.GUIDToAssetPath(guid);
             Object asset = AssetDatabase.LoadAssetAtPath(path, objectType);
 
-            asset = EditorGUI.ObjectField(rect, asset, objectType, false);
+            asset = EditorGUI.ObjectField(rect, content, asset, objectType, false);
             path = AssetDatabase.GetAssetPath(asset);
             guid = AssetDatabase.AssetPathToGUID(path);
 
-            propertyElement.stringValue = guid;
+            serializedProperty.stringValue = guid;
         }
 
         private void OnDropdownTypeSelected(Type type)

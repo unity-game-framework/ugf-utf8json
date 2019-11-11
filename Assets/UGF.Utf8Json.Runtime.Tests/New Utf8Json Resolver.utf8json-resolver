@@ -1,4 +1,5 @@
 {
+    "m_autoGenerate": true,
     "m_name": "Resolver",
     "m_namespaceRoot": "Generated",
     "m_staticCaching": true,
@@ -6,10 +7,11 @@
     "m_ignoreReadOnly": true,
     "m_attributeRequired": true,
     "m_attributeTypeName": "System.SerializableAttribute, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+    "m_generateSource": true,
+    "m_source": "c8dd5a50cddb6cd45a9458db3a4ac85e",
     "m_sources": [
-        "f7d65c484f7c4372b75ee0c66c4c53fc"
-    ],
-    "m_externals": [
-        "0fd8a7ea51cc3044e8cb555a0809fcd4"
+        "f7d65c484f7c4372b75ee0c66c4c53fc",
+        "6553189464184f2438f89d968b222144",
+        "f6223d94883113c47bc001ad2ae65ec0"
     ]
 }

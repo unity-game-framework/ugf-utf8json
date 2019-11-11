@@ -11,6 +11,7 @@ using UGF.Utf8Json.Editor.ExternalType;
 using UnityEditor;
 using UnityEngine;
 using Utf8Json.UniversalCodeGenerator;
+using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
@@ -18,25 +19,31 @@ namespace UGF.Utf8Json.Editor.Resolver
     {
         public static string ResolverAssetExtensionName { get; } = "utf8json-resolver";
 
+        public static void GenerateResolverAll(ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
+        {
+        }
+
         public static void GenerateResolver(string assetPath, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
-            if (!File.Exists(assetPath)) throw new ArgumentException("The file at specified asset path does not exists.", nameof(assetPath));
-
-            string extension = Path.GetExtension(assetPath);
-            string extensionTarget = $".{ResolverAssetExtensionName}";
-
-            if (string.IsNullOrEmpty(extension) || !extension.Equals(extensionTarget, StringComparison.InvariantCultureIgnoreCase))
-            {
-                throw new ArgumentException($"The specified asset path contains invalid extension: '{assetPath}'.", nameof(assetPath));
-            }
 
             Utf8JsonResolverAssetData data = LoadResolverData(assetPath);
             string source = GenerateResolver(data, validation, compilation, generator);
-            string path = CodeGenerateEditorUtility.GetPathForGeneratedScript(assetPath, "Utf8Json");
+            string path = data.GenerateSource || string.IsNullOrEmpty(data.Source)
+                ? CodeGenerateEditorUtility.GetPathForGeneratedScript(assetPath, "Utf8Json")
+                : AssetDatabase.GUIDToAssetPath(data.Source);
 
             File.WriteAllText(path, source);
             AssetDatabase.ImportAsset(path);
+
+            if (data.GenerateSource && string.IsNullOrEmpty(data.Source))
+            {
+                data.Source = AssetDatabase.AssetPathToGUID(path);
+
+                SaveResolverData(assetPath, data);
+            }
+
+            Object.DestroyImmediate(data);
         }
 
         public static string GenerateResolver(Utf8JsonResolverAssetData data, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
@@ -78,7 +85,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                         {
                             sourcePaths.Add(path);
                         }
-                        else if (path.EndsWith($"*.{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}", StringComparison.InvariantCultureIgnoreCase))
+                        else if (path.EndsWith($".{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}", StringComparison.InvariantCultureIgnoreCase))
                         {
                             externals.Add(path);
                         }
@@ -101,6 +108,23 @@ namespace UGF.Utf8Json.Editor.Resolver
             return source;
         }
 
+        public static void ClearResolver(string assetPath)
+        {
+            if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
+
+            Utf8JsonResolverAssetData data = LoadResolverData(assetPath);
+            string path = data.GenerateSource || string.IsNullOrEmpty(data.Source)
+                ? CodeGenerateEditorUtility.GetPathForGeneratedScript(assetPath, "Utf8Json")
+                : AssetDatabase.GUIDToAssetPath(data.Source);
+
+            if (!string.IsNullOrEmpty(path))
+            {
+                AssetDatabase.MoveAssetToTrash(path);
+            }
+
+            Object.DestroyImmediate(data);
+        }
+
         public static Utf8JsonResolverAssetData LoadResolverData(string assetPath)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
@@ -108,7 +132,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             string source = File.ReadAllText(assetPath);
             var data = ScriptableObject.CreateInstance<Utf8JsonResolverAssetData>();
 
-            EditorJsonUtility.FromJsonOverwrite(source, data);
+            JsonUtility.FromJsonOverwrite(source, data);
 
             return data;
         }
@@ -118,7 +142,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
             if (data == null) throw new ArgumentNullException(nameof(data));
 
-            string source = EditorJsonUtility.ToJson(data, true);
+            string source = JsonUtility.ToJson(data, true);
 
             File.WriteAllText(assetPath, source);
 

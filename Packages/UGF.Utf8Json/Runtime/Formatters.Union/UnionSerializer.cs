@@ -34,7 +34,9 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
         /// <param name="typePropertyName">The name of the property to store type information.</param>
         public UnionSerializer(string typePropertyName = "type")
         {
-            TypePropertyName = typePropertyName ?? throw new ArgumentNullException(nameof(typePropertyName));
+            if (string.IsNullOrEmpty(typePropertyName)) throw new ArgumentException("Value cannot be null or empty.", nameof(typePropertyName));
+
+            TypePropertyName = typePropertyName;
             Types = new ReadOnlyDictionary<Type, int>(m_typeToId);
 
             m_typePropertyNameBytes = JsonWriter.GetEncodedPropertyName(typePropertyName);
@@ -48,8 +50,15 @@ namespace UGF.Utf8Json.Runtime.Formatters.Union
             if (m_identifierCounter == int.MaxValue) throw new Exception("The identifier counter exceeded.");
             if (m_typeToId.ContainsKey(targetType)) throw new ArgumentException($"The formatter of the specified target type already exists: '{targetType}'.");
 
-            int identifier = m_identifierCounter++;
             byte[] typeName = JsonWriter.GetEncodedPropertyNameWithoutQuotation(typeIdentifier);
+            var segment = new ArraySegment<byte>(typeName);
+
+            if (m_typeNameToId.TryGetValue(segment, out _))
+            {
+                throw new ArgumentException($"The specified type identifier already exists: '{typeIdentifier}'.");
+            }
+
+            int identifier = m_identifierCounter++;
 
             m_typeToId.Add(targetType, identifier);
             m_typeNameBytes.Add(identifier, typeName);

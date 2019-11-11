@@ -20,7 +20,6 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyAutoGenerate;
         private SerializedProperty m_propertyName;
         private SerializedProperty m_propertyNamespaceRoot;
-        private SerializedProperty m_propertyStaticCaching;
         private SerializedProperty m_propertyResolverAsset;
         private SerializedProperty m_propertyIgnoreReadOnly;
         private SerializedProperty m_propertyAttributeRequired;
@@ -38,7 +37,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_autoGenerate");
             m_propertyName = extraDataSerializedObject.FindProperty("m_name");
             m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_namespaceRoot");
-            m_propertyStaticCaching = extraDataSerializedObject.FindProperty("m_staticCaching");
             m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_resolverAsset");
             m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_ignoreReadOnly");
             m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_attributeRequired");
@@ -85,7 +83,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(m_propertyName);
             EditorGUILayout.PropertyField(m_propertyNamespaceRoot);
-            EditorGUILayout.PropertyField(m_propertyStaticCaching);
             EditorGUILayout.PropertyField(m_propertyResolverAsset);
 
             EditorGUILayout.Space();

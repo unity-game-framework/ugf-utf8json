@@ -2,7 +2,6 @@
     "m_autoGenerate": true,
     "m_name": "Resolver",
     "m_namespaceRoot": "Generated",
-    "m_staticCaching": true,
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
     "m_attributeRequired": true,

@@ -1,8 +1,7 @@
 using System;
 using System.IO;
 using UGF.Code.Generate.Editor;
-using UGF.Types.Editor;
-using UGF.Types.Editor.IMGUI;
+using UGF.EditorTools.Editor.IMGUI;
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEditorInternal;
@@ -27,7 +26,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyAttributeRequired;
         private SerializedProperty m_propertyAttributeTypeName;
         private ReorderableList m_sources;
-        private TypesDropdown m_dropdown;
+        private TypesDropdownDrawer m_dropdown;
 
         public override void OnEnable()
         {
@@ -51,6 +50,19 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
             m_sources.elementHeight = height;
             m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(Object));
+
+            m_dropdown = new TypesDropdownDrawer(m_propertyAttributeTypeName, () => TypeCache.GetTypesDerivedFrom<Attribute>());
+            m_dropdown.Selected += OnDropdownTypeSelected;
+        }
+
+        public override void OnDisable()
+        {
+            base.OnDisable();
+
+            if (m_dropdown != null)
+            {
+                m_dropdown.Selected -= OnDropdownTypeSelected;
+            }
         }
 
         public override void OnInspectorGUI()
@@ -79,7 +91,7 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             using (new EditorGUI.DisabledScope(!m_propertyAttributeRequired.boolValue))
             {
-                DrawTypeSelection(m_propertyAttributeTypeName);
+                m_dropdown.DrawGUILayout(new GUIContent(m_propertyAttributeTypeName.displayName));
             }
 
             EditorGUILayout.Space();
@@ -163,36 +175,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             guid = AssetDatabase.AssetPathToGUID(path);
 
             propertyElement.stringValue = guid;
-        }
-
-        private void DrawTypeSelection(SerializedProperty propertyTypeName)
-        {
-            Rect rect = EditorGUILayout.GetControlRect();
-            Rect rectButton = EditorGUI.PrefixLabel(rect, new GUIContent(propertyTypeName.displayName));
-
-            Type type = Type.GetType(propertyTypeName.stringValue);
-            GUIContent typeButtonContent = type != null ? new GUIContent(type.Name) : new GUIContent("None");
-
-            if (EditorGUI.DropdownButton(rectButton, typeButtonContent, FocusType.Keyboard))
-            {
-                ShowDropdown(rectButton);
-            }
-        }
-
-        private void ShowDropdown(Rect rect)
-        {
-            if (m_dropdown == null)
-            {
-                m_dropdown = TypesEditorGUIUtility.GetTypesDropdown(OnDropdownValidateType);
-                m_dropdown.Selected += OnDropdownTypeSelected;
-            }
-
-            m_dropdown.Show(rect);
-        }
-
-        private bool OnDropdownValidateType(Type type)
-        {
-            return typeof(Attribute).IsAssignableFrom(type);
         }
 
         private void OnDropdownTypeSelected(Type type)

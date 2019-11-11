@@ -1,8 +1,10 @@
 using UnityEngine;
+using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime.Resolver
 {
-    public class Utf8JsonResolverAsset : ScriptableObject
+    public abstract class Utf8JsonResolverAsset : ScriptableObject
     {
+        public abstract IJsonFormatterResolver GetResolver();
     }
 }

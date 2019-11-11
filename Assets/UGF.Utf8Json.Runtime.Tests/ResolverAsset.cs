@@ -1,6 +1,18 @@
 // THIS IS A GENERATED CODE. DO NOT EDIT.
 // ReSharper disable all
 
+namespace Generated.Asset
+{
+    [global::UnityEngine.CreateAssetMenuAttribute(menuName = ("Generated/Resolver"))]
+    public class ResolverAsset : global::UGF.Utf8Json.Runtime.Resolver.Utf8JsonResolverAsset
+    {
+        public override global::Utf8Json.IJsonFormatterResolver GetResolver()
+        {
+            return null;
+        }
+    }
+}
+
 namespace Generated.Resolvers
 {
     using System;

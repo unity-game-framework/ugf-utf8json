@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
 using UGF.Code.Generate.Editor.Container.External;
 using UGF.Utf8Json.Editor.ExternalType;
+using UGF.Utf8Json.Runtime.Resolver;
 using UnityEditor;
 using UnityEngine;
+using Utf8Json;
 using Utf8Json.UniversalCodeGenerator;
 using Object = UnityEngine.Object;
 
@@ -105,6 +108,11 @@ namespace UGF.Utf8Json.Editor.Resolver
                 FileUtil.DeleteFileOrDirectory(externalsTemp);
             }
 
+            if (data.ResolverAsset)
+            {
+                source = AppendResolverAsset(source, resolverName, namespaceRoot, compilation, generator);
+            }
+
             return source;
         }
 
@@ -123,6 +131,19 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             Object.DestroyImmediate(data);
+        }
+
+        public static string AppendResolverAsset(string source, string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
+        {
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
+
+            SyntaxNode unit = SyntaxFactory.ParseCompilationUnit(source);
+            SyntaxNode assetDeclaration = GenerateResolverAsset(resolverName, namespaceRoot, compilation, generator);
+
+            unit = generator.InsertMembers(unit, 0, assetDeclaration);
+
+            return unit.ToFullString();
         }
 
         public static Utf8JsonResolverAssetData LoadResolverData(string assetPath)
@@ -150,6 +171,59 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 AssetDatabase.ImportAsset(assetPath);
             }
+        }
+
+        private static SyntaxNode GenerateResolverAsset(string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
+        {
+            if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
+            if (string.IsNullOrEmpty(namespaceRoot)) throw new ArgumentException("Value cannot be null or empty.", nameof(namespaceRoot));
+            if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
+            if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
+
+            if (!compilation.TryConstructTypeSymbol(typeof(Utf8JsonResolverAsset), out ITypeSymbol baseTypeSymbol))
+            {
+                throw new ArgumentException("Can't construct asset base type from the specified compilation.");
+            }
+
+            if (!compilation.TryConstructTypeSymbol(typeof(IJsonFormatterResolver), out ITypeSymbol resolverTypeSymbol))
+            {
+                throw new ArgumentException("Can't construct resolver type from the specified compilation.");
+            }
+
+            if (!compilation.TryConstructTypeSymbol(typeof(CreateAssetMenuAttribute), out ITypeSymbol createAttributeTypeSymbol))
+            {
+                throw new ArgumentException("Can't construct create attribute type from the specified compilation.");
+            }
+
+            string namespaceName = $"{namespaceRoot}.Asset";
+            string menuName = $"{namespaceRoot.Replace('.', '/')}/{resolverName}";
+            string className = $"{resolverName}Asset";
+
+            SyntaxNode baseType = generator.TypeExpression(baseTypeSymbol);
+            SyntaxNode resolverType = generator.TypeExpression(resolverTypeSymbol);
+            SyntaxNode attribute = generator.Attribute(generator.TypeExpression(createAttributeTypeSymbol), new[]
+            {
+                generator.AssignmentStatement(generator.IdentifierName("menuName"), generator.LiteralExpression(menuName))
+            });
+
+            var addAttributeToNode = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, node => node.IsKind(SyntaxKind.ClassDeclaration));
+
+            SyntaxNode declaration = generator.NamespaceDeclaration(namespaceName, new[]
+            {
+                generator.ClassDeclaration(className, null, Accessibility.Public, DeclarationModifiers.None, baseType, null, new[]
+                {
+                    generator.MethodDeclaration("GetResolver", null, null, resolverType, Accessibility.Public, DeclarationModifiers.Override, new[]
+                    {
+                        generator.ReturnStatement(generator.NullLiteralExpression())
+                    })
+                })
+            });
+
+            declaration = addAttributeToNode.Visit(declaration);
+            declaration = declaration.NormalizeWhitespace();
+            declaration = declaration.WithTrailingTrivia(SyntaxFactory.CarriageReturnLineFeed, SyntaxFactory.CarriageReturnLineFeed);
+
+            return declaration;
         }
     }
 }

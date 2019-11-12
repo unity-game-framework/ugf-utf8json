@@ -228,7 +228,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                 {
                     generator.MethodDeclaration("GetResolver", null, null, resolverType, Accessibility.Public, DeclarationModifiers.Override, new[]
                     {
-                        generator.ReturnStatement(generator.NullLiteralExpression())
+                        generator.ReturnStatement(generator.IdentifierName($"{namespaceRoot}.Resolvers.{resolverName}.Instance"))
                     })
                 })
             });

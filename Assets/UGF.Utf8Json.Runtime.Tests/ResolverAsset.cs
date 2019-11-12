@@ -8,7 +8,7 @@ namespace Generated.Asset
     {
         public override global::Utf8Json.IJsonFormatterResolver GetResolver()
         {
-            return null;
+            return Generated.Resolvers.Resolver.Instance;
         }
     }
 }

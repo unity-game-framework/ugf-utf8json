@@ -77,7 +77,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             serializedObject.UpdateIfRequiredOrScript();
             extraDataSerializedObject.UpdateIfRequiredOrScript();
 
-            using (new EditorGUI.DisabledScope(false))
+            using (new EditorGUI.DisabledScope(true))
             {
                 EditorGUILayout.PropertyField(m_propertyScript);
             }

@@ -15,6 +15,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         public override bool showImportedObject { get; } = false;
         protected override Type extraDataType { get; } = typeof(Utf8JsonResolverAssetImporterData);
 
+        private Utf8JsonResolverAssetImporter m_importer;
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyAutoGenerate;
         private SerializedProperty m_propertyResolverName;
@@ -26,10 +27,14 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyAttributeTypeName;
         private ReorderableList m_sources;
         private TypesDropdownDrawer m_dropdown;
+        private string m_destinationPath;
+        private bool m_destinationPathAnotherExist;
 
         public override void OnEnable()
         {
             base.OnEnable();
+
+            m_importer = (Utf8JsonResolverAssetImporter)targets[0];
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
             m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_info.m_autoGenerate");
@@ -66,6 +71,9 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         public override void OnInspectorGUI()
         {
+            m_destinationPath = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(m_importer.assetPath, m_propertyResolverName.stringValue, m_propertyDestinationSource.stringValue);
+            m_destinationPathAnotherExist = string.IsNullOrEmpty(m_propertyDestinationSource.stringValue) && File.Exists(m_destinationPath);
+
             serializedObject.UpdateIfRequiredOrScript();
             extraDataSerializedObject.UpdateIfRequiredOrScript();
 
@@ -104,6 +112,14 @@ namespace UGF.Utf8Json.Editor.Resolver
             extraDataSerializedObject.ApplyModifiedProperties();
 
             ApplyRevertGUI();
+
+            if (m_destinationPathAnotherExist)
+            {
+                string assetName = $"{m_propertyResolverName.stringValue}Asset";
+
+                EditorGUILayout.Space();
+                EditorGUILayout.HelpBox($"A file with the same name of the generate source already exists: '{assetName}'.\nPath: '{m_destinationPath}'.", MessageType.Warning);
+            }
         }
 
         protected override void InitializeExtraDataInstance(Object extraData, int targetIndex)
@@ -120,15 +136,13 @@ namespace UGF.Utf8Json.Editor.Resolver
             base.Apply();
 
             var data = (Utf8JsonResolverAssetImporterData)extraDataTargets[0];
-            var importer = (Utf8JsonResolverAssetImporter)targets[0];
 
-            Utf8JsonResolverAssetEditorUtility.SaveResolverInfo(importer.assetPath, data.Info);
+            Utf8JsonResolverAssetEditorUtility.SaveResolverInfo(m_importer.assetPath, data.Info);
         }
 
         protected override bool OnApplyRevertGUI()
         {
-            var importer = (Utf8JsonResolverAssetImporter)targets[0];
-            string path = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(importer.assetPath, m_propertyResolverName.stringValue, m_propertyDestinationSource.stringValue);
+            bool canClear = File.Exists(m_destinationPath) && !string.IsNullOrEmpty(m_propertyDestinationSource.stringValue);
 
             using (new EditorGUI.DisabledScope(HasModified()))
             {
@@ -137,24 +151,25 @@ namespace UGF.Utf8Json.Editor.Resolver
                     Utf8JsonResolverAssetEditorUtility.GenerateResolverAll();
                 }
 
-                if (GUILayout.Button("Generate"))
+                using (new EditorGUI.DisabledScope(m_destinationPathAnotherExist))
                 {
-                    Utf8JsonResolverAssetEditorUtility.GenerateResolver(importer.assetPath);
+                    if (GUILayout.Button("Generate"))
+                    {
+                        Utf8JsonResolverAssetEditorUtility.GenerateResolver(m_importer.assetPath);
+                    }
                 }
 
-                using (new EditorGUI.DisabledScope(!File.Exists(path)))
+                using (new EditorGUI.DisabledScope(!canClear))
                 {
                     if (GUILayout.Button("Clear"))
                     {
-                        if (EditorUtility.DisplayDialog("Delete Utf8Json Generated Script?", $"{path}\nYou cannot undo this action.", "Delete", "Cancel"))
+                        if (EditorUtility.DisplayDialog("Delete Utf8Json Generated Script?", $"{m_destinationPath}\nYou cannot undo this action.", "Delete", "Cancel"))
                         {
-                            Utf8JsonResolverAssetEditorUtility.ClearResolver(importer.assetPath);
+                            Utf8JsonResolverAssetEditorUtility.ClearResolver(m_importer.assetPath);
                         }
                     }
                 }
             }
-
-            EditorGUILayout.Space();
 
             return base.OnApplyRevertGUI();
         }

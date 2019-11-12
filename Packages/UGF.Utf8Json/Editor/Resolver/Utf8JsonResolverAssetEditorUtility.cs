@@ -120,11 +120,15 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             if (!string.IsNullOrEmpty(path))
             {
+                info.DestinationSource = string.Empty;
+
+                SaveResolverInfo(assetPath, info);
+
                 AssetDatabase.MoveAssetToTrash(path);
             }
         }
 
-        public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid)
+        public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid = null)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
@@ -135,7 +139,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 string directory = Path.GetDirectoryName(assetPath);
 
-                resolverName = Utf8JsonEditorUtility.FormatResolverName(resolverName);
                 path = $"{directory}/{resolverName}Asset.cs";
             }
 

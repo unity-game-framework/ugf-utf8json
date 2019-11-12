@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using UGF.Code.Generate.Editor;
 using UGF.EditorTools.Editor.IMGUI;
 using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
@@ -18,14 +17,13 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyAutoGenerate;
-        private SerializedProperty m_propertyName;
+        private SerializedProperty m_propertyResolverName;
         private SerializedProperty m_propertyNamespaceRoot;
+        private SerializedProperty m_propertyDestinationSource;
         private SerializedProperty m_propertyResolverAsset;
         private SerializedProperty m_propertyIgnoreReadOnly;
         private SerializedProperty m_propertyAttributeRequired;
         private SerializedProperty m_propertyAttributeTypeName;
-        private SerializedProperty m_propertyGenerateSource;
-        private SerializedProperty m_propertySource;
         private ReorderableList m_sources;
         private TypesDropdownDrawer m_dropdown;
 
@@ -35,14 +33,13 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
             m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_autoGenerate");
-            m_propertyName = extraDataSerializedObject.FindProperty("m_name");
+            m_propertyResolverName = extraDataSerializedObject.FindProperty("m_resolverName");
             m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_namespaceRoot");
+            m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_destinationSource");
             m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_resolverAsset");
             m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_ignoreReadOnly");
             m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_attributeRequired");
             m_propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_attributeTypeName");
-            m_propertyGenerateSource = extraDataSerializedObject.FindProperty("m_generateSource");
-            m_propertySource = extraDataSerializedObject.FindProperty("m_source");
 
             float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
 
@@ -81,27 +78,21 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(m_propertyName);
+            EditorGUILayout.PropertyField(m_propertyResolverName);
             EditorGUILayout.PropertyField(m_propertyNamespaceRoot);
             EditorGUILayout.PropertyField(m_propertyResolverAsset);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Generate", EditorStyles.boldLabel);
+
+            DrawObjectField(m_propertyDestinationSource, m_propertyDestinationSource.displayName, typeof(TextAsset));
+
             EditorGUILayout.PropertyField(m_propertyIgnoreReadOnly);
             EditorGUILayout.PropertyField(m_propertyAttributeRequired);
 
             using (new EditorGUI.DisabledScope(!m_propertyAttributeRequired.boolValue))
             {
                 m_dropdown.DrawGUILayout(new GUIContent(m_propertyAttributeTypeName.displayName));
-            }
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Source", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(m_propertyGenerateSource);
-
-            using (new EditorGUI.DisabledScope(m_propertyGenerateSource.boolValue))
-            {
-                DrawObjectField(m_propertySource, new GUIContent(m_propertySource.displayName), typeof(TextAsset));
             }
 
             EditorGUILayout.Space();
@@ -139,9 +130,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         protected override bool OnApplyRevertGUI()
         {
             var importer = (Utf8JsonResolverAssetImporter)targets[0];
-            string path = m_propertyGenerateSource.boolValue || string.IsNullOrEmpty(m_propertySource.stringValue)
-                ? CodeGenerateEditorUtility.GetPathForGeneratedScript(importer.assetPath, "Utf8Json")
-                : AssetDatabase.GUIDToAssetPath(m_propertySource.stringValue);
+            string path = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(importer.assetPath, m_propertyResolverName.stringValue, m_propertyDestinationSource.stringValue);
 
             using (new EditorGUI.DisabledScope(HasModified()))
             {
@@ -179,23 +168,26 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(index);
 
-            DrawObjectField(rect, propertyElement, GUIContent.none, objectType);
+            DrawObjectField(rect, propertyElement, null, objectType);
         }
 
-        private static void DrawObjectField(SerializedProperty serializedProperty, GUIContent content, Type objectType)
+        private static void DrawObjectField(SerializedProperty serializedProperty, string label, Type objectType)
         {
-            Rect rect = EditorGUILayout.GetControlRect(content != GUIContent.none);
+            Rect rect = EditorGUILayout.GetControlRect(!string.IsNullOrEmpty(label));
 
-            DrawObjectField(rect, serializedProperty, content, objectType);
+            DrawObjectField(rect, serializedProperty, label, objectType);
         }
 
-        private static void DrawObjectField(Rect rect, SerializedProperty serializedProperty, GUIContent content, Type objectType)
+        private static void DrawObjectField(Rect rect, SerializedProperty serializedProperty, string label, Type objectType)
         {
             string guid = serializedProperty.stringValue;
             string path = AssetDatabase.GUIDToAssetPath(guid);
             Object asset = AssetDatabase.LoadAssetAtPath(path, objectType);
 
-            asset = EditorGUI.ObjectField(rect, content, asset, objectType, false);
+            asset = string.IsNullOrEmpty(label)
+                ? EditorGUI.ObjectField(rect, GUIContent.none, asset, objectType, false)
+                : EditorGUI.ObjectField(rect, label, asset, objectType, false);
+
             path = AssetDatabase.GetAssetPath(asset);
             guid = AssetDatabase.AssetPathToGUID(path);
 

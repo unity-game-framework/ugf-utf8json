@@ -14,7 +14,6 @@ using UnityEditor;
 using UnityEngine;
 using Utf8Json;
 using Utf8Json.UniversalCodeGenerator;
-using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
@@ -30,54 +29,52 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
-            Utf8JsonResolverAssetData data = LoadResolverData(assetPath);
-            string source = GenerateResolver(data, validation, compilation, generator);
-            string path = GetDestinationSourcePath(assetPath, data.ResolverName, data.DestinationSource);
+            Utf8JsonResolverAssetInfo info = LoadResolverInfo(assetPath);
+            string source = GenerateResolver(info, validation, compilation, generator);
+            string path = GetDestinationSourcePath(assetPath, info.ResolverName, info.DestinationSource);
 
             File.WriteAllText(path, source);
             AssetDatabase.ImportAsset(path);
 
-            if (string.IsNullOrEmpty(data.DestinationSource))
+            if (string.IsNullOrEmpty(info.DestinationSource))
             {
-                data.DestinationSource = AssetDatabase.AssetPathToGUID(path);
+                info.DestinationSource = AssetDatabase.AssetPathToGUID(path);
 
-                SaveResolverData(assetPath, data);
+                SaveResolverInfo(assetPath, info);
             }
-
-            Object.DestroyImmediate(data);
         }
 
-        public static string GenerateResolver(Utf8JsonResolverAssetData data, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
+        public static string GenerateResolver(Utf8JsonResolverAssetInfo info, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
-            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (info == null) throw new ArgumentNullException(nameof(info));
             if (validation == null) validation = CodeGenerateContainerExternalEditorUtility.DefaultValidation;
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
             var sourcePaths = new List<string>();
-            string resolverName = Utf8JsonEditorUtility.FormatResolverName(data.ResolverName);
-            string namespaceRoot = data.NamespaceRoot;
+            string resolverName = Utf8JsonEditorUtility.FormatResolverName(info.ResolverName);
+            string namespaceRoot = info.NamespaceRoot;
             string externalsTemp = string.Empty;
             Type attributeType = null;
 
             var generateArguments = new Utf8JsonGenerateArguments
             {
-                IgnoreReadOnly = data.IgnoreReadOnly,
-                IsTypeRequireAttribute = data.AttributeRequired
+                IgnoreReadOnly = info.IgnoreReadOnly,
+                IsTypeRequireAttribute = info.AttributeRequired
             };
 
-            if (data.AttributeRequired && data.TryGetAttributeType(out attributeType))
+            if (info.AttributeRequired && info.TryGetAttributeType(out attributeType))
             {
                 generateArguments.TypeRequiredAttributeShortName = attributeType.Name;
             }
 
-            if (data.Sources.Count > 0)
+            if (info.Sources.Count > 0)
             {
                 var externals = new List<string>();
 
-                for (int i = 0; i < data.Sources.Count; i++)
+                for (int i = 0; i < info.Sources.Count; i++)
                 {
-                    string guid = data.Sources[i];
+                    string guid = info.Sources[i];
                     string path = AssetDatabase.GUIDToAssetPath(guid);
 
                     if (!string.IsNullOrEmpty(path))
@@ -106,7 +103,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                 FileUtil.DeleteFileOrDirectory(externalsTemp);
             }
 
-            if (data.ResolverAsset)
+            if (info.ResolverAsset)
             {
                 source = AppendResolverAsset(source, resolverName, namespaceRoot, compilation, generator);
             }
@@ -118,15 +115,13 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
-            Utf8JsonResolverAssetData data = LoadResolverData(assetPath);
-            string path = GetDestinationSourcePath(assetPath, data.ResolverName, data.DestinationSource);
+            Utf8JsonResolverAssetInfo info = LoadResolverInfo(assetPath);
+            string path = GetDestinationSourcePath(assetPath, info.ResolverName, info.DestinationSource);
 
             if (!string.IsNullOrEmpty(path))
             {
                 AssetDatabase.MoveAssetToTrash(path);
             }
-
-            Object.DestroyImmediate(data);
         }
 
         public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid)
@@ -160,24 +155,24 @@ namespace UGF.Utf8Json.Editor.Resolver
             return unit.ToFullString();
         }
 
-        public static Utf8JsonResolverAssetData LoadResolverData(string assetPath)
+        public static Utf8JsonResolverAssetInfo LoadResolverInfo(string assetPath)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
             string source = File.ReadAllText(assetPath);
-            var data = ScriptableObject.CreateInstance<Utf8JsonResolverAssetData>();
+            var data = new Utf8JsonResolverAssetInfo();
 
             JsonUtility.FromJsonOverwrite(source, data);
 
             return data;
         }
 
-        public static void SaveResolverData(string assetPath, Utf8JsonResolverAssetData data, bool importAsset = true)
+        public static void SaveResolverInfo(string assetPath, Utf8JsonResolverAssetInfo info, bool importAsset = true)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
-            if (data == null) throw new ArgumentNullException(nameof(data));
+            if (info == null) throw new ArgumentNullException(nameof(info));
 
-            string source = JsonUtility.ToJson(data, true);
+            string source = EditorJsonUtility.ToJson(info, true);
 
             File.WriteAllText(assetPath, source);
 

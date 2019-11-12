@@ -13,7 +13,7 @@ namespace UGF.Utf8Json.Editor.Resolver
     public class Utf8JsonResolverAssetImporterEditor : ScriptedImporterEditor
     {
         public override bool showImportedObject { get; } = false;
-        protected override Type extraDataType { get; } = typeof(Utf8JsonResolverAssetData);
+        protected override Type extraDataType { get; } = typeof(Utf8JsonResolverAssetImporterData);
 
         private SerializedProperty m_propertyScript;
         private SerializedProperty m_propertyAutoGenerate;
@@ -32,18 +32,18 @@ namespace UGF.Utf8Json.Editor.Resolver
             base.OnEnable();
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
-            m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_autoGenerate");
-            m_propertyResolverName = extraDataSerializedObject.FindProperty("m_resolverName");
-            m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_namespaceRoot");
-            m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_destinationSource");
-            m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_resolverAsset");
-            m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_ignoreReadOnly");
-            m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_attributeRequired");
-            m_propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_attributeTypeName");
+            m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_info.m_autoGenerate");
+            m_propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
+            m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_info.m_namespaceRoot");
+            m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
+            m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_info.m_resolverAsset");
+            m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_info.m_ignoreReadOnly");
+            m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_info.m_attributeRequired");
+            m_propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_info.m_attributeTypeName");
 
             float height = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
 
-            SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_sources");
+            SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_info.m_sources");
 
             m_sources = new ReorderableList(serializedObject, propertySources);
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
@@ -108,23 +108,21 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         protected override void InitializeExtraDataInstance(Object extraData, int targetIndex)
         {
+            var data = (Utf8JsonResolverAssetImporterData)extraData;
             var importer = (Utf8JsonResolverAssetImporter)targets[targetIndex];
-            var textAsset = AssetDatabase.LoadAssetAtPath<TextAsset>(importer.assetPath);
+            Utf8JsonResolverAssetInfo info = Utf8JsonResolverAssetEditorUtility.LoadResolverInfo(importer.assetPath);
 
-            if (textAsset != null)
-            {
-                JsonUtility.FromJsonOverwrite(textAsset.text, extraData);
-            }
+            data.Info = info;
         }
 
         protected override void Apply()
         {
             base.Apply();
 
-            var data = (Utf8JsonResolverAssetData)extraDataTargets[0];
+            var data = (Utf8JsonResolverAssetImporterData)extraDataTargets[0];
             var importer = (Utf8JsonResolverAssetImporter)targets[0];
 
-            Utf8JsonResolverAssetEditorUtility.SaveResolverData(importer.assetPath, data);
+            Utf8JsonResolverAssetEditorUtility.SaveResolverInfo(importer.assetPath, data.Info);
         }
 
         protected override bool OnApplyRevertGUI()

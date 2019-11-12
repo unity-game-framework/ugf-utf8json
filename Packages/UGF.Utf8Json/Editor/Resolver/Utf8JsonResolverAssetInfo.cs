@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
-    public class Utf8JsonResolverAssetData : ScriptableObject
+    [Serializable]
+    public class Utf8JsonResolverAssetInfo
     {
         [SerializeField] private bool m_autoGenerate = true;
         [SerializeField] private string m_resolverName = "Resolver";

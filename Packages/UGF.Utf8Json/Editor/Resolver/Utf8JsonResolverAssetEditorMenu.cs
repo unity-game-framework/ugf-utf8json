@@ -9,9 +9,9 @@ namespace UGF.Utf8Json.Editor.Resolver
         private static void ExternalTypeCreateMenu()
         {
             Texture2D icon = AssetPreview.GetMiniTypeThumbnail(typeof(TextAsset));
-            string extension = Utf8JsonResolverAssetEditorUtility.ResolverAssetExtensionName;
+            const string name = "New Utf8Json Resolver." + Utf8JsonResolverAssetEditorUtility.RESOLVER_ASSET_EXTENSION_NAME;
 
-            ProjectWindowUtil.CreateAssetWithContent($"New Utf8Json Resolver.{extension}", "{}", icon);
+            ProjectWindowUtil.CreateAssetWithContent(name, "{}", icon);
         }
     }
 }

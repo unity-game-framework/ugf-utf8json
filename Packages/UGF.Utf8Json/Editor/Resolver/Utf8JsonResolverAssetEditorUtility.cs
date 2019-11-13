@@ -19,10 +19,20 @@ namespace UGF.Utf8Json.Editor.Resolver
 {
     public static class Utf8JsonResolverAssetEditorUtility
     {
-        public static string ResolverAssetExtensionName { get; } = "utf8json-resolver";
+        public const string RESOLVER_ASSET_EXTENSION_NAME = "utf8json-resolver";
+
+        internal const string RESOLVER_SEARCH_PATTERN = "*." + RESOLVER_ASSET_EXTENSION_NAME;
 
         public static void GenerateResolverAll(ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
+            string[] paths = Directory.GetFiles("Assets", RESOLVER_SEARCH_PATTERN, SearchOption.AllDirectories);
+
+            for (int i = 0; i < paths.Length; i++)
+            {
+                string path = paths[i];
+
+                GenerateResolver(path, validation, compilation, generator);
+            }
         }
 
         public static void GenerateResolver(string assetPath, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
@@ -79,11 +89,11 @@ namespace UGF.Utf8Json.Editor.Resolver
 
                     if (!string.IsNullOrEmpty(path))
                     {
-                        if (path.EndsWith(".cs", StringComparison.InvariantCultureIgnoreCase))
+                        if (IsCSharpFile(path))
                         {
                             sourcePaths.Add(path);
                         }
-                        else if (path.EndsWith($".{Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName}", StringComparison.InvariantCultureIgnoreCase))
+                        else if (Utf8JsonExternalTypeEditorUtility.IsExternalFile(path))
                         {
                             externals.Add(path);
                         }
@@ -183,6 +193,15 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 AssetDatabase.ImportAsset(assetPath);
             }
+        }
+
+        internal static bool IsCSharpFile(string path)
+        {
+            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
+
+            string extension = Path.GetExtension(path);
+
+            return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static SyntaxNode GenerateResolverAsset(string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)

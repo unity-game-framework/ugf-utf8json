@@ -236,14 +236,15 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             string namespaceName = $"{namespaceRoot}.Asset";
-            string menuName = $"{namespaceRoot.Replace('.', '/')}/{resolverName}";
+            string menuName = $"UGF/Utf8Json/Generated/{namespaceRoot}.{resolverName}";
             string className = $"{resolverName}Asset";
 
             SyntaxNode baseType = generator.TypeExpression(baseTypeSymbol);
             SyntaxNode resolverType = generator.TypeExpression(resolverTypeSymbol);
             SyntaxNode attribute = generator.Attribute(generator.TypeExpression(createAttributeTypeSymbol), new[]
             {
-                generator.AssignmentStatement(generator.IdentifierName("menuName"), generator.LiteralExpression(menuName))
+                generator.AssignmentStatement(generator.IdentifierName("menuName"), generator.LiteralExpression(menuName)),
+                generator.AssignmentStatement(generator.IdentifierName("order"), generator.LiteralExpression(2000))
             });
 
             var addAttributeToNode = new CodeGenerateRewriterAddAttributeToNode(generator, attribute, node => node.IsKind(SyntaxKind.ClassDeclaration));

@@ -3,7 +3,7 @@
 
 namespace Generated.Asset
 {
-    [global::UnityEngine.CreateAssetMenuAttribute(menuName = ("Generated/Resolver"))]
+    [global::UnityEngine.CreateAssetMenuAttribute(menuName = ("UGF/Utf8Json/Generated/Generated.Resolver"), order = (2000))]
     public class ResolverAsset : global::UGF.Utf8Json.Runtime.Resolver.Utf8JsonResolverAsset
     {
         public override global::Utf8Json.IJsonFormatterResolver GetResolver()

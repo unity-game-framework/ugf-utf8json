@@ -30,29 +30,17 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 string path = paths[i];
 
-                GenerateResolver(path, true, false, validation, compilation, generator);
+                GenerateResolver(path, validation, compilation, generator);
             }
-
-            Utf8JsonResolverCache.SaveCache();
         }
 
         public static void GenerateResolver(string assetPath, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
-        {
-            GenerateResolver(assetPath, false, false, validation, compilation, generator);
-        }
-
-        internal static void GenerateResolver(string assetPath, bool cache, bool persistCache, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
             Utf8JsonResolverAssetInfo info = LoadResolverInfo(assetPath);
             string source = GenerateResolver(info, validation, compilation, generator);
             string path = GetDestinationSourcePath(assetPath, info.ResolverName, info.DestinationSource);
-
-            if (cache)
-            {
-                Utf8JsonResolverCache.Add(assetPath, info);
-            }
 
             File.WriteAllText(path, source);
             AssetDatabase.ImportAsset(path);
@@ -62,11 +50,6 @@ namespace UGF.Utf8Json.Editor.Resolver
                 info.DestinationSource = AssetDatabase.AssetPathToGUID(path);
 
                 SaveResolverInfo(assetPath, info);
-            }
-
-            if (persistCache)
-            {
-                Utf8JsonResolverCache.SaveCache();
             }
         }
 
@@ -173,6 +156,9 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         public static string AppendResolverAsset(string source, string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)
         {
+            if (string.IsNullOrEmpty(source)) throw new ArgumentException("Value cannot be null or empty.", nameof(source));
+            if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
+            if (string.IsNullOrEmpty(namespaceRoot)) throw new ArgumentException("Value cannot be null or empty.", nameof(namespaceRoot));
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
@@ -218,7 +204,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
         }
 
-        internal static bool IsCSharpFile(string path)
+        private static bool IsCSharpFile(string path)
         {
             if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
 

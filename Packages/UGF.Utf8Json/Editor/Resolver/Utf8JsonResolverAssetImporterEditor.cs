@@ -17,7 +17,6 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         private Utf8JsonResolverAssetImporter m_importer;
         private SerializedProperty m_propertyScript;
-        private SerializedProperty m_propertyAutoGenerate;
         private SerializedProperty m_propertyResolverName;
         private SerializedProperty m_propertyNamespaceRoot;
         private SerializedProperty m_propertyDestinationSource;
@@ -37,7 +36,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_importer = (Utf8JsonResolverAssetImporter)targets[0];
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
-            m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_info.m_autoGenerate");
             m_propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
             m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_info.m_namespaceRoot");
             m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
@@ -81,8 +79,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 EditorGUILayout.PropertyField(m_propertyScript);
             }
-
-            EditorGUILayout.PropertyField(m_propertyAutoGenerate);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);

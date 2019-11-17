@@ -9,9 +9,9 @@ namespace UGF.Utf8Json.Editor.ExternalType
         private static void ExternalTypeCreateMenu()
         {
             Texture2D icon = AssetPreview.GetMiniTypeThumbnail(typeof(TextAsset));
-            string extension = Utf8JsonExternalTypeEditorUtility.ExternalTypeAssetExtensionName;
+            const string name = "New Utf8Json External Type." + Utf8JsonExternalTypeEditorUtility.EXTERNAL_TYPE_ASSET_EXTENSION_NAME;
 
-            ProjectWindowUtil.CreateAssetWithContent($"New Utf8Json External Type.{extension}", "{}", icon);
+            ProjectWindowUtil.CreateAssetWithContent(name, "{}", icon);
         }
     }
 }

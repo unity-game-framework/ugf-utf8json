@@ -26,6 +26,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 3.0.0-preview - 2019-11-17
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.2.0-preview...3.0.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/8?closed=1)
+
+### Added
+- `Utf8JsonResolverAsset` to generate resolver with additional options.
+
+### Changed
+- Package dependencies:
+    - `com.ugf.code.generate`: from `3.1.0` to `4.0.0-preview`.
+
+### Removed
+- Package dependencies:
+    - `com.ugf.code.assemblies`: `1.5.2`.
+- Assembly dependent resolver generation.
+
 ## 2.2.0-preview - 2019-10-16
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.1.0-preview...2.2.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/7?closed=1)

@@ -13,7 +13,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         [SerializeField] private bool m_resolverAsset = true;
         [SerializeField] private bool m_ignoreReadOnly = true;
         [SerializeField] private bool m_attributeRequired = true;
-        [SerializeField] private string m_attributeTypeName = $"{typeof(SerializableAttribute).AssemblyQualifiedName}";
+        [SerializeField] private string m_attributeTypeName = typeof(SerializableAttribute).AssemblyQualifiedName;
         [SerializeField] private List<string> m_sources = new List<string>();
 
         public string ResolverName { get { return m_resolverName; } set { m_resolverName = value; } }

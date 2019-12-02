@@ -26,6 +26,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 3.1.0-preview - 2019-12-02
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.0.0-preview...3.1.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/9?closed=1)
+
+### Added
+- `Utf8JsonResolverAssetImporter.AutoGenerate` to allow resolver generation on asset import.
+- `Utf8JsonResolverAssetInfo.AutoGenerate` to control whether to re-generate resolver after depending sources have changed.
+
+### Removed
+- `Utf8JsonExternalTypeEditorUtility.IsExternalFile`: use `String.EndWith` instead.
+
 ## 3.0.0-preview - 2019-11-17
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/2.2.0-preview...3.0.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/8?closed=1)

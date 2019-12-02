@@ -17,6 +17,8 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         private Utf8JsonResolverAssetImporter m_importer;
         private SerializedProperty m_propertyScript;
+        private SerializedProperty m_propertyImporterAutoGenerate;
+        private SerializedProperty m_propertyAutoGenerate;
         private SerializedProperty m_propertyResolverName;
         private SerializedProperty m_propertyNamespaceRoot;
         private SerializedProperty m_propertyDestinationSource;
@@ -36,6 +38,8 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_importer = (Utf8JsonResolverAssetImporter)targets[0];
 
             m_propertyScript = serializedObject.FindProperty("m_Script");
+            m_propertyImporterAutoGenerate = serializedObject.FindProperty("m_autoGenerate");
+            m_propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_info.m_autoGenerate");
             m_propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
             m_propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_info.m_namespaceRoot");
             m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
@@ -52,6 +56,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
             m_sources.elementHeight = height;
             m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(TextAsset));
+            m_sources.onAddCallback = OnAddSource;
 
             m_dropdown = new TypesDropdownDrawer(m_propertyAttributeTypeName, () => TypeCache.GetTypesDerivedFrom<Attribute>());
             m_dropdown.Selected += OnDropdownTypeSelected;
@@ -81,6 +86,10 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Importer Settings", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(m_propertyImporterAutoGenerate);
+
+            EditorGUILayout.Space();
             EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(m_propertyResolverName);
             EditorGUILayout.PropertyField(m_propertyNamespaceRoot);
@@ -88,6 +97,7 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Generate", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(m_propertyAutoGenerate);
 
             DrawObjectField(m_propertyDestinationSource, m_propertyDestinationSource.displayName, typeof(TextAsset));
 
@@ -207,6 +217,16 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             m_propertyAttributeTypeName.stringValue = type.AssemblyQualifiedName;
             m_propertyAttributeTypeName.serializedObject.ApplyModifiedProperties();
+        }
+
+        private void OnAddSource(ReorderableList list)
+        {
+            list.serializedProperty.InsertArrayElementAtIndex(list.serializedProperty.arraySize);
+
+            SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+
+            propertyElement.stringValue = string.Empty;
+            propertyElement.serializedObject.ApplyModifiedProperties();
         }
     }
 }

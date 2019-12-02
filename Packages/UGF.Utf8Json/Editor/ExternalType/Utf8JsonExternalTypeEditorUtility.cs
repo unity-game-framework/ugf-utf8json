@@ -13,9 +13,6 @@ using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.ExternalType
 {
-    /// <summary>
-    /// Provides utilities to work with external types in editor.
-    /// </summary>
     public static class Utf8JsonExternalTypeEditorUtility
     {
         public const string EXTERNAL_TYPE_ASSET_EXTENSION_NAME = "utf8json-external";
@@ -70,15 +67,6 @@ namespace UGF.Utf8Json.Editor.ExternalType
             }
 
             return externalsTempPath;
-        }
-
-        public static bool IsExternalFile(string path)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
-
-            string extension = Path.GetExtension(path);
-
-            return !string.IsNullOrEmpty(extension) && extension.Equals(EXTERNAL_TYPE_ASSET_EXTENSION, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static CSharpSyntaxRewriter GetAttributeRewriter(Compilation compilation, SyntaxGenerator generator, ITypeSymbol attributeTypeSymbol)

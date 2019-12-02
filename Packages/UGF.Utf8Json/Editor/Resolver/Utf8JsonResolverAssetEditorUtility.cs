@@ -88,11 +88,11 @@ namespace UGF.Utf8Json.Editor.Resolver
 
                     if (!string.IsNullOrEmpty(path))
                     {
-                        if (IsCSharpFile(path))
+                        if (path.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
                         {
                             sourcePaths.Add(path);
                         }
-                        else if (Utf8JsonExternalTypeEditorUtility.IsExternalFile(path))
+                        else if (path.EndsWith(Utf8JsonExternalTypeEditorUtility.EXTERNAL_TYPE_ASSET_EXTENSION, StringComparison.OrdinalIgnoreCase))
                         {
                             externals.Add(path);
                         }
@@ -202,15 +202,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 AssetDatabase.ImportAsset(assetPath);
             }
-        }
-
-        private static bool IsCSharpFile(string path)
-        {
-            if (string.IsNullOrEmpty(path)) throw new ArgumentException("Value cannot be null or empty.", nameof(path));
-
-            string extension = Path.GetExtension(path);
-
-            return !string.IsNullOrEmpty(extension) && extension.Equals(".cs", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static SyntaxNode GenerateResolverAsset(string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)

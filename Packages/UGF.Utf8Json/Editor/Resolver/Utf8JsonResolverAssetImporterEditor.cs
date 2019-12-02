@@ -52,6 +52,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
             m_sources.elementHeight = height;
             m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(TextAsset));
+            m_sources.onAddCallback = OnAddSource;
 
             m_dropdown = new TypesDropdownDrawer(m_propertyAttributeTypeName, () => TypeCache.GetTypesDerivedFrom<Attribute>());
             m_dropdown.Selected += OnDropdownTypeSelected;
@@ -207,6 +208,16 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             m_propertyAttributeTypeName.stringValue = type.AssemblyQualifiedName;
             m_propertyAttributeTypeName.serializedObject.ApplyModifiedProperties();
+        }
+
+        private void OnAddSource(ReorderableList list)
+        {
+            list.serializedProperty.InsertArrayElementAtIndex(list.serializedProperty.arraySize);
+
+            SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
+
+            propertyElement.stringValue = string.Empty;
+            propertyElement.serializedObject.ApplyModifiedProperties();
         }
     }
 }

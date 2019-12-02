@@ -8,3 +8,4 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 027f7e747a2813b4a9e6486adc8d5bcc, type: 3}
+  autoGenerate: 1

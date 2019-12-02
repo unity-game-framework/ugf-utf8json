@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using NUnit.Framework;
 using Utf8Json;
 
@@ -14,6 +13,12 @@ namespace UGF.Utf8Json.Runtime.Tests
         public class Target
         {
             public string Value { get; set; }
+        }
+
+        [Serializable]
+        public class Target2
+        {
+            public bool Value { get; set; }
         }
 
         [OneTimeSetUp]

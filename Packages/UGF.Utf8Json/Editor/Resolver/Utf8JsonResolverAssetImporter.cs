@@ -7,7 +7,7 @@ namespace UGF.Utf8Json.Editor.Resolver
     [ScriptedImporter(0, Utf8JsonResolverAssetEditorUtility.RESOLVER_ASSET_EXTENSION_NAME)]
     public class Utf8JsonResolverAssetImporter : ScriptedImporter
     {
-        [SerializeField] private bool m_autoGenerate = true;
+        [SerializeField] private bool m_autoGenerate;
 
         public bool AutoGenerate { get { return m_autoGenerate; } set { m_autoGenerate = value; } }
 

@@ -32,15 +32,26 @@ namespace UGF.Utf8Json.Editor
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
 
             var builder = new StringBuilder();
+            int start = 0;
 
-            for (int i = 0; i < resolverName.Length; i++)
+            while (!char.IsLetter(resolverName[start]) && start < resolverName.Length)
+            {
+                start++;
+            }
+
+            for (int i = start; i < resolverName.Length; i++)
             {
                 char ch = resolverName[i];
 
-                if (char.IsLetter(ch))
+                if (char.IsLetterOrDigit(ch))
                 {
                     builder.Append(ch);
                 }
+            }
+
+            if (builder.Length == 0)
+            {
+                throw new ArgumentException($"The specified resolver name is invalid: '{resolverName}'.", nameof(resolverName));
             }
 
             return builder.ToString();

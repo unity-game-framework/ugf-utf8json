@@ -25,7 +25,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddResolver(Generated.Resolvers.Resolver.Instance);
+            m_resolver.AddResolver(Generated.Resolvers.Resolver88.Instance);
         }
 
         [Test]

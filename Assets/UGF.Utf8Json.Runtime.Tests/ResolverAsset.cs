@@ -3,12 +3,12 @@
 
 namespace Generated.Asset
 {
-    [global::UnityEngine.CreateAssetMenuAttribute(menuName = ("UGF/Utf8Json/Generated/Generated.Resolver"), order = (2000))]
-    public class ResolverAsset : global::UGF.Utf8Json.Runtime.Resolver.Utf8JsonResolverAsset
+    [global::UnityEngine.CreateAssetMenuAttribute(menuName = ("UGF/Utf8Json/Generated/Generated.Resolver88"), order = (2000))]
+    public class Resolver88Asset : global::UGF.Utf8Json.Runtime.Resolver.Utf8JsonResolverAsset
     {
         public override global::Utf8Json.IJsonFormatterResolver GetResolver()
         {
-            return Generated.Resolvers.Resolver.Instance;
+            return Generated.Resolvers.Resolver88.Instance;
         }
     }
 }
@@ -18,11 +18,11 @@ namespace Generated.Resolvers
     using System;
     using Utf8Json;
 
-    public class Resolver : global::Utf8Json.IJsonFormatterResolver
+    public class Resolver88 : global::Utf8Json.IJsonFormatterResolver
     {
-        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new Resolver();
+        public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new Resolver88();
 
-        Resolver()
+        Resolver88()
         {
 
         }
@@ -38,7 +38,7 @@ namespace Generated.Resolvers
 
             static FormatterCache()
             {
-                var f = ResolverGetFormatterHelper.GetFormatter(typeof(T));
+                var f = Resolver88GetFormatterHelper.GetFormatter(typeof(T));
                 if (f != null)
                 {
                     formatter = (global::Utf8Json.IJsonFormatter<T>)f;
@@ -47,11 +47,11 @@ namespace Generated.Resolvers
         }
     }
 
-    internal static class ResolverGetFormatterHelper
+    internal static class Resolver88GetFormatterHelper
     {
         static readonly global::System.Collections.Generic.Dictionary<Type, int> lookup;
 
-        static ResolverGetFormatterHelper()
+        static Resolver88GetFormatterHelper()
         {
             lookup = new global::System.Collections.Generic.Dictionary<Type, int>(12)
             {

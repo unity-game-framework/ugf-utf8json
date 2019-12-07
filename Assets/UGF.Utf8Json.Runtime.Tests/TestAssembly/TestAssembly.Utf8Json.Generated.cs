@@ -20,6 +20,11 @@ namespace TestAssembly.Resolvers
             return FormatterCache<T>.formatter;
         }
 
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            return (IJsonFormatter)TestAssemblyResolverGetFormatterHelper.GetFormatter(type);
+        }
+
         static class FormatterCache<T>
         {
             public static readonly global::Utf8Json.IJsonFormatter<T> formatter;
@@ -100,7 +105,7 @@ namespace TestAssembly.Formatters.UnityEngine
         {
             writer.WriteInt32((Int32)value);
         }
-        
+
         public global::UnityEngine.HideFlags Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
             return (global::UnityEngine.HideFlags)reader.ReadInt32();
@@ -154,7 +159,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("vector2"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("bounds"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("flags"),
-                
+
             };
         }
 
@@ -165,7 +170,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 writer.WriteNull();
                 return;
             }
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteString(value.Name);
@@ -181,7 +186,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[6]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.HideFlags>(formatterResolver).Serialize(ref writer, value.Flags, formatterResolver);
-            
+
             writer.WriteEndObject();
         }
 
@@ -191,7 +196,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             {
                 return null;
             }
-            
+
 
             var __Name__ = default(string);
             var __Name__b__ = false;
@@ -310,7 +315,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("arrayTarget"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("listTarget"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("arrayFrames"),
-                
+
             };
         }
 
@@ -321,7 +326,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 writer.WriteNull();
                 return;
             }
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteString(value.Name);
@@ -347,7 +352,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::UGF.Utf8Json.Runtime.Tests.TestAssembly.TestTarget2>>(formatterResolver).Serialize(ref writer, value.ListTarget, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[11]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Keyframe[]>(formatterResolver).Serialize(ref writer, value.ArrayFrames, formatterResolver);
-            
+
             writer.WriteEndObject();
         }
 
@@ -357,7 +362,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             {
                 return null;
             }
-            
+
 
             var __Name__ = default(string);
             var __Name__b__ = false;
@@ -513,7 +518,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("listTarget"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("arrayFrames"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("arrayInt2"),
-                
+
             };
         }
 
@@ -524,7 +529,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
                 writer.WriteNull();
                 return;
             }
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteString(value.Name);
@@ -552,7 +557,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Keyframe[]>(formatterResolver).Serialize(ref writer, value.ArrayFrames, formatterResolver);
             writer.WriteRaw(this.____stringByteKeys[12]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<int[,]>(formatterResolver).Serialize(ref writer, value.ArrayInt2, formatterResolver);
-            
+
             writer.WriteEndObject();
         }
 
@@ -562,7 +567,7 @@ namespace TestAssembly.Formatters.UGF.Utf8Json.Runtime.Tests.TestAssembly
             {
                 return null;
             }
-            
+
 
             var __Name__ = default(string);
             var __Name__b__ = false;
@@ -737,13 +742,13 @@ namespace TestAssembly.Formatters.UnityEngine.AI
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("voxelSize"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("overrideTileSize"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("tileSize"),
-                
+
             };
         }
 
         public void Serialize(ref global::Utf8Json.JsonWriter writer, global::UnityEngine.AI.NavMeshBuildSettings value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
         {
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteInt32(value.agentTypeID);
@@ -765,7 +770,7 @@ namespace TestAssembly.Formatters.UnityEngine.AI
             writer.WriteBoolean(value.overrideTileSize);
             writer.WriteRaw(this.____stringByteKeys[9]);
             writer.WriteInt32(value.tileSize);
-            
+
             writer.WriteEndObject();
         }
 
@@ -775,7 +780,7 @@ namespace TestAssembly.Formatters.UnityEngine.AI
             {
                 throw new InvalidOperationException("typecode is null, struct not supported");
             }
-            
+
 
             var __agentTypeID__ = default(int);
             var __agentTypeID__b__ = false;

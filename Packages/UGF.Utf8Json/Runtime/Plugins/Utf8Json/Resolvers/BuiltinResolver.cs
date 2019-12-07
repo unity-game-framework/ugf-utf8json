@@ -22,6 +22,11 @@ namespace Utf8Json.Resolvers
             return FormatterCache<T>.formatter;
         }
 
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            return (IJsonFormatter)BuiltinResolverGetFormatterHelper.GetFormatter(type);
+        }
+
         static class FormatterCache<T>
         {
             public static readonly IJsonFormatter<T> formatter;

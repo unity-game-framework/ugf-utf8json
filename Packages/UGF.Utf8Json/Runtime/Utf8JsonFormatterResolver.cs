@@ -85,12 +85,24 @@ namespace UGF.Utf8Json.Runtime
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            return m_formatters.TryGetValue(type, out formatter);
+            if (m_formatters.TryGetValue(type, out formatter))
+            {
+                return true;
+            }
+
+            for (int i = 0; i < m_resolvers.Count; i++)
+            {
+                formatter = m_resolvers[i].GetFormatter(type);
+
+                if (formatter != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        /// <summary>
-        /// Gets formatter for the specified type.
-        /// </summary>
         public IJsonFormatter<T> GetFormatter<T>()
         {
             IJsonFormatter<T> formatter = null;
@@ -109,6 +121,36 @@ namespace UGF.Utf8Json.Runtime
                     {
                         break;
                     }
+                }
+
+                if (formatter == null)
+                {
+                    throw new ArgumentException($"Formatter for specified type not found: '{typeof(T)}'.");
+                }
+            }
+
+            return formatter;
+        }
+
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            if (type == null) throw new ArgumentNullException(nameof(type));
+
+            if (!m_formatters.TryGetValue(type, out IJsonFormatter formatter))
+            {
+                for (int i = 0; i < m_resolvers.Count; i++)
+                {
+                    formatter = m_resolvers[i].GetFormatter(type);
+
+                    if (formatter != null)
+                    {
+                        break;
+                    }
+                }
+
+                if (formatter == null)
+                {
+                    throw new ArgumentException($"Formatter for specified type not found: '{type}'.");
                 }
             }
 

@@ -62,7 +62,15 @@ namespace Utf8Json.CodeGenerator.Generator
 
 #line default
 #line hidden
-            this.Write("()\r\n        {\r\n\r\n        }\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +
+            this.Write("()\r\n        {\r\n\r\n        }");
+
+            this.Write($@"
+        public IJsonFormatter GetFormatter(Type type)
+        {{
+            return (IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
+        }}");
+
+            this.Write("\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +
                        "        {\r\n            return FormatterCache<T>.formatter;\r\n        }\r\n\r\n        static class FormatterCache<T>\r\n" +
                        "        {\r\n            public static readonly global::Utf8Json.IJsonFormatter<T> formatter;\r\n\r\n            static FormatterCache()\r\n" +
                        "            {\r\n                var f = ");

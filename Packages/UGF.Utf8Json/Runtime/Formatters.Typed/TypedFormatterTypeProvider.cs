@@ -83,18 +83,17 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
         {
             string typeName = GetTypeName(type);
 
-            return JsonWriter.GetEncodedPropertyName(typeName);
+            return JsonWriter.GetEncodedPropertyNameWithoutQuotation(typeName);
         }
 
         private static string GetTypeName(Type type)
         {
             string assemblyName = type.Assembly.GetName().Name;
-            string namespaceName = type.Namespace;
-            string name = type.Name;
+            string name = type.FullName;
 
-            return !string.IsNullOrEmpty(namespaceName)
-                ? $"{namespaceName}.{name}, {assemblyName}"
-                : $"{name}, {assemblyName}";
+            return !string.IsNullOrEmpty(name)
+                ? $"{name}, {assemblyName}"
+                : $"{type.Name}, {assemblyName}";
         }
     }
 }

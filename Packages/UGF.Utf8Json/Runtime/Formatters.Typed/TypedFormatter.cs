@@ -1,67 +1,75 @@
 using System;
+using System.Text;
 using Utf8Json;
+using Utf8Json.Internal;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Typed
 {
     public class TypedFormatter<TTarget> : IJsonFormatter<TTarget>
     {
         public IUtf8JsonFormatterResolver Resolver { get; }
-        public string TypePropertyName { get; set; } = "type";
+        public ITypedFormatterTypeProvider TypeProvider { get; }
+        public string TypePropertyName { get; }
 
-        public TypedFormatter(IUtf8JsonFormatterResolver resolver)
+        private readonly byte[] m_typePropertyNameBytes;
+        private readonly ArraySegment<byte> m_typePropertyNameValue;
+
+        public TypedFormatter(IUtf8JsonFormatterResolver resolver, ITypedFormatterTypeProvider typeProvider, string typePropertyName = "type")
         {
             Resolver = resolver;
+            TypeProvider = typeProvider;
+            TypePropertyName = typePropertyName;
+
+            m_typePropertyNameBytes = JsonWriter.GetEncodedPropertyName(typePropertyName);
+            m_typePropertyNameValue = new ArraySegment<byte>(m_typePropertyNameBytes, 1, m_typePropertyNameBytes.Length - 3);
         }
 
         public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
         {
             Type type = value.GetType();
 
-            if (type != typeof(TTarget))
+            if (!(Resolver.TryGetFormatter(type, out IJsonFormatter result) && result is IJsonFormatter<object> formatter))
             {
-                if (!(Resolver.TryGetFormatter(type, out IJsonFormatter result) && result is IJsonFormatter<object> formatter))
-                {
-                    throw new ArgumentException($"Formatter not found for specified type: '{type}'.");
-                }
-
-                string typeName = type.AssemblyQualifiedName;
-                int position = WriteTypeNameSpace(ref writer, typeName);
-
-                formatter.Serialize(ref writer, value, formatterResolver);
-
-                WriteTypeName(ref writer, typeName, position);
+                throw new ArgumentException($"Formatter not found for specified type: '{type}'.");
             }
-            else
+
+            if (!TypeProvider.TryGetTypeName(type, out byte[] typeName))
             {
-                Resolver.GetFormatter<TTarget>().Serialize(ref writer, value, formatterResolver);
+                throw new ArgumentException($"Type name for specified type not found: '{type}'.");
             }
+
+            int position = WriteTypeNameSpace(ref writer, typeName);
+
+            formatter.Serialize(ref writer, value, formatterResolver);
+
+            WriteTypeName(ref writer, typeName, position);
         }
 
         public TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
         {
-            if (TryReadTypeName(reader, out string typeName))
+            if (!TryReadTypeName(reader, out ArraySegment<byte> typeName))
             {
-                Type type = !string.IsNullOrEmpty(typeName) ? Type.GetType(typeName) : null;
-
-                if (type == null)
-                {
-                    throw new ArgumentException($"Type not found by the specified type name: '{typeName}'.", nameof(type));
-                }
-
-                if (!(Resolver.TryGetFormatter(type, out IJsonFormatter result) && result is IJsonFormatter<object> formatter))
-                {
-                    throw new ArgumentException($"Formatter not found for specified type: '{type}'.");
-                }
-
-                return (TTarget)formatter.Deserialize(ref reader, formatterResolver);
+                throw new ArgumentException("Type name property not found.");
             }
 
-            return Resolver.GetFormatter<TTarget>().Deserialize(ref reader, formatterResolver);
+            if (!TypeProvider.TryGetType(typeName, out Type type))
+            {
+                string name = typeName.Array != null ? Encoding.UTF8.GetString(typeName.Array, typeName.Offset, typeName.Count) : null;
+
+                throw new ArgumentException($"Type not found by the specified type name: '{name}'.", nameof(type));
+            }
+
+            if (!(Resolver.TryGetFormatter(type, out IJsonFormatter result) && result is IJsonFormatter<object> formatter))
+            {
+                throw new ArgumentException($"Formatter not found for specified type: '{type}'.");
+            }
+
+            return (TTarget)formatter.Deserialize(ref reader, formatterResolver);
         }
 
-        private int WriteTypeNameSpace(ref JsonWriter writer, string typeName)
+        private int WriteTypeNameSpace(ref JsonWriter writer, byte[] typeName)
         {
-            int length = TypePropertyName.Length + typeName.Length + 3;
+            int length = m_typePropertyNameBytes.Length + typeName.Length + 3;
             int position = writer.CurrentOffset;
 
             writer.EnsureCapacity(length + 1);
@@ -70,38 +78,38 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             return position;
         }
 
-        private void WriteTypeName(ref JsonWriter writer, string typeName, int position)
+        private void WriteTypeName(ref JsonWriter writer, byte[] typeName, int position)
         {
             int current = writer.CurrentOffset;
 
             writer.CurrentOffset = position;
             writer.WriteBeginObject();
-            writer.WriteString(TypePropertyName);
+            writer.WriteRaw(m_typePropertyNameBytes);
             writer.WriteQuotation();
-            writer.WriteString(typeName);
+            writer.WriteRaw(typeName);
             writer.WriteQuotation();
             writer.WriteValueSeparator();
             writer.CurrentOffset = current;
         }
 
-        private bool TryReadTypeName(JsonReader reader, out string typeName)
+        private bool TryReadTypeName(JsonReader reader, out ArraySegment<byte> typeName)
         {
             int count = 0;
 
             while (reader.ReadIsInObject(ref count))
             {
-                string propertyName = reader.ReadPropertyName();
+                ArraySegment<byte> propertyName = reader.ReadPropertyNameSegmentRaw();
 
-                if (propertyName.Equals(TypePropertyName, StringComparison.Ordinal))
+                if (ByteArrayComparer.Equals(propertyName, m_typePropertyNameValue))
                 {
-                    typeName = reader.ReadString();
+                    typeName = reader.ReadStringSegmentRaw();
                     return true;
                 }
 
                 reader.ReadNextBlock();
             }
 
-            typeName = null;
+            typeName = default;
             return false;
         }
     }

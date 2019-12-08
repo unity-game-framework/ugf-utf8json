@@ -30,6 +30,11 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Typed
             public int IntValue { get; set; } = 10;
         }
 
+        [Serializable]
+        public class Target3 : ITarget
+        {
+        }
+
         [Test]
         public void Serialize()
         {

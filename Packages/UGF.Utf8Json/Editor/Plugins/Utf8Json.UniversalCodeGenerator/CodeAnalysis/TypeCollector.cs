@@ -552,7 +552,7 @@ namespace Utf8Json.UniversalCodeGenerator
                 }
             }
 
-            if (stringMembers.Count == 0) return;
+            if (arguments.IgnoreEmpty && stringMembers.Count == 0) return;
 
             var info = new ObjectSerializationInfo
             {

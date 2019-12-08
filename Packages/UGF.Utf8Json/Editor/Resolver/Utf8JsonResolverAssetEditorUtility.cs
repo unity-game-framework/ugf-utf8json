@@ -69,7 +69,8 @@ namespace UGF.Utf8Json.Editor.Resolver
             var generateArguments = new Utf8JsonGenerateArguments
             {
                 IgnoreReadOnly = info.IgnoreReadOnly,
-                IsTypeRequireAttribute = info.AttributeRequired
+                IgnoreEmpty = info.IgnoreEmpty,
+                IsTypeRequireAttribute = info.AttributeRequired,
             };
 
             if (info.AttributeRequired && info.TryGetAttributeType(out attributeType))

@@ -13,6 +13,11 @@ namespace Utf8Json.UniversalCodeGenerator
         public bool IgnoreReadOnly;
 
         /// <summary>
+        /// The value that determines whether to ingore types wihtout any serializable members.
+        /// </summary>
+        public bool IgnoreEmpty;
+
+        /// <summary>
         /// The value that determines whether target type must contains specific attribute.
         /// </summary>
         public bool IsTypeRequireAttribute;

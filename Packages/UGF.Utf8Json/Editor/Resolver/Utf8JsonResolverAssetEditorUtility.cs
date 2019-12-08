@@ -11,9 +11,11 @@ using UGF.Code.Generate.Editor.Container.External;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime.Resolver;
 using UnityEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using Utf8Json;
 using Utf8Json.UniversalCodeGenerator;
+using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
@@ -24,13 +26,24 @@ namespace UGF.Utf8Json.Editor.Resolver
         public static void GenerateResolverAll(ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             const string resolverSearchPattern = "*." + RESOLVER_ASSET_EXTENSION_NAME;
-            string[] paths = Directory.GetFiles("Assets", resolverSearchPattern, SearchOption.AllDirectories);
+            string[] underAssets = Directory.GetFiles("Assets", resolverSearchPattern, SearchOption.AllDirectories);
+            string[] underPackages = Directory.GetFiles("Packages", resolverSearchPattern, SearchOption.AllDirectories);
 
-            for (int i = 0; i < paths.Length; i++)
+            for (int i = 0; i < underAssets.Length; i++)
             {
-                string path = paths[i];
+                string path = underAssets[i];
 
                 GenerateResolver(path, validation, compilation, generator);
+            }
+
+            for (int i = 0; i < underPackages.Length; i++)
+            {
+                string path = underPackages[i];
+
+                if (CanGenerateResolver(path))
+                {
+                    GenerateResolver(path, validation, compilation, generator);
+                }
             }
         }
 
@@ -69,7 +82,8 @@ namespace UGF.Utf8Json.Editor.Resolver
             var generateArguments = new Utf8JsonGenerateArguments
             {
                 IgnoreReadOnly = info.IgnoreReadOnly,
-                IsTypeRequireAttribute = info.AttributeRequired
+                IgnoreEmpty = info.IgnoreEmpty,
+                IsTypeRequireAttribute = info.AttributeRequired,
             };
 
             if (info.AttributeRequired && info.TryGetAttributeType(out attributeType))
@@ -135,6 +149,13 @@ namespace UGF.Utf8Json.Editor.Resolver
 
                 AssetDatabase.MoveAssetToTrash(path);
             }
+        }
+
+        public static bool CanGenerateResolver(string assetPath)
+        {
+            PackageInfo packageInfo = PackageInfo.FindForAssetPath(assetPath);
+
+            return packageInfo == null || packageInfo.source == PackageSource.Embedded;
         }
 
         public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid = null)

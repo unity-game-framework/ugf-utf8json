@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using Utf8Json;
@@ -24,6 +25,11 @@ namespace UGF.Utf8Json.Runtime.Tests
             {
                 return null;
             }
+
+            public IJsonFormatter GetFormatter(Type type)
+            {
+                return null;
+            }
         }
 
         private class Resolver<TFormatter> : IJsonFormatterResolver
@@ -33,6 +39,11 @@ namespace UGF.Utf8Json.Runtime.Tests
             public IJsonFormatter<T> GetFormatter<T>()
             {
                 return m_formatter as IJsonFormatter<T>;
+            }
+
+            public IJsonFormatter GetFormatter(Type type)
+            {
+                return null;
             }
         }
 
@@ -155,11 +166,10 @@ namespace UGF.Utf8Json.Runtime.Tests
             resolver.AddResolver(resolver1);
 
             IJsonFormatter<int> formatter0 = resolver.GetFormatter<int>();
-            IJsonFormatter<bool> formatter1 = resolver.GetFormatter<bool>();
             IJsonFormatter<float> formatter2 = resolver.GetFormatter<float>();
 
+            Assert.Throws<ArgumentException>(() => resolver.GetFormatter<bool>());
             Assert.NotNull(formatter0);
-            Assert.Null(formatter1);
             Assert.NotNull(formatter2);
         }
     }

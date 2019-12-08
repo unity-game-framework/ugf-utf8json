@@ -23,6 +23,11 @@ namespace Utf8Json.Unity
             return FormatterCache<T>.formatter;
         }
 
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            return (IJsonFormatter)UnityResolverGetFormatterHelper.GetFormatter(type);
+        }
+
         static class FormatterCache<T>
         {
             public static readonly global::Utf8Json.IJsonFormatter<T> formatter;

@@ -13,6 +13,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         [SerializeField] private string m_destinationSource;
         [SerializeField] private bool m_resolverAsset = true;
         [SerializeField] private bool m_ignoreReadOnly = true;
+        [SerializeField] private bool m_ignoreEmpty;
         [SerializeField] private bool m_attributeRequired = true;
         [SerializeField] private string m_attributeTypeName = typeof(SerializableAttribute).AssemblyQualifiedName;
         [SerializeField] private List<string> m_sources = new List<string>();
@@ -23,6 +24,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         public string DestinationSource { get { return m_destinationSource; } set { m_destinationSource = value; } }
         public bool ResolverAsset { get { return m_resolverAsset; } set { m_resolverAsset = value; } }
         public bool IgnoreReadOnly { get { return m_ignoreReadOnly; } set { m_ignoreReadOnly = value; } }
+        public bool IgnoreEmpty { get { return m_ignoreEmpty; } set { m_ignoreEmpty = value; } }
         public bool AttributeRequired { get { return m_attributeRequired; } set { m_attributeRequired = value; } }
         public string AttributeTypeName { get { return m_attributeTypeName; } set { m_attributeTypeName = value; } }
         public List<string> Sources { get { return m_sources; } }

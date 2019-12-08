@@ -57,6 +57,8 @@ namespace Utf8Json.CodeGenerator.Generator
 #line hidden
             this.Write("();\r\n\r\n        ");
 
+            this.Write("private readonly System.Collections.Generic.Dictionary<global::System.Type, global::Utf8Json.IJsonFormatter> m_formatters = new System.Collections.Generic.Dictionary<global::System.Type, global::Utf8Json.IJsonFormatter>();\r\n\r\n        ");
+
 #line 20 "C:\Users\y.kawai\Documents\neuecc\Utf8Json\src\Utf8Json.CodeGenerator\Generator\ResolverTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(ResolverName));
 
@@ -67,7 +69,14 @@ namespace Utf8Json.CodeGenerator.Generator
             this.Write($@"
         public global::Utf8Json.IJsonFormatter GetFormatter(global::System.Type type)
         {{
-            return (global::Utf8Json.IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
+            if (!m_formatters.TryGetValue(type, out var formatter))
+            {{
+                formatter = (global::Utf8Json.IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
+
+                m_formatters.Add(type, formatter);
+            }}
+
+            return formatter;
         }}");
 
             this.Write("\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +

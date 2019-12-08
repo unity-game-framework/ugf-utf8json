@@ -22,13 +22,22 @@ namespace Generated2.Resolvers
     {
         public static readonly global::Utf8Json.IJsonFormatterResolver Instance = new Resolver2();
 
+        private readonly System.Collections.Generic.Dictionary<global::System.Type, global::Utf8Json.IJsonFormatter> m_formatters = new System.Collections.Generic.Dictionary<global::System.Type, global::Utf8Json.IJsonFormatter>();
+
         Resolver2()
         {
 
         }
-        public IJsonFormatter GetFormatter(Type type)
+        public global::Utf8Json.IJsonFormatter GetFormatter(global::System.Type type)
         {
-            return (IJsonFormatter)Resolver2GetFormatterHelper.GetFormatter(type);
+            if (!m_formatters.TryGetValue(type, out var formatter))
+            {
+                formatter = (global::Utf8Json.IJsonFormatter)Resolver2GetFormatterHelper.GetFormatter(type);
+
+                m_formatters.Add(type, formatter);
+            }
+
+            return formatter;
         }
 
         public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()

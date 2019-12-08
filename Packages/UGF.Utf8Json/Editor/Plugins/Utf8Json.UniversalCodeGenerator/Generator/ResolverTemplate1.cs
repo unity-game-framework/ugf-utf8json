@@ -65,9 +65,9 @@ namespace Utf8Json.CodeGenerator.Generator
             this.Write("()\r\n        {\r\n\r\n        }");
 
             this.Write($@"
-        public IJsonFormatter GetFormatter(Type type)
+        public global::Utf8Json.IJsonFormatter GetFormatter(global::System.Type type)
         {{
-            return (IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
+            return (global::Utf8Json.IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
         }}");
 
             this.Write("\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +

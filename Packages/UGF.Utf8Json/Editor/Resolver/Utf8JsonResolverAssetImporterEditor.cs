@@ -24,6 +24,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         private SerializedProperty m_propertyDestinationSource;
         private SerializedProperty m_propertyResolverAsset;
         private SerializedProperty m_propertyIgnoreReadOnly;
+        private SerializedProperty m_propertyIgnoreEmpty;
         private SerializedProperty m_propertyAttributeRequired;
         private SerializedProperty m_propertyAttributeTypeName;
         private ReorderableList m_sources;
@@ -45,6 +46,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             m_propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
             m_propertyResolverAsset = extraDataSerializedObject.FindProperty("m_info.m_resolverAsset");
             m_propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_info.m_ignoreReadOnly");
+            m_propertyIgnoreEmpty = extraDataSerializedObject.FindProperty("m_info.m_ignoreEmpty");
             m_propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_info.m_attributeRequired");
             m_propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_info.m_attributeTypeName");
 
@@ -53,7 +55,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_info.m_sources");
 
             m_sources = new ReorderableList(serializedObject, propertySources);
-            m_sources.headerHeight = EditorGUIUtility.standardVerticalSpacing;
+            m_sources.drawHeaderCallback = DrawHeader;
             m_sources.elementHeight = height;
             m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(TextAsset));
             m_sources.onAddCallback = OnAddSource;
@@ -102,6 +104,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             DrawObjectField(m_propertyDestinationSource, m_propertyDestinationSource.displayName, typeof(TextAsset));
 
             EditorGUILayout.PropertyField(m_propertyIgnoreReadOnly);
+            EditorGUILayout.PropertyField(m_propertyIgnoreEmpty);
             EditorGUILayout.PropertyField(m_propertyAttributeRequired);
 
             using (new EditorGUI.DisabledScope(!m_propertyAttributeRequired.boolValue))
@@ -110,7 +113,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Sources", EditorStyles.boldLabel);
 
             m_sources.DoLayoutList();
 
@@ -149,6 +151,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         protected override bool OnApplyRevertGUI()
         {
             bool canClear = File.Exists(m_destinationPath) && !string.IsNullOrEmpty(m_propertyDestinationSource.stringValue);
+            bool canGenerate = Utf8JsonResolverAssetEditorUtility.CanGenerateResolver(m_importer.assetPath);
 
             using (new EditorGUI.DisabledScope(HasModified()))
             {
@@ -157,7 +160,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     Utf8JsonResolverAssetEditorUtility.GenerateResolverAll();
                 }
 
-                using (new EditorGUI.DisabledScope(m_destinationPathAnotherExist))
+                using (new EditorGUI.DisabledScope(m_destinationPathAnotherExist || !canGenerate))
                 {
                     if (GUILayout.Button("Generate"))
                     {
@@ -165,7 +168,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     }
                 }
 
-                using (new EditorGUI.DisabledScope(!canClear))
+                using (new EditorGUI.DisabledScope(!canClear || !canGenerate))
                 {
                     if (GUILayout.Button("Clear"))
                     {
@@ -178,6 +181,11 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             return base.OnApplyRevertGUI();
+        }
+
+        private void DrawHeader(Rect rect)
+        {
+            GUI.Label(rect, $"{m_sources.serializedProperty.displayName} (Size: {m_sources.serializedProperty.arraySize})", EditorStyles.boldLabel);
         }
 
         private static void DrawElement(ReorderableList list, Rect rect, int index, Type objectType)

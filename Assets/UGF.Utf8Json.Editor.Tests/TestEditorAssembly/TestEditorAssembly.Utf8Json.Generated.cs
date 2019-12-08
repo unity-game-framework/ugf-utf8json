@@ -20,6 +20,11 @@ namespace TestEditorAssembly.Resolvers
             return FormatterCache<T>.formatter;
         }
 
+        public IJsonFormatter GetFormatter(Type type)
+        {
+            return (IJsonFormatter)TestEditorAssemblyResolverGetFormatterHelper.GetFormatter(type);
+        }
+
         static class FormatterCache<T>
         {
             public static readonly global::Utf8Json.IJsonFormatter<T> formatter;
@@ -102,7 +107,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("vector2"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("floatValue"),
                 global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithPrefixValueSeparator("bounds"),
-                
+
             };
         }
 
@@ -113,7 +118,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
                 writer.WriteNull();
                 return;
             }
-            
+
 
             writer.WriteRaw(this.____stringByteKeys[0]);
             writer.WriteBoolean(value.BoolValue);
@@ -125,7 +130,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             writer.WriteSingle(value.FloatValue);
             writer.WriteRaw(this.____stringByteKeys[4]);
             global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::UnityEngine.Bounds>(formatterResolver).Serialize(ref writer, value.Bounds, formatterResolver);
-            
+
             writer.WriteEndObject();
         }
 
@@ -135,7 +140,7 @@ namespace TestEditorAssembly.Formatters.UGF.Utf8Json.Editor.Tests.TestEditorAsse
             {
                 return null;
             }
-            
+
 
             var __BoolValue__ = default(bool);
             var __BoolValue__b__ = false;

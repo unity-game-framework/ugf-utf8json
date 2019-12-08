@@ -26,6 +26,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 3.2.0-preview - 2019-12-08
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.1.1-preview...3.2.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/11?closed=1)
+
+### Added
+- `IJsonFormatterResolve.GetFormatter` to get formatter by specified type.
+- `JsonFormatterBase<T>` implementation for generated formatters, now all formatters supports `JsonFormatter<object>`
+- `TypedFormatter<T>` used to serialize specified value with type information.
+- `ITypedFormatterTypeProvider` and `TypedFormatterTypeProvider` to manage type information required by `TypedFormatter<T>`.
+- `Utf8JsonFormatterResolver` support for `TypedFormatter<T>`.
+- `Utf8JsonGenerateArguments.IgnoreEmpty` to control whether to ignore formatter generation for types without any serializable members.
+- `Utf8JsonResolverAssetInfo.IgnoreEmpty` to control whether to ignore formatter generation for types without any serializable members.
+
+### Fixed
+- Resolvers generation under the `Packages` folder.
+
 ## 3.1.1-preview - 2019-12-04
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.1.0-preview...3.1.1-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/10?closed=1)

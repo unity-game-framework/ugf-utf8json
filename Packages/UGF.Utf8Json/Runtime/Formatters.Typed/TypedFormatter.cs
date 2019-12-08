@@ -5,7 +5,7 @@ using Utf8Json.Internal;
 
 namespace UGF.Utf8Json.Runtime.Formatters.Typed
 {
-    public class TypedFormatter<TTarget> : IJsonFormatter<TTarget>
+    public class TypedFormatter<TTarget> : JsonFormatterBase<TTarget>
     {
         public IUtf8JsonFormatterResolver Resolver { get; }
         public ITypedFormatterTypeProvider TypeProvider { get; }
@@ -24,7 +24,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             m_typePropertyNameValue = new ArraySegment<byte>(m_typePropertyNameBytes, 1, m_typePropertyNameBytes.Length - 3);
         }
 
-        public void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
+        public override void Serialize(ref JsonWriter writer, TTarget value, IJsonFormatterResolver formatterResolver)
         {
             Type type = value.GetType();
 
@@ -45,7 +45,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             WriteTypeName(ref writer, typeName, position);
         }
 
-        public TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
+        public override TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
         {
             if (!TryReadTypeName(reader, out ArraySegment<byte> typeName))
             {

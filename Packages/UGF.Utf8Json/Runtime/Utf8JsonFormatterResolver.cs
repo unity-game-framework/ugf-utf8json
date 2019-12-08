@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UGF.Utf8Json.Runtime.Formatters.Typed;
 using Utf8Json;
 
 namespace UGF.Utf8Json.Runtime
@@ -9,6 +10,8 @@ namespace UGF.Utf8Json.Runtime
     /// </summary>
     public class Utf8JsonFormatterResolver : IUtf8JsonFormatterResolver
     {
+        public ITypedFormatterTypeProvider TypedFormatterTypeProvider { get; }
+
         /// <summary>
         /// Gets collection of the formatters stored by the target type.
         /// </summary>
@@ -21,6 +24,11 @@ namespace UGF.Utf8Json.Runtime
 
         private readonly Dictionary<Type, IJsonFormatter> m_formatters = new Dictionary<Type, IJsonFormatter>();
         private readonly List<IJsonFormatterResolver> m_resolvers = new List<IJsonFormatterResolver>();
+
+        public Utf8JsonFormatterResolver(ITypedFormatterTypeProvider typedFormatterTypeProvider = null)
+        {
+            TypedFormatterTypeProvider = typedFormatterTypeProvider ?? new TypedFormatterTypeProvider();
+        }
 
         public void AddFormatter<T>(IJsonFormatter<T> formatter)
         {
@@ -65,6 +73,12 @@ namespace UGF.Utf8Json.Runtime
                 return true;
             }
 
+            if (TryCreateTypeFormatter(typeof(T), out TypedFormatter<T> typedFormatter))
+            {
+                formatter = typedFormatter;
+                return true;
+            }
+
             for (int i = 0; i < m_resolvers.Count; i++)
             {
                 IJsonFormatterResolver resolver = m_resolvers[i];
@@ -90,6 +104,12 @@ namespace UGF.Utf8Json.Runtime
                 return true;
             }
 
+            if (TryCreateTypeFormatter(type, out TypedFormatter<object> typedFormatter))
+            {
+                formatter = typedFormatter;
+                return true;
+            }
+
             for (int i = 0; i < m_resolvers.Count; i++)
             {
                 formatter = m_resolvers[i].GetFormatter(type);
@@ -105,28 +125,9 @@ namespace UGF.Utf8Json.Runtime
 
         public IJsonFormatter<T> GetFormatter<T>()
         {
-            IJsonFormatter<T> formatter = null;
-
-            if (m_formatters.TryGetValue(typeof(T), out IJsonFormatter value) && value is IJsonFormatter<T> cast)
+            if (!TryGetFormatter(out IJsonFormatter<T> formatter))
             {
-                formatter = cast;
-            }
-            else
-            {
-                for (int i = 0; i < m_resolvers.Count; i++)
-                {
-                    formatter = m_resolvers[i].GetFormatter<T>();
-
-                    if (formatter != null)
-                    {
-                        break;
-                    }
-                }
-
-                if (formatter == null)
-                {
-                    throw new ArgumentException($"Formatter for specified type not found: '{typeof(T)}'.");
-                }
+                throw new ArgumentException($"Formatter for specified type not found: '{typeof(T)}'.");
             }
 
             return formatter;
@@ -136,25 +137,27 @@ namespace UGF.Utf8Json.Runtime
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
 
-            if (!m_formatters.TryGetValue(type, out IJsonFormatter formatter))
+            if (!TryGetFormatter(type, out IJsonFormatter formatter))
             {
-                for (int i = 0; i < m_resolvers.Count; i++)
-                {
-                    formatter = m_resolvers[i].GetFormatter(type);
-
-                    if (formatter != null)
-                    {
-                        break;
-                    }
-                }
-
-                if (formatter == null)
-                {
-                    throw new ArgumentException($"Formatter for specified type not found: '{type}'.");
-                }
+                throw new ArgumentException($"Formatter for specified type not found: '{type}'.");
             }
 
             return formatter;
+        }
+
+        private bool TryCreateTypeFormatter<T>(Type type, out TypedFormatter<T> formatter)
+        {
+            if (type.IsAbstract || type.IsInterface)
+            {
+                formatter = new TypedFormatter<T>(this, TypedFormatterTypeProvider);
+
+                m_formatters.Add(type, formatter);
+
+                return true;
+            }
+
+            formatter = null;
+            return false;
         }
     }
 }

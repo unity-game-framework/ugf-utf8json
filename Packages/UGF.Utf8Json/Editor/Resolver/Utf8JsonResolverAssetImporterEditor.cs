@@ -151,6 +151,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         protected override bool OnApplyRevertGUI()
         {
             bool canClear = File.Exists(m_destinationPath) && !string.IsNullOrEmpty(m_propertyDestinationSource.stringValue);
+            bool canGenerate = Utf8JsonResolverAssetEditorUtility.CanGenerateResolver(m_importer.assetPath);
 
             using (new EditorGUI.DisabledScope(HasModified()))
             {
@@ -159,7 +160,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     Utf8JsonResolverAssetEditorUtility.GenerateResolverAll();
                 }
 
-                using (new EditorGUI.DisabledScope(m_destinationPathAnotherExist))
+                using (new EditorGUI.DisabledScope(m_destinationPathAnotherExist || !canGenerate))
                 {
                     if (GUILayout.Button("Generate"))
                     {
@@ -167,7 +168,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                     }
                 }
 
-                using (new EditorGUI.DisabledScope(!canClear))
+                using (new EditorGUI.DisabledScope(!canClear || !canGenerate))
                 {
                     if (GUILayout.Button("Clear"))
                     {

@@ -26,7 +26,10 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             foreach (string resolverPath in m_resolvers)
             {
-                Utf8JsonResolverAssetEditorUtility.GenerateResolver(resolverPath);
+                if (Utf8JsonResolverAssetEditorUtility.CanGenerateResolver(resolverPath))
+                {
+                    Utf8JsonResolverAssetEditorUtility.GenerateResolver(resolverPath);
+                }
             }
         }
 
@@ -49,9 +52,16 @@ namespace UGF.Utf8Json.Editor.Resolver
         private static void CollectSources(IDictionary<string, string> cache)
         {
             const string resolverSearchPattern = "*." + Utf8JsonResolverAssetEditorUtility.RESOLVER_ASSET_EXTENSION_NAME;
-            string[] paths = Directory.GetFiles("Assets", resolverSearchPattern, SearchOption.AllDirectories);
+            string[] underAssets = Directory.GetFiles("Assets", resolverSearchPattern, SearchOption.AllDirectories);
+            string[] underPackages = Directory.GetFiles("Packages", resolverSearchPattern, SearchOption.AllDirectories);
 
-            for (int i = 0; i < paths.Length; i++)
+            CollectSources(cache, underAssets);
+            CollectSources(cache, underPackages);
+        }
+
+        private static void CollectSources(IDictionary<string, string> cache, IReadOnlyList<string> paths)
+        {
+            for (int i = 0; i < paths.Count; i++)
             {
                 string path = paths[i];
                 Utf8JsonResolverAssetInfo info = Utf8JsonResolverAssetEditorUtility.LoadResolverInfo(path);

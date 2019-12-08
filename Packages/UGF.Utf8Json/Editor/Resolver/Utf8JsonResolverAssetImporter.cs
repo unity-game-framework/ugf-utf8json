@@ -19,7 +19,7 @@ namespace UGF.Utf8Json.Editor.Resolver
             context.AddObjectToAsset("main", asset);
             context.SetMainObject(asset);
 
-            if (m_autoGenerate)
+            if (m_autoGenerate && Utf8JsonResolverAssetEditorUtility.CanGenerateResolver(context.assetPath))
             {
                 Utf8JsonResolverAssetEditorUtility.GenerateResolver(context.assetPath);
             }

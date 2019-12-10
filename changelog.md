@@ -26,6 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 3.2.1-preview - 2019-12-10
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.2.0-preview...3.2.1-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/12?closed=1)
+
+### Fixed
+- Generated resolver results in inconsistent line endings.
+
 ## 3.2.0-preview - 2019-12-08
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.1.1-preview...3.2.0-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/11?closed=1)

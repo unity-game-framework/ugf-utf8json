@@ -42,18 +42,10 @@ namespace Utf8Json.CodeGenerator.Generator
 
             this.Write("()\r\n        {\r\n\r\n        }");
 
-            this.Write($@"
-        public global::Utf8Json.IJsonFormatter GetFormatter(global::System.Type type)
-        {{
-            if (!m_formatters.TryGetValue(type, out var formatter))
-            {{
-                formatter = (global::Utf8Json.IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);
-
-                m_formatters.Add(type, formatter);
-            }}
-
-            return formatter;
-        }}");
+            this.Write($"\r\n        public global::Utf8Json.IJsonFormatter GetFormatter(global::System.Type type)" +
+                       $"\r\n        {{\r\n            if (!m_formatters.TryGetValue(type, out var formatter))" +
+                       $"\r\n            {{\r\n                formatter = (global::Utf8Json.IJsonFormatter){this.ToStringHelper.ToStringWithCulture(ResolverName)}GetFormatterHelper.GetFormatter(type);" +
+                       $"\r\n\r\n                m_formatters.Add(type, formatter);\r\n            }}\r\n\r\n            return formatter;\r\n        }}");
 
             this.Write("\r\n\r\n        public global::Utf8Json.IJsonFormatter<T> GetFormatter<T>()\r\n" +
                        "        {\r\n            return FormatterCache<T>.formatter;\r\n        }\r\n\r\n        static class FormatterCache<T>\r\n" +

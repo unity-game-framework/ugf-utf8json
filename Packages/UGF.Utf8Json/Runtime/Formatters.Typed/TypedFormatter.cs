@@ -38,11 +38,13 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
                 throw new ArgumentException($"Type name for specified type not found: '{type}'.");
             }
 
-            int position = WriteTypeNameSpace(ref writer, typeName);
+            int position = WriteTypeNameSpace(ref writer, typeName, out int end);
 
             formatter.Serialize(ref writer, value, formatterResolver);
 
-            WriteTypeName(ref writer, typeName, position);
+            bool anyWritten = writer.CurrentOffset > end + 2;
+
+            WriteTypeName(ref writer, typeName, position, anyWritten);
         }
 
         public override TTarget Deserialize(ref JsonReader reader, IJsonFormatterResolver formatterResolver)
@@ -67,7 +69,7 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             return (TTarget)formatter.Deserialize(ref reader, formatterResolver);
         }
 
-        private int WriteTypeNameSpace(ref JsonWriter writer, byte[] typeName)
+        private int WriteTypeNameSpace(ref JsonWriter writer, byte[] typeName, out int end)
         {
             int length = m_typePropertyNameBytes.Length + typeName.Length + 3;
             int position = writer.CurrentOffset;
@@ -75,10 +77,12 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             writer.EnsureCapacity(length + 1);
             writer.AdvanceOffset(length);
 
+            end = writer.CurrentOffset;
+
             return position;
         }
 
-        private void WriteTypeName(ref JsonWriter writer, byte[] typeName, int position)
+        private void WriteTypeName(ref JsonWriter writer, byte[] typeName, int position, bool anyWritten)
         {
             int current = writer.CurrentOffset;
 
@@ -88,8 +92,17 @@ namespace UGF.Utf8Json.Runtime.Formatters.Typed
             writer.WriteQuotation();
             writer.WriteRaw(typeName);
             writer.WriteQuotation();
-            writer.WriteValueSeparator();
-            writer.CurrentOffset = current;
+
+            if (anyWritten)
+            {
+                writer.WriteValueSeparator();
+                writer.CurrentOffset = current;
+            }
+            else
+            {
+                writer.WriteEndObject();
+                writer.CurrentOffset = current - 1;
+            }
         }
 
         private bool TryReadTypeName(JsonReader reader, out ArraySegment<byte> typeName)

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using NUnit.Framework;
 using UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Resolvers;
 using Unity.Profiling;
@@ -12,6 +14,8 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Typed
         private readonly string m_target1Data2 = "{\"type\":\"UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target1, UGF.Utf8Json.Runtime.Tests\",\"boolValue\":false}";
         private readonly string m_target2Data = "{\"type\":\"UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests\",\"intValue\":10}";
         private readonly string m_target2Data2 = "{\"type\":\"UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests\",\"intValue\":100}";
+        private readonly string m_target3Data = "{\"type\":\"UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target3, UGF.Utf8Json.Runtime.Tests\"}";
+        private readonly string m_collectionPath = "Assets/UGF.Utf8Json.Runtime.Tests/Formatters.Typed/collection.json";
         private ProfilerMarker m_serializeMethodMarker = new ProfilerMarker("TestTypedFormatter.SerializeProfiler()");
 
         public interface ITarget
@@ -35,6 +39,12 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Typed
         {
         }
 
+        [Serializable]
+        public class TargetCollection
+        {
+            public List<ITarget> Targets { get; set; } = new List<ITarget>();
+        }
+
         [Test]
         public void Serialize()
         {
@@ -44,13 +54,44 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatters.Typed
 
             var target1 = new Target1();
             var target2 = new Target2();
+            var target3 = new Target3();
 
             string data1 = JsonSerializer.ToJsonString<ITarget>(target1, resolver);
             string data2 = JsonSerializer.ToJsonString<ITarget>(target2, resolver);
+            string data3 = JsonSerializer.ToJsonString<ITarget>(target3, resolver);
 
             Assert.AreEqual(m_target1Data, data1);
             Assert.AreEqual(m_target2Data, data2);
-            Assert.Pass($"{data1}\n{data2}");
+            Assert.AreEqual(m_target3Data, data3);
+            Assert.Pass($"{data1}\n{data2}\n{data3}");
+        }
+
+        [Test]
+        public void SerializeCollection()
+        {
+            var resolver = new Utf8JsonFormatterResolver();
+
+            resolver.AddResolver(TestTypedFormatterResolver.Instance);
+
+            var collection = new TargetCollection
+            {
+                Targets =
+                {
+                    new Target1(),
+                    new Target2(),
+                    new Target3(),
+                    new Target3(),
+                    new Target2(),
+                    new Target1()
+                }
+            };
+
+            string data = JsonSerializer.ToJsonString(collection, resolver);
+
+            data = JsonSerializer.PrettyPrint(data);
+
+            File.WriteAllText(m_collectionPath, data);
+            Assert.Pass(data);
         }
 
         [Test]

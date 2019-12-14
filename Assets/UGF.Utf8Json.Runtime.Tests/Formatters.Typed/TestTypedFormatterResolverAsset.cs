@@ -66,11 +66,13 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Resolvers
 
         static TestTypedFormatterResolverGetFormatterHelper()
         {
-            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(3)
+            lookup = new global::System.Collections.Generic.Dictionary<Type, int>(5)
             {
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target1), 0 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target2), 1 },
-                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target3), 2 },
+                {typeof(global::System.Collections.Generic.List<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.ITarget>), 0 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target1), 1 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target2), 2 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target3), 3 },
+                {typeof(global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.TargetCollection), 4 },
             };
         }
 
@@ -81,9 +83,11 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Resolvers
 
             switch (key)
             {
-                case 0: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target1Formatter();
-                case 1: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target2Formatter();
-                case 2: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target3Formatter();
+                case 0: return new global::Utf8Json.Formatters.ListFormatter<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.ITarget>();
+                case 1: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target1Formatter();
+                case 2: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target2Formatter();
+                case 3: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_Target3Formatter();
+                case 4: return new UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter_TargetCollectionFormatter();
                 default: return null;
             }
         }
@@ -331,6 +335,86 @@ namespace UGF.Utf8Json.Runtime.Tests.Formatter.Typed.Formatters.UGF.Utf8Json.Run
             }
 
             var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.Target3();
+
+            return ____result;
+        }
+    }
+
+
+    public sealed class TestTypedFormatter_TargetCollectionFormatter : global::Utf8Json.JsonFormatterBase<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.TargetCollection>
+    {
+        readonly global::Utf8Json.Internal.AutomataDictionary ____keyMapping;
+        readonly byte[][] ____stringByteKeys;
+
+        public TestTypedFormatter_TargetCollectionFormatter()
+        {
+            this.____keyMapping = new global::Utf8Json.Internal.AutomataDictionary()
+            {
+                { global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithoutQuotation("targets"), 0},
+            };
+
+            this.____stringByteKeys = new byte[][]
+            {
+                global::Utf8Json.JsonWriter.GetEncodedPropertyNameWithBeginObject("targets"),
+                
+            };
+        }
+
+        public override void Serialize(ref global::Utf8Json.JsonWriter writer, global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.TargetCollection value, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            if (value == null)
+            {
+                writer.WriteNull();
+                return;
+            }
+            
+
+            writer.WriteRaw(this.____stringByteKeys[0]);
+            global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.ITarget>>(formatterResolver).Serialize(ref writer, value.Targets, formatterResolver);
+            
+            writer.WriteEndObject();
+        }
+
+        public override global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.TargetCollection Deserialize(ref global::Utf8Json.JsonReader reader, global::Utf8Json.IJsonFormatterResolver formatterResolver)
+        {
+            if (reader.ReadIsNull())
+            {
+                return null;
+            }
+            
+
+            var __Targets__ = default(global::System.Collections.Generic.List<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.ITarget>);
+            var __Targets__b__ = false;
+
+            var ____count = 0;
+            reader.ReadIsBeginObjectWithVerify();
+            while (!reader.ReadIsEndObjectWithSkipValueSeparator(ref ____count))
+            {
+                var stringKey = reader.ReadPropertyNameSegmentRaw();
+                int key;
+                if (!____keyMapping.TryGetValue(stringKey, out key))
+                {
+                    reader.ReadNextBlock();
+                    goto NEXT_LOOP;
+                }
+
+                switch (key)
+                {
+                    case 0:
+                        __Targets__ = global::Utf8Json.JsonFormatterResolverExtensions.GetFormatterWithVerify<global::System.Collections.Generic.List<global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.ITarget>>(formatterResolver).Deserialize(ref reader, formatterResolver);
+                        __Targets__b__ = true;
+                        break;
+                    default:
+                        reader.ReadNextBlock();
+                        break;
+                }
+
+                NEXT_LOOP:
+                continue;
+            }
+
+            var ____result = new global::UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter.TargetCollection();
+            if(__Targets__b__) ____result.Targets = __Targets__;
 
             return ____result;
         }

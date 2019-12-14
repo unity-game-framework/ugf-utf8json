@@ -26,6 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 3.2.2-preview - 2019-12-14
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.2.1-preview...3.2.2-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/13?closed=1)
+
+### Fixed
+- `TypedFormatter` serialization of type information when target type does not have any serializable members.
+
 ## 3.2.1-preview - 2019-12-10
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.2.0-preview...3.2.1-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/12?closed=1)

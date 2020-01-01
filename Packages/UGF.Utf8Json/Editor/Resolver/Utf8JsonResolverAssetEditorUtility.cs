@@ -153,9 +153,14 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         public static bool CanGenerateResolver(string assetPath)
         {
-            PackageInfo packageInfo = PackageInfo.FindForAssetPath(assetPath);
+            if (File.Exists(assetPath))
+            {
+                PackageInfo packageInfo = PackageInfo.FindForAssetPath(assetPath);
 
-            return packageInfo == null || packageInfo.source == PackageSource.Embedded;
+                return packageInfo == null || packageInfo.source == PackageSource.Embedded;
+            }
+
+            return false;
         }
 
         public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid = null)

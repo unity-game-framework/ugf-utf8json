@@ -1,10 +1,7 @@
-using System;
 using System.IO;
 using UGF.AssetPipeline.Editor.Asset.Info;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
@@ -14,7 +11,6 @@ namespace UGF.Utf8Json.Editor.Resolver
         public override bool showImportedObject { get; } = false;
 
         private AssetImporter m_importer;
-        private ReorderableList m_sources;
         private string m_destinationPath;
         private bool m_destinationPathAnotherExist;
 
@@ -23,14 +19,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             base.OnEnable();
 
             m_importer = (AssetImporter)targets[0];
-
-            SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_info.m_sources");
-
-            m_sources = new ReorderableList(extraDataSerializedObject, propertySources);
-            m_sources.drawHeaderCallback = DrawHeader;
-            m_sources.elementHeight = EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing * 2F;
-            m_sources.drawElementCallback = (rect, index, active, focused) => DrawElement(m_sources, rect, index, typeof(TextAsset));
-            m_sources.onAddCallback = OnAddSource;
         }
 
         public override void OnInspectorGUI()
@@ -61,17 +49,13 @@ namespace UGF.Utf8Json.Editor.Resolver
             SerializedProperty propertyIgnoreEmpty = extraDataSerializedObject.FindProperty("m_info.m_ignoreEmpty");
             SerializedProperty propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_info.m_attributeRequired");
             SerializedProperty propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_info.m_attributeTypeName");
-
-            m_sources.serializedProperty = extraDataSerializedObject.FindProperty("m_info.m_sources");
+            SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_info.m_sources");
 
             m_destinationPath = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(m_importer.assetPath, propertyResolverName.stringValue, propertyDestinationSource.objectReferenceValue as TextAsset);
             m_destinationPathAnotherExist = propertyDestinationSource.objectReferenceValue == null && File.Exists(m_destinationPath);
 
             EditorGUILayout.Space();
             EditorGUILayout.LabelField(InfoName, EditorStyles.boldLabel);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Resolver", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(propertyResolverName);
             EditorGUILayout.PropertyField(propertyNamespaceRoot);
             EditorGUILayout.PropertyField(propertyResolverAsset);
@@ -89,9 +73,7 @@ namespace UGF.Utf8Json.Editor.Resolver
                 EditorGUILayout.PropertyField(propertyAttributeTypeName);
             }
 
-            EditorGUILayout.Space();
-
-            m_sources.DoLayoutList();
+            EditorGUILayout.PropertyField(propertySources);
 
             extraDataSerializedObject.ApplyModifiedProperties();
         }
@@ -131,47 +113,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             }
 
             return base.OnApplyRevertGUI();
-        }
-
-        private void DrawHeader(Rect rect)
-        {
-            GUI.Label(rect, $"{m_sources.serializedProperty.displayName} (Size: {m_sources.serializedProperty.arraySize})", EditorStyles.boldLabel);
-        }
-
-        private static void DrawElement(ReorderableList list, Rect rect, int index, Type objectType)
-        {
-            rect.y += EditorGUIUtility.standardVerticalSpacing;
-            rect.height = EditorGUIUtility.singleLineHeight;
-
-            SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(index);
-
-            DrawObjectField(rect, propertyElement, null, objectType);
-        }
-
-        private static void DrawObjectField(Rect rect, SerializedProperty serializedProperty, string label, Type objectType)
-        {
-            string guid = serializedProperty.stringValue;
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            Object asset = AssetDatabase.LoadAssetAtPath(path, objectType);
-
-            asset = string.IsNullOrEmpty(label)
-                ? EditorGUI.ObjectField(rect, GUIContent.none, asset, objectType, false)
-                : EditorGUI.ObjectField(rect, label, asset, objectType, false);
-
-            path = AssetDatabase.GetAssetPath(asset);
-            guid = AssetDatabase.AssetPathToGUID(path);
-
-            serializedProperty.stringValue = guid;
-        }
-
-        private void OnAddSource(ReorderableList list)
-        {
-            list.serializedProperty.InsertArrayElementAtIndex(list.serializedProperty.arraySize);
-
-            SerializedProperty propertyElement = list.serializedProperty.GetArrayElementAtIndex(list.serializedProperty.arraySize - 1);
-
-            propertyElement.stringValue = string.Empty;
-            propertyElement.serializedObject.ApplyModifiedProperties();
         }
     }
 }

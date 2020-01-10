@@ -98,8 +98,8 @@ namespace UGF.Utf8Json.Editor.Resolver
 
                 for (int i = 0; i < info.Sources.Count; i++)
                 {
-                    string guid = info.Sources[i];
-                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    TextAsset asset = info.Sources[i];
+                    string path = AssetDatabase.GetAssetPath(asset);
 
                     if (!string.IsNullOrEmpty(path))
                     {

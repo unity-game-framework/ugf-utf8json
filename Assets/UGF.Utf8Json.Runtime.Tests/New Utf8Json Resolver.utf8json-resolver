@@ -2,15 +2,20 @@
     "m_autoGenerate": true,
     "m_resolverName": "898Res.....olver88",
     "m_namespaceRoot": "Generated",
-    "m_destinationSource": "c8dd5a50cddb6cd45a9458db3a4ac85e",
+    "m_destinationSource": {
+        "fileID": 11500000,
+        "guid": "c8dd5a50cddb6cd45a9458db3a4ac85e",
+        "type": 3
+    },
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
+    "m_ignoreEmpty": false,
     "m_attributeRequired": true,
     "m_attributeTypeName": "System.SerializableAttribute, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
     "m_sources": [
         "f7d65c484f7c4372b75ee0c66c4c53fc",
+        "9ccd4e0539a9acb4aae07ec6e9c8543b",
         "6553189464184f2438f89d968b222144",
-        "f6223d94883113c47bc001ad2ae65ec0",
-        "9ccd4e0539a9acb4aae07ec6e9c8543b"
+        "f6223d94883113c47bc001ad2ae65ec0"
     ]
 }

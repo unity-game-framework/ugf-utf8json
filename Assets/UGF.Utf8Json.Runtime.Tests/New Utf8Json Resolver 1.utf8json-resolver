@@ -2,7 +2,11 @@
     "m_autoGenerate": true,
     "m_resolverName": "Resolver2",
     "m_namespaceRoot": "Generated2",
-    "m_destinationSource": "b0803580521c0eb49895d60c445c6b31",
+    "m_destinationSource": {
+        "fileID": 11500000,
+        "guid": "b0803580521c0eb49895d60c445c6b31",
+        "type": 3
+    },
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
     "m_ignoreEmpty": false,

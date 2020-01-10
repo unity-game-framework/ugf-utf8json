@@ -59,9 +59,9 @@ namespace UGF.Utf8Json.Editor.Resolver
             File.WriteAllText(path, source);
             AssetDatabase.ImportAsset(path);
 
-            if (string.IsNullOrEmpty(info.DestinationSource))
+            if (info.DestinationSource == null)
             {
-                info.DestinationSource = AssetDatabase.AssetPathToGUID(path);
+                info.DestinationSource = AssetDatabase.LoadAssetAtPath<TextAsset>(path);
 
                 AssetInfoEditorUtility.SaveInfo(assetPath, info);
             }
@@ -144,7 +144,7 @@ namespace UGF.Utf8Json.Editor.Resolver
 
             if (!string.IsNullOrEmpty(path))
             {
-                info.DestinationSource = string.Empty;
+                info.DestinationSource = null;
 
                 AssetInfoEditorUtility.SaveInfo(assetPath, info);
                 AssetDatabase.MoveAssetToTrash(path);
@@ -163,12 +163,12 @@ namespace UGF.Utf8Json.Editor.Resolver
             return false;
         }
 
-        public static string GetDestinationSourcePath(string assetPath, string resolverName, string sourceGuid = null)
+        public static string GetDestinationSourcePath(string assetPath, string resolverName, TextAsset asset = null)
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
             if (string.IsNullOrEmpty(resolverName)) throw new ArgumentException("Value cannot be null or empty.", nameof(resolverName));
 
-            string path = AssetDatabase.GUIDToAssetPath(sourceGuid);
+            string path = AssetDatabase.GetAssetPath(asset);
 
             if (string.IsNullOrEmpty(path))
             {

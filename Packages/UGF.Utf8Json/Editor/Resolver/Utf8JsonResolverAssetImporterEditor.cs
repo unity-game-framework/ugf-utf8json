@@ -23,59 +23,21 @@ namespace UGF.Utf8Json.Editor.Resolver
 
         public override void OnInspectorGUI()
         {
+            SerializedProperty propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
+            SerializedProperty propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
+
+            m_destinationPath = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(m_importer.assetPath, propertyResolverName.stringValue, propertyDestinationSource.objectReferenceValue as TextAsset);
+            m_destinationPathAnotherExist = propertyDestinationSource.objectReferenceValue == null && File.Exists(m_destinationPath);
+
             base.OnInspectorGUI();
 
             if (m_destinationPathAnotherExist)
             {
-                SerializedProperty propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
-
                 string assetName = $"{propertyResolverName.stringValue}Asset";
 
                 EditorGUILayout.Space();
                 EditorGUILayout.HelpBox($"A file with the same name of the generate source already exists: '{assetName}'.\nPath: '{m_destinationPath}'.", MessageType.Warning);
             }
-        }
-
-        protected override void OnDrawInfo()
-        {
-            extraDataSerializedObject.UpdateIfRequiredOrScript();
-
-            SerializedProperty propertyAutoGenerate = extraDataSerializedObject.FindProperty("m_info.m_autoGenerate");
-            SerializedProperty propertyResolverName = extraDataSerializedObject.FindProperty("m_info.m_resolverName");
-            SerializedProperty propertyNamespaceRoot = extraDataSerializedObject.FindProperty("m_info.m_namespaceRoot");
-            SerializedProperty propertyDestinationSource = extraDataSerializedObject.FindProperty("m_info.m_destinationSource");
-            SerializedProperty propertyResolverAsset = extraDataSerializedObject.FindProperty("m_info.m_resolverAsset");
-            SerializedProperty propertyIgnoreReadOnly = extraDataSerializedObject.FindProperty("m_info.m_ignoreReadOnly");
-            SerializedProperty propertyIgnoreEmpty = extraDataSerializedObject.FindProperty("m_info.m_ignoreEmpty");
-            SerializedProperty propertyAttributeRequired = extraDataSerializedObject.FindProperty("m_info.m_attributeRequired");
-            SerializedProperty propertyAttributeTypeName = extraDataSerializedObject.FindProperty("m_info.m_attributeTypeName");
-            SerializedProperty propertySources = extraDataSerializedObject.FindProperty("m_info.m_sources");
-
-            m_destinationPath = Utf8JsonResolverAssetEditorUtility.GetDestinationSourcePath(m_importer.assetPath, propertyResolverName.stringValue, propertyDestinationSource.objectReferenceValue as TextAsset);
-            m_destinationPathAnotherExist = propertyDestinationSource.objectReferenceValue == null && File.Exists(m_destinationPath);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField(InfoName, EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(propertyResolverName);
-            EditorGUILayout.PropertyField(propertyNamespaceRoot);
-            EditorGUILayout.PropertyField(propertyResolverAsset);
-
-            EditorGUILayout.Space();
-            EditorGUILayout.LabelField("Generate", EditorStyles.boldLabel);
-            EditorGUILayout.PropertyField(propertyAutoGenerate);
-            EditorGUILayout.PropertyField(propertyDestinationSource);
-            EditorGUILayout.PropertyField(propertyIgnoreReadOnly);
-            EditorGUILayout.PropertyField(propertyIgnoreEmpty);
-            EditorGUILayout.PropertyField(propertyAttributeRequired);
-
-            using (new EditorGUI.DisabledScope(!propertyAttributeRequired.boolValue))
-            {
-                EditorGUILayout.PropertyField(propertyAttributeTypeName);
-            }
-
-            EditorGUILayout.PropertyField(propertySources);
-
-            extraDataSerializedObject.ApplyModifiedProperties();
         }
 
         protected override bool OnApplyRevertGUI()

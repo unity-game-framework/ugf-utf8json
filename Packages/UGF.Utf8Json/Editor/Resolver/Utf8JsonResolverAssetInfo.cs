@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UGF.AssetPipeline.Editor.Asset.Info;
+using UGF.EditorTools.Runtime.IMGUI.Types;
 using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.Resolver
@@ -16,6 +17,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         [SerializeField] private bool m_ignoreReadOnly = true;
         [SerializeField] private bool m_ignoreEmpty;
         [SerializeField] private bool m_attributeRequired = true;
+        [TypesDropdown(typeof(Attribute))]
         [SerializeField] private string m_attributeTypeName = typeof(SerializableAttribute).AssemblyQualifiedName;
         [SerializeField] private List<string> m_sources = new List<string>();
 

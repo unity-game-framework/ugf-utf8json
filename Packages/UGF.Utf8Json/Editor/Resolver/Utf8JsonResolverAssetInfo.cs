@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using UGF.AssetPipeline.Editor.Asset.Info;
 using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
     [Serializable]
-    public class Utf8JsonResolverAssetInfo
+    public class Utf8JsonResolverAssetInfo : IAssetInfo
     {
         [SerializeField] private bool m_autoGenerate = true;
         [SerializeField] private string m_resolverName = "Resolver";

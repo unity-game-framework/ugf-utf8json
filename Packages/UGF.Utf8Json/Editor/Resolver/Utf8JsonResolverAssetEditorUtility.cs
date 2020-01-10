@@ -4,10 +4,11 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
+using UGF.AssetPipeline.Editor.Asset.Info;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
-using UGF.Code.Generate.Editor.Container.External;
+using UGF.Code.Generate.Editor.Container.Asset;
 using UGF.Utf8Json.Editor.ExternalType;
 using UGF.Utf8Json.Runtime.Resolver;
 using UnityEditor;
@@ -51,7 +52,7 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
-            Utf8JsonResolverAssetInfo info = LoadResolverInfo(assetPath);
+            var info = AssetInfoEditorUtility.LoadInfo<Utf8JsonResolverAssetInfo>(assetPath);
             string source = GenerateResolver(info, validation, compilation, generator);
             string path = GetDestinationSourcePath(assetPath, info.ResolverName, info.DestinationSource);
 
@@ -62,14 +63,14 @@ namespace UGF.Utf8Json.Editor.Resolver
             {
                 info.DestinationSource = AssetDatabase.AssetPathToGUID(path);
 
-                SaveResolverInfo(assetPath, info);
+                AssetInfoEditorUtility.SaveInfo(assetPath, info);
             }
         }
 
         public static string GenerateResolver(Utf8JsonResolverAssetInfo info, ICodeGenerateContainerValidation validation = null, Compilation compilation = null, SyntaxGenerator generator = null)
         {
             if (info == null) throw new ArgumentNullException(nameof(info));
-            if (validation == null) validation = CodeGenerateContainerExternalEditorUtility.DefaultValidation;
+            if (validation == null) validation = CodeGenerateContainerAssetEditorUtility.DefaultValidation;
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
@@ -138,15 +139,14 @@ namespace UGF.Utf8Json.Editor.Resolver
         {
             if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
 
-            Utf8JsonResolverAssetInfo info = LoadResolverInfo(assetPath);
+            var info = AssetInfoEditorUtility.LoadInfo<Utf8JsonResolverAssetInfo>(assetPath);
             string path = GetDestinationSourcePath(assetPath, info.ResolverName, info.DestinationSource);
 
             if (!string.IsNullOrEmpty(path))
             {
                 info.DestinationSource = string.Empty;
 
-                SaveResolverInfo(assetPath, info);
-
+                AssetInfoEditorUtility.SaveInfo(assetPath, info);
                 AssetDatabase.MoveAssetToTrash(path);
             }
         }
@@ -194,40 +194,6 @@ namespace UGF.Utf8Json.Editor.Resolver
             unit = generator.InsertMembers(unit, 0, assetDeclaration);
 
             return unit.ToFullString();
-        }
-
-        public static Utf8JsonResolverAssetInfo LoadResolverInfo(string assetPath)
-        {
-            if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
-
-            var data = new Utf8JsonResolverAssetInfo();
-
-            if (File.Exists(assetPath))
-            {
-                string source = File.ReadAllText(assetPath);
-
-                if (!string.IsNullOrEmpty(source))
-                {
-                    JsonUtility.FromJsonOverwrite(source, data);
-                }
-            }
-
-            return data;
-        }
-
-        public static void SaveResolverInfo(string assetPath, Utf8JsonResolverAssetInfo info, bool importAsset = true)
-        {
-            if (string.IsNullOrEmpty(assetPath)) throw new ArgumentException("Value cannot be null or empty.", nameof(assetPath));
-            if (info == null) throw new ArgumentNullException(nameof(info));
-
-            string source = EditorJsonUtility.ToJson(info, true);
-
-            File.WriteAllText(assetPath, source);
-
-            if (importAsset)
-            {
-                AssetDatabase.ImportAsset(assetPath);
-            }
         }
 
         private static SyntaxNode GenerateResolverAsset(string resolverName, string namespaceRoot, Compilation compilation = null, SyntaxGenerator generator = null)

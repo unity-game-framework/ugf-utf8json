@@ -5,6 +5,7 @@
     "m_destinationSource": "b0803580521c0eb49895d60c445c6b31",
     "m_resolverAsset": true,
     "m_ignoreReadOnly": true,
+    "m_ignoreEmpty": false,
     "m_attributeRequired": true,
     "m_attributeTypeName": "System.SerializableAttribute, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
     "m_sources": [

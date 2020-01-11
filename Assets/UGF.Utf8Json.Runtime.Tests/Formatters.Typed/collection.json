@@ -1,26 +1,26 @@
 {
-  "targets": [
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target1, UGF.Utf8Json.Runtime.Tests",
-      "boolValue": true
-    },
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests",
-      "intValue": 10
-    },
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target3, UGF.Utf8Json.Runtime.Tests"
-    },
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target3, UGF.Utf8Json.Runtime.Tests"
-    },
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests",
-      "intValue": 10
-    },
-    {
-      "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target1, UGF.Utf8Json.Runtime.Tests",
-      "boolValue": true
-    }
-  ]
+    "targets": [
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target1, UGF.Utf8Json.Runtime.Tests",
+            "boolValue": true
+        },
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests",
+            "intValue": 10
+        },
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target3, UGF.Utf8Json.Runtime.Tests"
+        },
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target3, UGF.Utf8Json.Runtime.Tests"
+        },
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target2, UGF.Utf8Json.Runtime.Tests",
+            "intValue": 10
+        },
+        {
+            "type": "UGF.Utf8Json.Runtime.Tests.Formatters.Typed.TestTypedFormatter+Target1, UGF.Utf8Json.Runtime.Tests",
+            "boolValue": true
+        }
+    ]
 }

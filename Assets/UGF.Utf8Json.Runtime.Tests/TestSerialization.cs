@@ -1,6 +1,6 @@
 using System;
+using Generated2.Resolvers;
 using NUnit.Framework;
-using UGF.Utf8Json.Runtime.Tests.Resolvers;
 using UnityEngine;
 using Utf8Json;
 
@@ -44,7 +44,7 @@ namespace UGF.Utf8Json.Runtime.Tests
         public void Setup()
         {
             m_resolver = Utf8JsonUtility.CreateDefaultResolver();
-            m_resolver.AddResolver(UGFUtf8JsonRuntimeTestsResolver.Instance);
+            m_resolver.AddResolver(Resolver2.Instance);
         }
 
         [Test]

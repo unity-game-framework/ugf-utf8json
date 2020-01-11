@@ -26,6 +26,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 4.0.0-preview - 2020-01-11
+- [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.2.2-preview...4.0.0-preview)
+- [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/14?closed=1)
+
+### Added
+- `Utf8JsonUtility.ToJson` and `Utf8JsonUtility.FromJson`.
+
+### Changed
+- Package dependencies:
+    - `com.ugf.code.generate`: from `4.0.0-preview` to `4.1.0-preview`.
+- `JsonSerializer.PrettyPrint` indent size to `4`.
+- `Utf8JsonResolverAssetInfo.DestinationSource` to store asset directly.
+- `Utf8JsonResolverAssetInfo.Sources` to store assets directly.
+
+### Removed
+- `Formatters.Union`: use `Formatters.Typed` instead.
+- `Utf8JsonResolverAssetEditorUtility.LoadResolverInfo` and `Utf8JsonResolverAssetEditorUtility.SaveResolverInfo`: use `AssetInfoEditorUtility` instead.
+- `Utf8JsonResolverAssetImporter.AutoGenerate`.
+
+### Fixed
+- `Utf8JsonResolverAssetEditorUtility.CanGenerateResolver` throws expcetion when specified path does not exists.
+
 ## 3.2.2-preview - 2019-12-14
 - [Commits](https://github.com/unity-game-framework/ugf-utf8json/compare/3.2.1-preview...3.2.2-preview)
 - [Milestone](https://github.com/unity-game-framework/ugf-utf8json/milestone/13?closed=1)

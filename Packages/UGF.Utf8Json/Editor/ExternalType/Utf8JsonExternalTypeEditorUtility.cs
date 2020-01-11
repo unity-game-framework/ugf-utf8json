@@ -4,10 +4,12 @@ using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
+using UGF.AssetPipeline.Editor.Asset.Info;
 using UGF.Code.Analysis.Editor;
 using UGF.Code.Generate.Editor;
 using UGF.Code.Generate.Editor.Container;
-using UGF.Code.Generate.Editor.Container.External;
+using UGF.Code.Generate.Editor.Container.Asset;
+using UGF.Code.Generate.Editor.Container.Info;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,7 +24,7 @@ namespace UGF.Utf8Json.Editor.ExternalType
         {
             if (externalPaths == null) throw new ArgumentNullException(nameof(externalPaths));
             if (sourcePaths == null) throw new ArgumentNullException(nameof(sourcePaths));
-            if (validation == null) validation = CodeGenerateContainerExternalEditorUtility.DefaultValidation;
+            if (validation == null) validation = CodeGenerateContainerAssetEditorUtility.DefaultValidation;
             if (compilation == null) compilation = CodeAnalysisEditorUtility.ProjectCompilation;
             if (generator == null) generator = CodeAnalysisEditorUtility.Generator;
 
@@ -40,12 +42,13 @@ namespace UGF.Utf8Json.Editor.ExternalType
             for (int i = 0; i < externalPaths.Count; i++)
             {
                 string externalPath = externalPaths[i];
+                var info = AssetInfoEditorUtility.LoadInfo<CodeGenerateContainerInfo>(externalPath);
 
-                if (CodeGenerateContainerExternalEditorUtility.TryGetInfoFromAssetPath(externalPath, out Utf8JsonExternalTypeAssetInfo info) && info.TryGetTargetType(out Type type))
+                if (info.TryGetTargetType(out Type type))
                 {
                     if (types.Add(type))
                     {
-                        SyntaxNode unit = CodeGenerateContainerExternalEditorUtility.CreateUnit(info, validation, compilation, generator);
+                        SyntaxNode unit = CodeGenerateContainerInfoEditorUtility.CreateUnit(info, validation, compilation, generator);
 
                         if (rewriterAddAttribute != null)
                         {

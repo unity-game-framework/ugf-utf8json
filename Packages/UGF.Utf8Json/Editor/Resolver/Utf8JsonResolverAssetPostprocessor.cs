@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UGF.AssetPipeline.Editor.Asset.Info;
 using UnityEditor;
+using UnityEngine;
 
 namespace UGF.Utf8Json.Editor.Resolver
 {
@@ -64,13 +66,13 @@ namespace UGF.Utf8Json.Editor.Resolver
             for (int i = 0; i < paths.Count; i++)
             {
                 string path = paths[i];
-                Utf8JsonResolverAssetInfo info = Utf8JsonResolverAssetEditorUtility.LoadResolverInfo(path);
+                var info = AssetInfoEditorUtility.LoadInfo<Utf8JsonResolverAssetInfo>(path);
 
                 if (info.AutoGenerate)
                 {
-                    foreach (string source in info.Sources)
+                    foreach (TextAsset asset in info.Sources)
                     {
-                        string sourcePath = AssetDatabase.GUIDToAssetPath(source);
+                        string sourcePath = AssetDatabase.GetAssetPath(asset);
 
                         cache[sourcePath] = path;
                     }

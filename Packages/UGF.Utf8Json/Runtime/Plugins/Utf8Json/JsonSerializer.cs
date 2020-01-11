@@ -357,7 +357,7 @@ namespace Utf8Json
             return writer.ToUtf8ByteArray();
         }
 
-        static readonly byte[][] indent = Enumerable.Range(0, 100).Select(x => Encoding.UTF8.GetBytes(new string(' ', x * 2))).ToArray();
+        static readonly byte[][] indent = Enumerable.Range(0, 100).Select(x => Encoding.UTF8.GetBytes(new string(' ', x * 4))).ToArray();
         static readonly byte[] newLine = Encoding.UTF8.GetBytes(Environment.NewLine);
 
         static void WritePrittyPrint(ref JsonReader reader, ref JsonWriter writer, int depth)

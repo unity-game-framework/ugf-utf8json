@@ -10,6 +10,6 @@
     },
     "dependencies": {
         "com.ugf.code.generate": "4.1.0-preview",
-        "com.ugf.editortools": "0.4.0-preview"
+        "com.ugf.assetpipeline": "0.3.0-preview"
     }
 }

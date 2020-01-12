@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using NUnit.Framework;
 using Utf8Json;
+using Utf8Json.Resolvers;
+using Utf8Json.Unity;
 
 namespace UGF.Utf8Json.Runtime.Tests
 {
@@ -24,7 +26,9 @@ namespace UGF.Utf8Json.Runtime.Tests
         [OneTimeSetUp]
         public void Setup()
         {
-            m_resolver = Utf8JsonUtility.CreateDefaultResolver();
+            m_resolver = new Utf8JsonFormatterResolver();
+            m_resolver.AddResolver(BuiltinResolver.Instance);
+            m_resolver.AddResolver(UnityResolver.Instance);
             m_resolver.AddResolver(Generated.Resolvers.Resolver88.Instance);
         }
 

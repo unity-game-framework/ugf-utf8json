@@ -4,7 +4,7 @@ UGF.Utf8Json
 
 ## Info
 
-- **Version**: `4.1.0-preview`
+- **Version**: `4.1.1-preview`
 - **Unity Version**: `2019.3.0`
 - **API Compatibility Level**: `.NET Standard 2.0`
 

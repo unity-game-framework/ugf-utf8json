@@ -24,69 +24,6 @@ namespace Utf8Json.Internal
             root = new AutomataNode(0);
         }
 
-#if NETSTANDARD
-        public unsafe void Add(string str, int value)
-        {
-            Add(JsonWriter.GetEncodedPropertyNameWithoutQuotation(str), value);
-        }
-
-        public unsafe void Add(byte[] bytes, int value)
-        {
-            fixed (byte* buffer = &bytes[0])
-            {
-                var node = root;
-
-                var p = buffer;
-                var rest = bytes.Length;
-                while (rest != 0)
-                {
-                    var key = AutomataKeyGen.GetKey(ref p, ref rest);
-
-                    if (rest == 0)
-                    {
-                        node = node.Add(key, value, Encoding.UTF8.GetString(bytes));
-                    }
-                    else
-                    {
-                        node = node.Add(key);
-                    }
-                }
-            }
-        }
-
-        public unsafe bool TryGetValue(ArraySegment<byte> bytes, out int value)
-        {
-            return TryGetValue(bytes.Array, bytes.Offset, bytes.Count, out value);
-        }
-
-        public unsafe bool TryGetValue(byte[] bytes, int offset, int count, out int value)
-        {
-            fixed (byte* p = &bytes[offset])
-            {
-                var p1 = p;
-                var node = root;
-                var rest = count;
-
-                while (rest != 0 && node != null)
-                {
-                    node = node.SearchNext(ref p1, ref rest);
-                }
-
-                if (node == null)
-                {
-                    value = -1;
-                    return false;
-                }
-                else
-                {
-                    value = node.Value;
-                    return true;
-                }
-            }
-        }
-#else
-        // for Unity, use safe only.
-
         public void Add(string str, int value)
         {
             Add(JsonWriter.GetEncodedPropertyNameWithoutQuotation(str), value);
@@ -114,7 +51,10 @@ namespace Utf8Json.Internal
             }
         }
 
-#endif
+        public bool TryGetValue(ArraySegment<byte> key, out int value)
+        {
+            return TryGetValueSafe(key, out value);
+        }
 
         public bool TryGetValueSafe(ArraySegment<byte> key, out int value)
         {
